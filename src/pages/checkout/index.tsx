@@ -37,7 +37,7 @@ type Loading = {
   saving: boolean;
 };
 
-function Delivery({ checkoutId }: { checkoutId: string }) {
+function Delivery() {
   const [newAddress, SetnewAddress] = useState(false);
   const [cartItem, SetCartItem] = useState<any>({});
   const [deliveryFee, setDeliveryFee] = useState<number>(50);
@@ -48,15 +48,15 @@ function Delivery({ checkoutId }: { checkoutId: string }) {
 
   const { cart, setCart } = useAppContext();
 
-  useEffect(() => {
-    getCart(setCart).then(() => {
-      const filtered = cart?.products?.filter(
-        (item: any) => item.cartItemId === checkoutId
-      );
-      SetCartItem(filtered[0]);
-    });
-    getUser();
-  }, []);
+  // useEffect(() => {
+  //   getCart(setCart).then(() => {
+  //     const filtered = cart?.products?.filter(
+  //       (item: any) => item.cartItemId === checkoutId
+  //     );
+  //     SetCartItem(filtered[0]);
+  //   });
+  //   getUser();
+  // }, []);
 
   const getUser = async () => {
     try {
