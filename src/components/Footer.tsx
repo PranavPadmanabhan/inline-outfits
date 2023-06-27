@@ -1,0 +1,21 @@
+import React from 'react'
+
+function Footer() {
+  return (
+    <div className='h-[30vh] w-[100%] flex items-center justify-between px-10 box-border text-white bg-black bottom-0 relative'>
+        <h1 className="text-5xl font-bold ">YOLO</h1>
+        <div className="h-[80%] w-[250px] grid grid-cols-2 gap-2">
+            <h1 className="text-sm font-medium ">Home</h1>
+            <h1 className="text-sm font-medium ">Instagrm</h1>
+            <h1 className="text-sm font-medium ">Shop</h1>
+            <h1 className="text-sm font-medium ">WhatsApp</h1>
+            <h1 className="text-sm font-medium ">Contact Us</h1>
+            <h1 className="text-sm font-medium ">Email</h1>
+            <h1 className="text-sm font-medium ">Terms & Conditions</h1>
+            
+        </div>
+    </div>
+  )
+}
+
+export default Footer
