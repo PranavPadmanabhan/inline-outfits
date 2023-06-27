@@ -43,8 +43,19 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
   const [cartItem, SetCartItem] = useState<any>({});
   const [deliveryFee, setDeliveryFee] = useState<number>(50);
   const [user, setUser] = useState<any>({});
-  const [address, setAddress] = useState<Address>({} as Address);
-  const [error, setError] = useState<error>({} as error);
+  const [isHomeAddress, setIsHomeAddress] = useState<boolean>(true)
+  const [address, setAddress] = useState<Address>({
+    address:"",
+    alternateNumber:"",
+    city:"",
+    landMark:"",
+    locality:"",
+    name:"",
+    phone:"",
+    pinCode:"",
+    state:""
+  });
+  const [error, setError] = useState<any>([]);
   const [loading, setLoading] = useState<Loading>({ saving: false });
 
   const { cart, setCart } = useAppContext();
@@ -57,10 +68,11 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
   const getUser = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user")!);
-      const res = await Axios.get(`/user/${user?.phone}`);
+      const res = await Axios.get(`/auth/user/${user?.phone}`);
       const data = await res.data;
       if (!data.error) {
         setUser(data);
+        console.log(data)
       }
     } catch (error) {}
   };
@@ -69,7 +81,6 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
     try {
       if (
         address.address.trim().length > 0 &&
-        address.alternateNumber.trim().length > 0 &&
         address.city.trim().length > 0 &&
         address.name.trim().length > 0 &&
         address.pinCode.trim().length > 0 &&
@@ -78,25 +89,40 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
       ) {
         setLoading({ ...loading, saving: true });
         const user = JSON.parse(localStorage.getItem("user")!);
-        const res = await Axios.put(`/user/${user?.phone}`, {
-          addresses: [...user.addresses, address],
+        console.log(user)
+        let addresses:any[] = []
+        if(user?.addresses){
+          addresses = [...user?.addresses, {...address,isHomeAddress}]
+        }
+        else {
+          addresses = [{...address,isHomeAddress} ]
+        }
+        const res = await Axios.put(`/auth/user/${user?.phone}`, {
+          addresses
         });
         const data = await res.data;
         if (!data.error) {
-          setUser(data);
+          getUser()
+          setError([])
+          SetnewAddress(false)
         }
         setLoading({ ...loading, saving: false });
       } else {
+        let allErrors:string[] = []
         Object.values(address).map((item, i) => {
           if (item.trim().length <= 0) {
-            setError({
-              ...error,
-              [item.toString()]: `${Object.keys(address)[i]} is empty `,
-            });
+            if(!allErrors.includes(Object.keys(address)[i].toString())){
+              allErrors = [...allErrors,Object.keys(address)[i].toString()]
+            }
           }
+          else {
+            allErrors = allErrors.filter(item => item !== Object.keys(address)[i].toString() )
+          }
+          setError(allErrors)
         });
       }
     } catch (error) {
+      console.log(error)
       setLoading({ ...loading, saving: false });
     }
   };
@@ -107,28 +133,21 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
       <div className="w-full h-full flex items-start justify-center">
         <div className="h-auto   w-[50%] flex flex-col items-start justify-start  box-border  ">
           <h1 className="text-lg font-medium my-2 ml-10 text-black">Delivery Address</h1>
-          <div className="h-[32%] w-[100%]  flex items-center justify-evenly">
+          <div className="min-h-[32%] h-auto w-[90%]  grid grid-cols-3 gap-y-2 place-content-center place-items-center px-7  box-border">
             {user?.addresses?.map((item: any, i: number) => (
               <GivenAddress
                 key={i}
                 Delete="/svg/delete.svg"
-                AddressType="/svg/home.svg"
+                AddressType={item.isHomeAddress?"Home":"Office"}
                 Name={item.name}
+                isSelected
                 Locality={item.locality}
                 City={item.city}
-                PinNumber={670307}
-                PhoneNumber={9999999999}
+                PinNumber={item.pinCode}
+                PhoneNumber={"+91"+item.phone}
               />
             ))}
-            {/* <GivenAddress
-              Delete="/svg/delete.svg"
-              AddressType="/svg/office.svg"
-              Name="Athul Vishnu"
-              Locality="Karamel"
-              City="Payyanur"
-              PinNumber={670307}
-              PhoneNumber={9999999999}
-            /> */}
+            
           </div>
 
           <div className="min-h-[50px] w-[87%] flex flex-col items-start justify-start  border-[1px] border-[#00000013] rounded-lg ml-10 my-5">
@@ -156,7 +175,9 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
                 setAddress={setAddress}
                 loading={loading.saving}
                 updateAddress={updateAddress}
-                
+                error={error}
+                setIsHome={setIsHomeAddress}
+                isHome={isHomeAddress}
               />
             )}
           </div>

@@ -133,18 +133,20 @@ function Delivery() {
 
           <div className="min-h-[50px] w-[87%] flex flex-col items-start justify-start  border-[1px] border-[#00000013] rounded-lg ml-10 my-5">
             <div className="h-[100%] w-[100%] flex items-center justify-between pl-5 pr-2 pt-1 box-border">
-              <h1 className="text-lg font-medium">Add a new address</h1>
+              <h1 className="text-lg font-medium text-black">Add a new address</h1>
               {newAddress ? (
                 <AiOutlineMinus
                   onClick={() => SetnewAddress(!newAddress)}
                   className=" cursor-pointer m-1"
                   size={24}
+                  color="black"
                 />
               ) : (
                 <AiOutlinePlus
                   onClick={() => SetnewAddress(!newAddress)}
                   className=" cursor-pointer m-1"
                   size={24}
+                  color="black"
                 />
               )}
             </div>
@@ -154,6 +156,7 @@ function Delivery() {
                 setAddress={setAddress}
                 loading={loading.saving}
                 updateAddress={updateAddress}
+                error={null}
               />
             )}
           </div>
