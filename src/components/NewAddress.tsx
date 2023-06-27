@@ -86,7 +86,7 @@ function NewAddress({
       </div>
 
       <div className="h-[20px] w-[200px] flex items-center justify-evenly">
-        <h1 className=" text-[11px]">Address Type </h1>
+        <h1 className=" text-[11px] text-black">Address Type </h1>
         <input
           id="horizontal-list-radio-license"
           type="radio"
@@ -94,7 +94,7 @@ function NewAddress({
           name="list-radio"
           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ml-2 "
         />
-        <h1 className=" text-[11px]">Home</h1>
+        <h1 className=" text-[11px] text-black">Home</h1>
         <input
           id="horizontal-list-radio-id"
           type="radio"
@@ -102,7 +102,7 @@ function NewAddress({
           name="list-radio"
           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ml-2 "
         />
-        <h1 className="text-[11px]">Office </h1>
+        <h1 className="text-[11px] text-black">Office </h1>
       </div>
       <button
         onClick={updateAddress}
