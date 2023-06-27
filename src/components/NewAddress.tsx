@@ -5,11 +5,13 @@ function NewAddress({
   setAddress,
   loading,
   updateAddress,
+  error
 }: {
   address: any;
   setAddress: Dispatch<SetStateAction<any>>;
   loading: boolean;
   updateAddress: any;
+  error:any
 }) {
   return (
     <div className="h-[400px] w-[94%] flex flex-col justify-evenly items-start mt-2 ml-4 ">
@@ -110,6 +112,7 @@ function NewAddress({
       >
         {loading ? "Saving.." : "Save"}
       </button>
+      <span className="text-[14px] text-red-800 ">{error}</span>
     </div>
   );
 }
