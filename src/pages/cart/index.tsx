@@ -75,7 +75,9 @@ function Cart() {
               ))}
             </InfiniteScroll>
           </div>
-          <div className="w-[35%] h-full bg-white flex flex-col items-center justify-start">
+         {
+          cart?.products?.length > 0 && (
+            <div className="w-[35%] h-full bg-white flex flex-col items-center justify-start">
             <div className="w-[70%] h-[72%] min-h-[60vh] border-[1px] border-gray-400 rounded-[10px] flex flex-col px-[5%] pt-4 box-border ">
               <div className="w-full h-[20%] flex flex-col items-start justify-start border-b-[2px] border-dashed">
                 <span className="mb-2 ml-4 text-black font-[600] text-[1.2rem] ">
@@ -126,6 +128,8 @@ function Cart() {
               </button>
             </div>
           </div>
+          )
+         }
         </div>
       )}
     </div>

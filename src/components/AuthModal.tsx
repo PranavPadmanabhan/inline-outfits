@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "./Input";
 import { User, Key, Call, CloseCircle } from "iconsax-react";
 import { passwordRegex, phoneRegex } from "@/constants/constants";
@@ -59,8 +59,16 @@ function AuthModal() {
   const { setIsAuthModalVisible, setUser, authType, setAuthType } =
     useAppContext();
 
-  const signup = async (e?:any) => {
-    e?.preventDefault()
+  useEffect(() => {
+    setError({
+      name: "",
+      phone: "",
+      password: "",
+    });
+  }, [authType]);
+
+  const signup = async (e?: any) => {
+    e?.preventDefault();
     if (
       state.name.trim().length !== 0 &&
       state.phone.trim().length !== 0 &&
@@ -84,7 +92,7 @@ function AuthModal() {
           localStorage.setItem("user", JSON.stringify({}));
           setError({
             name: "",
-            phone:"",
+            phone: "",
             password: data.error,
           });
         }
@@ -198,7 +206,6 @@ function AuthModal() {
       });
   };
 
-
   const VerifyOTP = async (otp: number | string) => {
     setLoading({ ...loading, verifying: true });
     window.confirmationResult.confirm(otp).then(async (resp: any) => {
@@ -219,8 +226,8 @@ function AuthModal() {
     });
   };
 
-  const signin = async (e?:any) => {
-    e?.preventDefault()
+  const signin = async (e?: any) => {
+    e?.preventDefault();
     if (state.phone.trim().length !== 0 && state.password.trim().length !== 0) {
       try {
         setLoading({ ...loading, signingIn: true });
@@ -238,7 +245,7 @@ function AuthModal() {
           setUser({});
           setError({
             name: "",
-            phone:"",
+            phone: "",
             password: data.error,
           });
           localStorage.setItem("user", JSON.stringify({}));
@@ -340,13 +347,16 @@ function AuthModal() {
             </button>
           </div>
         ) : (
-          <form onSubmit={(e) => {
-            if (authType === "signup") {
-              signup(e);
-            } else {
-              signin(e);
-            }
-          }} className="w-1/2 h-full flex flex-col items-center justify-start">
+          <form
+            onSubmit={(e) => {
+              if (authType === "signup") {
+                signup(e);
+              } else {
+                signin(e);
+              }
+            }}
+            className="w-1/2 h-full flex flex-col items-center justify-start"
+          >
             <div id="recaptcha-container"></div>
             <div
               className={`min-w-[120px] min-h-[50px] ${
