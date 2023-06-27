@@ -57,7 +57,7 @@ function Header() {
             router.pathname === "/"
               ? "border-b-[1px] border-b-black"
               : "border-none"
-          } font-medium  cursor-pointer`}
+          } font-medium  cursor-pointer text-black`}
         >
           Home
         </h1>
@@ -67,7 +67,7 @@ function Header() {
             router.pathname === "/shop"
               ? "border-b-[1px] border-b-black"
               : "border-none"
-          } font-medium`}
+          } font-medium text-black`}
         >
           Shop
         </button>
@@ -76,7 +76,7 @@ function Header() {
             router.pathname === "/contact"
               ? "border-b-[1px] border-b-black"
               : "border-none"
-          } font-medium`}
+          } font-medium text-black`}
         >
           Contact Us
         </h1>
