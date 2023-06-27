@@ -49,15 +49,10 @@ function Delivery() {
 
   const { cart, setCart } = useAppContext();
 
-  // useEffect(() => {
-  //   getCart(setCart).then(() => {
-  //     const filtered = cart?.products?.filter(
-  //       (item: any) => item.cartItemId === checkoutId
-  //     );
-  //     SetCartItem(filtered[0]);
-  //   });
-  //   getUser();
-  // }, []);
+  useEffect(() => {
+    getCart(setCart,null,settotalAmount)
+    getUser();
+  }, []);
 
   const getUser = async () => {
     try {
