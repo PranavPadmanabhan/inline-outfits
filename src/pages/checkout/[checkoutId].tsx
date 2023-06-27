@@ -50,14 +50,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
   const { cart, setCart } = useAppContext();
 
   useEffect(() => {
-    getCart(setCart).then(() => {
-      const filtered = cart?.products?.filter(
-        (item: any) => item.cartItemId === checkoutId
-      );
-      if(filtered[0]){
-        SetCartItem(filtered[0]);
-      }
-    });
+    getCart(setCart,null,null,SetCartItem,checkoutId);
     getUser();
   }, []);
 

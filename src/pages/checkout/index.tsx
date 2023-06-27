@@ -45,9 +45,11 @@ function Delivery() {
   const [address, setAddress] = useState<Address>({} as Address);
   const [error, setError] = useState<error>({} as error);
   const [loading, setLoading] = useState<Loading>({ saving: false });
+  const [totalAmount, settotalAmount] = useState<any>(0);
 
   const { cart, setCart } = useAppContext();
 
+<<<<<<< HEAD
   // useEffect(() => {
   //   getCart(setCart).then(() => {
   //     const filtered = cart?.products?.filter(
@@ -57,6 +59,12 @@ function Delivery() {
   //   });
   //   getUser();
   // }, []);
+=======
+  useEffect(() => {
+    getCart(setCart, null, settotalAmount);
+    getUser();
+  }, []);
+>>>>>>> 985f2e6e72c48d6560e6649c807d1d35ab1e81e1
 
   const getUser = async () => {
     try {
@@ -176,9 +184,7 @@ function Delivery() {
                   Net Amount
                 </span>
                 <span className="ml-4 mr-2 text-black font-[600] text-[1.5rem]">
-                  ₹
-                  {parseInt(cartItem?.product?.price?.original.toString()) *
-                    cartItem?.quantity}
+                  ₹{totalAmount}
                 </span>
               </div>
 
@@ -196,10 +202,7 @@ function Delivery() {
                 Total
               </span>
               <span className="ml-4 mr-2 text-black font-[600] text-[1.5rem]">
-                ₹
-                {parseInt(cartItem?.product?.price?.original.toString()) *
-                  cartItem?.quantity +
-                  deliveryFee}
+                ₹{totalAmount + deliveryFee}
               </span>
             </div>
 
@@ -223,4 +226,4 @@ function Delivery() {
   );
 }
 
-export default dynamic(() => Promise.resolve(Delivery),{ssr:false});
+export default dynamic(() => Promise.resolve(Delivery), { ssr: false });
