@@ -82,6 +82,11 @@ function AuthModal() {
         } else {
           setUser({});
           localStorage.setItem("user", JSON.stringify({}));
+          setError({
+            name: "",
+            phone:"",
+            password: data.error,
+          });
         }
         setLoading({ ...loading, signingUp: false });
       } catch (error) {
