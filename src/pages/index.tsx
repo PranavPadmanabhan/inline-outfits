@@ -2,9 +2,9 @@ import About from "@/components/About";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Landing from "@/components/Landing";
-// import TeesShowCase from "@/components/TeesShowCase";
+import TeesShowCase from "@/components/TeesShowCase";
 
-const TeesShowCase = React.lazy(() => import("@/components/TeesShowCase"))
+// const TeesShowCase = React.lazy(() => import("@/components/TeesShowCase"))
 import Axios from "@/config/AxiosConfig";
 import AuthLayout from "@/layout/AuthLayout";
 import dynamic from "next/dynamic";
