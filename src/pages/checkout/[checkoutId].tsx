@@ -54,7 +54,9 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
       const filtered = cart?.products?.filter(
         (item: any) => item.cartItemId === checkoutId
       );
-      SetCartItem(filtered[0]);
+      if(filtered[0]){
+        SetCartItem(filtered[0]);
+      }
     });
     getUser();
   }, []);

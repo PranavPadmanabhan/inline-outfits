@@ -99,14 +99,6 @@ function Cart() {
                 </div>
                 <div className="w-full h-auto mb-2 flex items-center justify-between">
                   <span className="ml-4 text-black font-[400] text-[1rem]">
-                    Discount
-                  </span>
-                  <span className="ml-4 mr-2 text-black font-[600] text-[1.5rem]">
-                    ₹500
-                  </span>
-                </div>
-                <div className="w-full h-auto mb-2 flex items-center justify-between">
-                  <span className="ml-4 text-black font-[400] text-[1rem]">
                     Delivery
                   </span>
                   <span className="ml-4 mr-2 text-black font-[600] text-[1.5rem]">
@@ -173,84 +165,3 @@ export const getCart = async (
     setLoading?.(false);
   }
 };
-
-// {cart?.products?.map((item: any, i: number) => (
-//   <div
-//     key={i}
-//     className="w-full h-auto flex flex-col items-center justify-start"
-//   >
-//     <CartItem
-//       name={item.product.name}
-//       description={item.product.description}
-//       image={item.product.images[0]}
-//       product={item}
-//       finalPrice={item.product.price.original}
-//       price={Math.round(
-//         item?.product.price?.original *
-//           (100 / (100 - parseFloat(item?.product.price?.offer)))
-//       )}
-//       offer={item.product.offer}
-//       totalQuantity={item.quantity}
-//       getProducts={getData}
-//     />
-//     <div className="min-h-[1px] w-[95%] bg-gray-300"></div>
-//   </div>
-// ))}
-
-// <div className="w-[85%] h-[72%] min-h-[60vh] border-[1px] border-gray-400 rounded-[10px] flex flex-col px-[5%] pt-4 box-border ">
-// <div className="w-full h-[20%] flex flex-col items-start justify-start border-b-[2px] border-dashed">
-//   <span className="mb-2 ml-4 text-black font-[600] text-[1.2rem] ">
-//     Delivery
-//   </span>
-//   <span className="mb-2 ml-4 text-black font-[400] text-[1rem]">
-//     Delivery date - June 25
-//   </span>
-// </div>
-// <div className="w-full h-[45%] flex flex-col items-start justify-start border-b-gray-300 border-b-[2px] border-dashed mt-2">
-//   <span className="mb-2 ml-4 text-black font-[600] text-[1.2rem] ">
-//     Subtotal
-//   </span>
-//   <div className="w-full h-auto mb-2 flex items-center justify-between">
-//     <span className="ml-4 text-black font-[400] text-[1rem]">
-//       Net Amount
-//     </span>
-//     <span className="ml-4 mr-2 text-black font-[600] text-[1.5rem]">
-//       ₹{totalAmount}
-//     </span>
-//   </div>
-//   <div className="w-full h-auto mb-2 flex items-center justify-between">
-//   <span className="ml-4 text-black font-[400] text-[1rem]">
-//     Discount
-//   </span>
-//   <span className="ml-4 mr-2 text-black font-[600] text-[1.5rem]">
-//     ₹500
-//   </span>
-// </div>
-//   <div className="w-full h-auto mb-2 flex items-center justify-between">
-//     <span className="ml-4 text-black font-[400] text-[1rem]">
-//       Delivery
-//     </span>
-//     <span className="ml-4 mr-2 text-black font-[600] text-[1.5rem]">
-//       ₹50
-//     </span>
-//   </div>
-// </div>
-// <div className="w-full h-[15%] mb-2 flex items-center justify-between border-b-gray-300 border-b-[2px] border-dashed">
-//   <span className="ml-4 text-black font-[400] text-[1rem]">
-//     Total
-//   </span>
-//   <span className="ml-4 mr-2 text-black font-[600] text-[1.5rem]">
-//     ₹{totalAmount + deliveryFee}
-//   </span>
-// </div>
-// <button className="self-center w-[80%] min-h-[43px] rounded-[10px] bg-black flex items-center justify-center mb-1">
-//   <img
-//     className="h-[18] w-[18px] ml-1"
-//     src="/svg/Cart.svg"
-//     alt=""
-//   />
-//   <h1 className="text-white text-[1rem] font-medium ml-2">
-//     Proceed to Checkout
-//   </h1>
-// </button>
-// </div>
