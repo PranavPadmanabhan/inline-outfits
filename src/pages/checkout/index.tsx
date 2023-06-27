@@ -49,7 +49,6 @@ function Delivery() {
 
   const { cart, setCart } = useAppContext();
 
-<<<<<<< HEAD
   // useEffect(() => {
   //   getCart(setCart).then(() => {
   //     const filtered = cart?.products?.filter(
@@ -59,12 +58,6 @@ function Delivery() {
   //   });
   //   getUser();
   // }, []);
-=======
-  useEffect(() => {
-    getCart(setCart, null, settotalAmount);
-    getUser();
-  }, []);
->>>>>>> 985f2e6e72c48d6560e6649c807d1d35ab1e81e1
 
   const getUser = async () => {
     try {
