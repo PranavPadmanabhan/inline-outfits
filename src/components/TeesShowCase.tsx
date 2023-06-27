@@ -5,7 +5,7 @@ import ProductItem from "./ProductItem";
 function TeesShowCase({ products }: { products: any[] }) {
   return (
     <div className="h-[140vh] w-full flex flex-col justify-start items-center my-5">
-      <h1 className=" leading-snug tracking-wide  text-6xl font-semibold  font-MuseoModerno  mt-10">
+      <h1 className=" leading-snug tracking-wide  text-6xl font-semibold text-black font-MuseoModerno  mt-10">
         Fasion Up Your Looks
       </h1>
       <h1 className="text-2xl tracking-wider text-[#A96500] font-MuseoModerno font-semibold -ml-[950px] my-2 ">
