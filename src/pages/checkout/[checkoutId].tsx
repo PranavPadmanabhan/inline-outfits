@@ -156,6 +156,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
                 setAddress={setAddress}
                 loading={loading.saving}
                 updateAddress={updateAddress}
+                
               />
             )}
           </div>
