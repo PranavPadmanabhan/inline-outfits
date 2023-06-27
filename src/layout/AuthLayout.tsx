@@ -7,7 +7,7 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
   const { isAuthModalVisible } = useAppContext()
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
+    <div className="relative w-full h-full bg-white flex items-center justify-center">
       {children}
       { isAuthModalVisible && <AuthModal /> }
     </div>

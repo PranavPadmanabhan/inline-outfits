@@ -3,7 +3,7 @@ import TypeOfSpec from "./TypeOfSpec";
 
 function Specification({ details }:{details:any}) {
   return (
-    <div className="h-[100%] w-[100%] flex flex-col justify-start items-center">
+    <div className="h-[100%] w-[100%] bg-white flex flex-col justify-start items-center">
       <div className="h-[25%] w-[100%] border-t-[1px] border-[#00000025] flex justify-start items-center">
         <TypeOfSpec Spec="Type" SpecDetails="Round Neck" />
         <TypeOfSpec Spec="Size" SpecDetails="L" />

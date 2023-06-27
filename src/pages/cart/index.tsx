@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
-const CartItem = React.lazy(() => import("@/components/CartItem"));
+import CartItem from "@/components/CartItem";
 import Header from "@/components/Header";
 import Axios from "@/config/AxiosConfig";
 import { useAppContext } from "@/contexts/AppContext";
@@ -27,11 +27,10 @@ function Cart() {
   }, []);
 
   return (
-    <AuthLayout>
-      <div className="h-screen w-screen flex flex-col items-center justify-start">
+      <div className="h-screen w-full bg-white flex flex-col items-center justify-start">
         <Header />
         {cart?.products?.length <= 0 && (
-          <div className="w-screen h-full flex items-center justify-center">
+          <div className="w-full h-full flex items-center justify-center">
             <span className="text-black text-[1.4rem] font-semibold ">
               Your Cart is Empty
             </span>
@@ -42,7 +41,7 @@ function Cart() {
             <ImSpinner4 color="black" size={36} className="animate-rotate" />
           </div>
         ) : (
-          <div className="w-full h-full flex items-center justify-between mt-6">
+          <div className="w-full h-full flex items-start justify-between mt-6">
             <div className="h-full w-[70%] flex flex-col items-center justify-start overflow-y-scroll scrollbar-hide pt-2 box-border">
               {cart?.products?.map((item: any, i: number) => (
                 <div
@@ -140,7 +139,6 @@ function Cart() {
           </div>
         )}
       </div>
-    </AuthLayout>
   );
 }
 

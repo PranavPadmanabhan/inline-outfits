@@ -104,25 +104,24 @@ function ShopItem({ productId }: { productId: any }) {
 
 
   return (
-    <AuthLayout>
-      <div className="min-h-[100vh] w-full flex flex-col items-start justify-center scrollbar-hide">
+      <div className="min-h-[100vh] w-full bg-white flex flex-col items-start justify-center scrollbar-hide">
         <Header />
         {loading.gettingInformation ? (
           <div className="h-[80vh]  w-full flex items-center justify-center">
             <ImSpinner4 color="black" size={36} className="animate-rotate" />
           </div>
         ) : (
-          <div className="h-[90vh] w-full flex items-start justify-center">
-            <div className="h-full w-[40%] flex justify-center items-start pt-4 box-border ">
+          <div className="h-auto w-full flex items-start justify-center">
+            <div className="h-full w-[40%] flex bg-white justify-center items-start pt-4 box-border ">
               <Carouselcomponent images={product?.images ?? []} />
             </div>
-            <div className="h-[100vh] w-[50%] flex flex-col justify-start items-start pl-10">
-              <h1 className="text-2xl font-bold mt-10">{product?.name}</h1>
+            <div className="h-full w-[50%] flex flex-col bg-white justify-start items-start pl-10">
+              <h1 className="text-2xl font-bold mt-10 text-black">{product?.name}</h1>
               <h1 className="text-[16px] text-[#000000a6] font-light my-1">
                 {product?.description}
               </h1>
               <div className="h-[20px] w-[100%] flex items-center justify-start my-2">
-                <h1 className="font-medium text-[23px] ">
+                <h1 className="font-medium text-[23px] text-black">
                   Rs {product?.price?.original}
                 </h1>
                 <h1 className="font-medium text-[17px] text-[#00000094] mx-2 line-through">
@@ -132,7 +131,7 @@ function ShopItem({ productId }: { productId: any }) {
                       (100 / (100 - parseFloat(product?.price?.offer)))
                   )}
                 </h1>
-                <h1 className="font-medium text-[15px] text-[#00000094]">
+                <h1 className="font-medium text-[15px] text-lightRed">
                   {product?.price?.offer}% off
                 </h1>
               </div>
@@ -157,7 +156,7 @@ function ShopItem({ productId }: { productId: any }) {
           </div>
 
 
-              <h1 className="text-xs mt-2 ">Colours</h1>
+              <h1 className="text-xs mt-2 text-black">Colors</h1>
               <div className="h-[50px] w-auto  flex justify-between items-center my-2">
                 {/* <Colour colour="black" colourName="Black" />
 
@@ -171,7 +170,7 @@ function ShopItem({ productId }: { productId: any }) {
                 }
               </div>
 
-              <h1 className="text-xs mt-2">Size</h1>
+              <h1 className="text-xs mt-2 text-black">Size</h1>
               <div className="h-[50px] w-[300px] flex justify-between items-center my-2">
                 {sizes.map((item, i) => (
                   <Size
@@ -183,11 +182,11 @@ function ShopItem({ productId }: { productId: any }) {
                 ))}
                 <div className="text-xs w-[100px] ">Size Chart</div>
               </div>
-              <div className="h-[45px] w-[260px] flex justify-between items-center my-2  ">
+              <div className="min-h-[45px] w-[260px] flex justify-between items-center my-2  ">
                 <div onClick={() => {
                   if(isAddedToCart) return
                   addToCart(productId)
-                }} className="h-full w-[45%] rounded-md bg-black flex items-center justify-evenly cursor-pointer">
+                }} className="h-full min-h-[40px] w-[47%] rounded-md bg-black flex items-center justify-evenly cursor-pointer">
                   {loading.addingToCart ? (
                     <>
                       <ImSpinner4
@@ -221,18 +220,18 @@ function ShopItem({ productId }: { productId: any }) {
                 </div>
                 <div
                   onClick={() => router.push("/delivery")}
-                  className="h-full w-[45%] rounded-md  flex items-center justify-evenly border-[1px] border-black cursor-pointer "
+                  className="h-full min-h-[40px] w-[47%] rounded-md  flex items-center justify-evenly border-[1px] border-black cursor-pointer "
                 >
                   <img
                     className="h-[15px] w-[15px]"
                     src="/svg/buy.svg"
                     alt=""
                   />
-                  <h1 className=" text-xs font-medium -ml-2">Buy Now</h1>
+                  <h1 className=" text-xs font-medium -ml-2 text-black">Buy Now</h1>
                 </div>
               </div>
 
-              <h1 className="text-lg font-medium my-3 ">Specifications</h1>
+              <h1 className="text-lg font-medium my-3 text-black">Specifications</h1>
 
               <div className="h-[300px] w-[70%]  mb-5">
                 <Specification details={product.details} />
@@ -241,7 +240,6 @@ function ShopItem({ productId }: { productId: any }) {
           </div>
         )}
       </div>
-    </AuthLayout>
   );
 }
 
