@@ -37,7 +37,7 @@ type Loading = {
   saving: boolean;
 };
 
-function Delivery({ checkoutId }: { checkoutId: string }) {
+function Delivery() {
   const [newAddress, SetnewAddress] = useState(false);
   const [cartItem, SetCartItem] = useState<any>({});
   const [deliveryFee, setDeliveryFee] = useState<number>(50);
@@ -45,16 +45,12 @@ function Delivery({ checkoutId }: { checkoutId: string }) {
   const [address, setAddress] = useState<Address>({} as Address);
   const [error, setError] = useState<error>({} as error);
   const [loading, setLoading] = useState<Loading>({ saving: false });
+  const [totalAmount, settotalAmount] = useState<any>(0);
 
   const { cart, setCart } = useAppContext();
 
   useEffect(() => {
-    getCart(setCart).then(() => {
-      const filtered = cart?.products?.filter(
-        (item: any) => item.cartItemId === checkoutId
-      );
-      SetCartItem(filtered[0]);
-    });
+    getCart(setCart, null, settotalAmount);
     getUser();
   }, []);
 
@@ -176,9 +172,7 @@ function Delivery({ checkoutId }: { checkoutId: string }) {
                   Net Amount
                 </span>
                 <span className="ml-4 mr-2 text-black font-[600] text-[1.5rem]">
-                  ₹
-                  {parseInt(cartItem?.product?.price?.original.toString()) *
-                    cartItem?.quantity}
+                  ₹{totalAmount}
                 </span>
               </div>
 
@@ -196,10 +190,7 @@ function Delivery({ checkoutId }: { checkoutId: string }) {
                 Total
               </span>
               <span className="ml-4 mr-2 text-black font-[600] text-[1.5rem]">
-                ₹
-                {parseInt(cartItem?.product?.price?.original.toString()) *
-                  cartItem?.quantity +
-                  deliveryFee}
+                ₹{totalAmount + deliveryFee}
               </span>
             </div>
 
@@ -223,4 +214,4 @@ function Delivery({ checkoutId }: { checkoutId: string }) {
   );
 }
 
-export default dynamic(() => Promise.resolve(Delivery),{ssr:false});
+export default dynamic(() => Promise.resolve(Delivery), { ssr: false });

@@ -136,8 +136,10 @@ export default Cart;
 
 export const getCart = async (
   setCart: any,
-  setLoading?: Dispatch<SetStateAction<boolean>>,
-  setTotalAmount?: any
+  setLoading?: any,
+  setTotalAmount?: any,
+  setCartItem?:any,
+  checkoutId?:any
 ) => {
   try {
     setLoading?.(true);
@@ -154,6 +156,14 @@ export const getCart = async (
             parseInt(item.quantity.toString());
         });
         setTotalAmount?.(total);
+        if(setCartItem && checkoutId){
+          const filtered = data?.products?.filter(
+            (item: any) => item.cartItemId === checkoutId
+          );
+          if(filtered?.length > 0){
+            setCartItem(filtered[0]);
+          }
+        }
       }
     } else {
       if (data.error.includes("Cart Doesnot exists")) {
