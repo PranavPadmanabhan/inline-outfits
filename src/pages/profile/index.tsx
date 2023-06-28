@@ -133,21 +133,21 @@ function Profile() {
           <div className="h-[32%] w-[100%]  flex items-center justify-evenly">
             <GivenAddress
               Delete="/svg/delete.svg"
-              AddressType="/svg/home.svg"
+              AddressType="Home"
               Name="Athul Vishnu"
               Locality="Karamel"
               City="Payyanur"
-              PinNumber={670307}
-              PhoneNumber={9999999999}
+              PinNumber={"670307"}
+              PhoneNumber={"9999999999"}
             />
             <GivenAddress
               Delete="/svg/delete.svg"
-              AddressType="/svg/office.svg"
+              AddressType="Home"
               Name="Athul Vishnu"
               Locality="Karamel"
               City="Payyanur"
-              PinNumber={670307}
-              PhoneNumber={9999999999}
+              PinNumber={"670307"}
+              PhoneNumber={"9999999999"}
             />
           </div>
 
@@ -166,6 +166,7 @@ function Profile() {
                 setAddress={setAddress}
                 loading={loading.saving}
                 updateAddress={updateAddress}
+                error={null}
               />}
           </div>
         </div>
