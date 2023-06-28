@@ -10,6 +10,8 @@ import Axios from "@/config/AxiosConfig";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import dynamic from "next/dynamic";
 import { createRazorpayOrder, loadRazorpayScript } from "@/utils/razorpay";
+import image from "next/image";
+import OrderItem from "@/components/OrderItem";
 
 type Address = {
   name: string;
@@ -76,8 +78,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
         // console.log(data)
       }
     } catch (error) {
-    console.clear()
-
+      console.clear();
     }
   };
 
@@ -172,6 +173,10 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
       <Header />
       <div className="w-full h-full flex items-start justify-center">
         <div className="h-auto   w-[50%] flex flex-col items-start justify-start  box-border  ">
+          <OrderItem />
+          <div className="h-[1px] w-[90%] bg-[#00000025]  "></div>
+          <OrderItem />
+
           <h1 className="text-lg font-medium my-2 ml-10 text-black">
             Delivery Address
           </h1>
