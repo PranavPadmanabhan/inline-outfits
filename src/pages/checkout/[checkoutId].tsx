@@ -75,7 +75,10 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
         setUser(data);
         // console.log(data)
       }
-    } catch (error) {}
+    } catch (error) {
+    console.clear()
+
+    }
   };
 
   const updateAddress = async () => {
@@ -125,12 +128,13 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
     } catch (error) {
       console.log(error);
       setLoading({ ...loading, saving: false });
+      console.clear();
     }
   };
 
   const initializePayment = async () => {
     // Load Razorpay script asynchronously
-    const user = JSON.parse(localStorage.getItem("user")!)
+    const user = JSON.parse(localStorage.getItem("user")!);
     await loadRazorpayScript();
 
     // Create Razorpay order
@@ -151,12 +155,12 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
       handler: function (response: any) {
         // Handle the payment success
         console.log("Payment Successful!", response);
-        alert("Successfull")
+        alert("Successfull");
       },
       prefill: {
-        name: user.name ,
+        name: user.name,
         // email: "john@example.com",
-        contact: user.phone
+        contact: user.phone,
       },
     };
     const razorpayInstance = new window.Razorpay(options);
@@ -265,7 +269,10 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
             {/* <span className="my-3 ml-4 text-black font-[350] text-[0.9rem] ">
               You saved 500 on this order
             </span> */}
-            <button onClick={initializePayment} className="self-center w-[80%] min-h-[43px] rounded-[10px] bg-black flex items-center justify-center mb-1 mt-6">
+            <button
+              onClick={initializePayment}
+              className="self-center w-[80%] min-h-[43px] rounded-[10px] bg-black flex items-center justify-center mb-1 mt-6"
+            >
               <img
                 className="h-[18] w-[18px] ml-1"
                 src="/svg/Cart.svg"

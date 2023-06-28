@@ -19,8 +19,8 @@ export const loadRazorpayScript = () => {
       });
       return response.data;
     } catch (error) {
-      console.error('Failed to create Razorpay order:', error);
-      throw error;
+      console.clear()
+
     }
   };
   

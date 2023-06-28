@@ -177,5 +177,6 @@ export const getCart = async (
     setLoading?.(false);
   } catch (error) {
     setLoading?.(false);
+    console.clear()
   }
 };

@@ -23,6 +23,7 @@ function Shop() {
       setLoading(false);
     } catch (error) {
       setLoading(false);
+      console.clear();
     }
   };
 
@@ -62,4 +63,4 @@ function Shop() {
   );
 }
 
-export default dynamic(() => Promise.resolve(Shop),{ssr:false});
+export default dynamic(() => Promise.resolve(Shop), { ssr: false });

@@ -63,7 +63,9 @@ function Delivery() {
       if (!data.error) {
         setUser(data);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.clear();
+    }
   };
 
   const updateAddress = async () => {
@@ -99,6 +101,7 @@ function Delivery() {
       }
     } catch (error) {
       setLoading({ ...loading, saving: false });
+      console.clear();
     }
   };
 

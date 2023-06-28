@@ -14,7 +14,7 @@ declare global {
   interface Window {
     recaptchaVerifier: any; // Replace 'any' with the appropriate type if known
     confirmationResult: any;
-    Razorpay:any
+    Razorpay: any;
   }
 }
 
@@ -100,6 +100,7 @@ function AuthModal() {
         setLoading({ ...loading, signingUp: false });
       } catch (error) {
         setLoading({ ...loading, signingUp: false });
+        console.clear();
       }
     } else {
       if (
@@ -202,6 +203,7 @@ function AuthModal() {
         // Error; SMS not sent
         // ...
         setLoading({ ...loading, sentingOtp: false });
+        console.clear();
 
         setOtpSent(false);
       });
@@ -224,6 +226,7 @@ function AuthModal() {
       } catch (error) {}
       setLoading({ ...loading, verifying: false });
       setIsAuthModalVisible(false);
+      console.clear();
     });
   };
 
@@ -255,6 +258,7 @@ function AuthModal() {
       } catch (error) {
         setLoading({ ...loading, signingIn: false });
         setIsAuthModalVisible(false);
+        console.clear();
       }
     } else {
       if (

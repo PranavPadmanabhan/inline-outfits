@@ -11,33 +11,32 @@ import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 
 function Index() {
+  const [products, setProducts] = useState<any>([]);
 
-  const [products, setProducts] = useState<any>([])
-
-  const getProducts = async() => {
+  const getProducts = async () => {
     try {
-      const res = await Axios.get("/products")
-      const data = await res.data
-      if(!data.error){
-        setProducts(data)
+      const res = await Axios.get("/products");
+      const data = await res.data;
+      if (!data.error) {
+        setProducts(data);
       }
     } catch (error) {
-      
+      console.clear();
     }
-  }
+  };
 
   useEffect(() => {
-    getProducts()
-  },[])
+    getProducts();
+  }, []);
 
   return (
-      <div className="min-h-screen bg-white w-full flex flex-col items-center justify-start scrollbar-hide">
-        <Header />
-        <Landing />
-        <TeesShowCase products={products} />
-        <About />
-        <Footer />
-      </div>
+    <div className="min-h-screen bg-white w-full flex flex-col items-center justify-start scrollbar-hide">
+      <Header />
+      <Landing />
+      <TeesShowCase products={products} />
+      <About />
+      <Footer />
+    </div>
   );
 }
 

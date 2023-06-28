@@ -49,7 +49,9 @@ function Profile() {
       if (!data.error) {
         setUser(data);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.clear();
+    }
   };
 
   const updateAddress = async () => {
@@ -85,9 +87,9 @@ function Profile() {
       }
     } catch (error) {
       setLoading({ ...loading, saving: false });
+      console.clear();
     }
   };
-
 
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-start">
@@ -95,7 +97,9 @@ function Profile() {
 
       <div className="h-full w-full flex items-start justify-start  overflow-y-scroll scrollbar-hide">
         <div className="h-[100%] w-[50%] flex flex-col items-start justify-start  mt-10 pl-20 box-border ">
-          <h1 className="font-semibold text-lg text-black ">Personal Information</h1>
+          <h1 className="font-semibold text-lg text-black ">
+            Personal Information
+          </h1>
           <div className="h-[55px] w-[550px]  flex items-center justify-between mt-3 ">
             <input
               className="text-xs text-[#0000004b] h-[55px] w-[48%] rounded-lg border-[1px] border-[#00000021] outline-none p-3 box-border "
@@ -109,7 +113,9 @@ function Profile() {
             />
           </div>
 
-          <h1 className="font-semibold text-lg mt-8 text-black">Email Address</h1>
+          <h1 className="font-semibold text-lg mt-8 text-black">
+            Email Address
+          </h1>
 
           <input
             className="text-xs text-[#0000004b] h-[55px] w-[48%] rounded-lg border-[1px] border-[#00000021] outline-none p-3 box-border mt-3 "
@@ -117,7 +123,9 @@ function Profile() {
             placeholder="example@gmail.com"
           />
 
-          <h1 className="font-semibold text-lg mt-8 text-black">Phone Number</h1>
+          <h1 className="font-semibold text-lg mt-8 text-black">
+            Phone Number
+          </h1>
 
           <input
             className="text-xs text-[#0000004b] h-[55px] w-[48%] rounded-lg border-[1px] border-[#00000021] outline-none p-3 box-border mt-3 "
@@ -154,7 +162,9 @@ function Profile() {
 
           <div className="min-h-[50px] w-[87%] flex flex-col items-start justify-start  border-[1px] border-[#00000013] rounded-lg ml-10 my-5">
             <div className="h-[100%] w-[100%] flex items-center justify-between px-5 pt-1 box-border">
-              <h1 className="text-lg font-medium text-black">Add a new address</h1>
+              <h1 className="text-lg font-medium text-black">
+                Add a new address
+              </h1>
               <img
                 onClick={() => SetnewAddress(!newAddress)}
                 className="h-[35px] w-[35px]"
@@ -162,13 +172,15 @@ function Profile() {
                 alt="w-screen h-screen flex flex-col items-center justify-start"
               />
             </div>
-            {newAddress && <NewAddress
+            {newAddress && (
+              <NewAddress
                 address={address}
                 setAddress={setAddress}
                 loading={loading.saving}
                 updateAddress={updateAddress}
                 error={null}
-              />}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -176,4 +188,4 @@ function Profile() {
   );
 }
 
-export default dynamic(() => Promise.resolve(Profile),{ssr:false});
+export default dynamic(() => Promise.resolve(Profile), { ssr: false });

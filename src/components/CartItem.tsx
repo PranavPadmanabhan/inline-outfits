@@ -61,6 +61,7 @@ function CartItem({
       }
     } catch (error) {
       setLoading({ ...loading, removingItem: false });
+      console.clear();
     }
   };
 
@@ -84,6 +85,7 @@ function CartItem({
       }
     } catch (error) {
       setLoading({ ...loading, deletingItem: false });
+      console.clear();
     }
   };
 
@@ -122,8 +124,18 @@ function CartItem({
               </>
             )}
           </span>
-          <span className="text-black text-[1rem] font-[300]">size : <span className="font-[700]">{product?.size}</span></span>
-          <span className="text-black text-[1rem] font-[300]">color : <span style={{color:product?.color?.code}} className="font-[700]">{product?.color?.name}</span></span>
+          <span className="text-black text-[1rem] font-[300]">
+            size : <span className="font-[700]">{product?.size}</span>
+          </span>
+          <span className="text-black text-[1rem] font-[300]">
+            color :{" "}
+            <span
+              style={{ color: product?.color?.code }}
+              className="font-[700]"
+            >
+              {product?.color?.name}
+            </span>
+          </span>
           <div className="min-w-[90px] min-h-[35px] rounded-[5px] border-[1px] border-gray-500 mt-2 flex items-center justify-between px-1 box-border">
             <button
               onClick={() => setQuantity(quantity > 0 ? quantity - 1 : 0)}
