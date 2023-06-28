@@ -57,7 +57,7 @@ function Delivery() {
   const getUser = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user")!);
-      const res = await Axios.get(`/user/${user?.phone}`);
+      const res = await Axios.get(`/auth/user/${user?.phone}`);
       const data = await res.data;
       if (!data.error) {
         setUser(data);
@@ -112,12 +112,12 @@ function Delivery() {
               <GivenAddress
                 key={i}
                 Delete="/svg/delete.svg"
-                AddressType="/svg/home.svg"
+                AddressType={item.isHomeAddress?"Home":"Office"}
                 Name={item.name}
                 Locality={item.locality}
                 City={item.city}
-                PinNumber={670307}
-                PhoneNumber={9999999999}
+                PinNumber={item.pinCode}
+                PhoneNumber={item.phone}
               />
             ))}
             {/* <GivenAddress

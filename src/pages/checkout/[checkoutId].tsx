@@ -72,7 +72,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
       const data = await res.data;
       if (!data.error) {
         setUser(data);
-        console.log(data)
+        // console.log(data)
       }
     } catch (error) {}
   };
