@@ -9,6 +9,7 @@ import { GetServerSideProps } from "next";
 import Axios from "@/config/AxiosConfig";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import dynamic from "next/dynamic";
+import { createRazorpayOrder, loadRazorpayScript } from "@/utils/razorpay";
 
 type Address = {
   name: string;
@@ -43,17 +44,17 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
   const [cartItem, SetCartItem] = useState<any>({});
   const [deliveryFee, setDeliveryFee] = useState<number>(50);
   const [user, setUser] = useState<any>({});
-  const [isHomeAddress, setIsHomeAddress] = useState<boolean>(true)
+  const [isHomeAddress, setIsHomeAddress] = useState<boolean>(true);
   const [address, setAddress] = useState<Address>({
-    address:"",
-    alternateNumber:"",
-    city:"",
-    landMark:"",
-    locality:"",
-    name:"",
-    phone:"",
-    pinCode:"",
-    state:""
+    address: "",
+    alternateNumber: "",
+    city: "",
+    landMark: "",
+    locality: "",
+    name: "",
+    phone: "",
+    pinCode: "",
+    state: "",
   });
   const [error, setError] = useState<any>([]);
   const [loading, setLoading] = useState<Loading>({ saving: false });
@@ -61,7 +62,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
   const { cart, setCart } = useAppContext();
 
   useEffect(() => {
-    getCart(setCart,null,null,SetCartItem,checkoutId);
+    getCart(setCart, null, null, SetCartItem, checkoutId);
     getUser();
   }, []);
 
@@ -89,42 +90,77 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
       ) {
         setLoading({ ...loading, saving: true });
         const user = JSON.parse(localStorage.getItem("user")!);
-        console.log(user)
-        let addresses:any[] = []
-        if(user?.addresses){
-          addresses = [...user?.addresses, {...address,isHomeAddress}]
-        }
-        else {
-          addresses = [{...address,isHomeAddress} ]
+        console.log(user);
+        let addresses: any[] = [];
+        if (user?.addresses) {
+          addresses = [...user?.addresses, { ...address, isHomeAddress }];
+        } else {
+          addresses = [{ ...address, isHomeAddress }];
         }
         const res = await Axios.put(`/auth/user/${user?.phone}`, {
-          addresses
+          addresses,
         });
         const data = await res.data;
         if (!data.error) {
-          getUser()
-          setError([])
-          SetnewAddress(false)
+          getUser();
+          setError([]);
+          SetnewAddress(false);
         }
         setLoading({ ...loading, saving: false });
       } else {
-        let allErrors:string[] = []
+        let allErrors: string[] = [];
         Object.values(address).map((item, i) => {
           if (item.trim().length <= 0) {
-            if(!allErrors.includes(Object.keys(address)[i].toString())){
-              allErrors = [...allErrors,Object.keys(address)[i].toString()]
+            if (!allErrors.includes(Object.keys(address)[i].toString())) {
+              allErrors = [...allErrors, Object.keys(address)[i].toString()];
             }
+          } else {
+            allErrors = allErrors.filter(
+              (item) => item !== Object.keys(address)[i].toString()
+            );
           }
-          else {
-            allErrors = allErrors.filter(item => item !== Object.keys(address)[i].toString() )
-          }
-          setError(allErrors)
+          setError(allErrors);
         });
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setLoading({ ...loading, saving: false });
     }
+  };
+
+  const initializePayment = async () => {
+    // Load Razorpay script asynchronously
+    const user = JSON.parse(localStorage.getItem("user")!)
+    await loadRazorpayScript();
+
+    // Create Razorpay order
+    const order = await createRazorpayOrder(
+      parseInt(cartItem?.product?.price?.original.toString()) *
+        cartItem?.quantity +
+        deliveryFee
+    );
+
+    // Open Razorpay checkout modal
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZOR_PAY_ID!,
+      amount: order.amount,
+      currency: order.currency,
+      order_id: order.id,
+      name: "In&O",
+      description: "Payment for your In&O purchase",
+      handler: function (response: any) {
+        // Handle the payment success
+        console.log("Payment Successful!", response);
+        alert("Successfull")
+      },
+      prefill: {
+        name: user.name ,
+        // email: "john@example.com",
+        contact: user.phone
+      },
+    };
+    const razorpayInstance = new window.Razorpay(options);
+    razorpayInstance.open();
   };
 
   return (
@@ -132,27 +168,30 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
       <Header />
       <div className="w-full h-full flex items-start justify-center">
         <div className="h-auto   w-[50%] flex flex-col items-start justify-start  box-border  ">
-          <h1 className="text-lg font-medium my-2 ml-10 text-black">Delivery Address</h1>
+          <h1 className="text-lg font-medium my-2 ml-10 text-black">
+            Delivery Address
+          </h1>
           <div className="min-h-[32%] h-auto w-[90%]  grid grid-cols-3 gap-y-2 place-content-center place-items-center px-7  box-border">
             {user?.addresses?.map((item: any, i: number) => (
               <GivenAddress
                 key={i}
                 Delete="/svg/delete.svg"
-                AddressType={item.isHomeAddress?"Home":"Office"}
+                AddressType={item.isHomeAddress ? "Home" : "Office"}
                 Name={item.name}
                 isSelected
                 Locality={item.locality}
                 City={item.city}
                 PinNumber={item.pinCode}
-                PhoneNumber={"+91"+item.phone}
+                PhoneNumber={"+91" + item.phone}
               />
             ))}
-            
           </div>
 
           <div className="min-h-[50px] w-[87%] flex flex-col items-start justify-start  border-[1px] border-[#00000013] rounded-lg ml-10 my-5">
             <div className="h-[100%] w-[100%] flex items-center justify-between pl-5 pr-2 pt-1 box-border">
-              <h1 className="text-lg font-medium text-black">Add a new address</h1>
+              <h1 className="text-lg font-medium text-black">
+                Add a new address
+              </h1>
               {newAddress ? (
                 <AiOutlineMinus
                   onClick={() => SetnewAddress(!newAddress)}
@@ -226,14 +265,14 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
             {/* <span className="my-3 ml-4 text-black font-[350] text-[0.9rem] ">
               You saved 500 on this order
             </span> */}
-            <button className="self-center w-[80%] min-h-[43px] rounded-[10px] bg-black flex items-center justify-center mb-1 mt-6">
+            <button onClick={initializePayment} className="self-center w-[80%] min-h-[43px] rounded-[10px] bg-black flex items-center justify-center mb-1 mt-6">
               <img
                 className="h-[18] w-[18px] ml-1"
                 src="/svg/Cart.svg"
                 alt=""
               />
               <h1 className="text-white text-[1rem] font-medium ml-2">
-                Proceed to Checkout
+                Proceed & Pay
               </h1>
             </button>
           </div>
@@ -243,7 +282,9 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
   );
 }
 
-export default dynamic(() => Promise.resolve(IndividualDelivery),{ssr:false});
+export default dynamic(() => Promise.resolve(IndividualDelivery), {
+  ssr: false,
+});
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const checkoutId = context.query.checkoutId;

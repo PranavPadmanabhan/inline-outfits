@@ -67,7 +67,7 @@ function Cart() {
                         item?.product.price?.original *
                           (100 / (100 - parseFloat(item?.product.price?.offer)))
                       )}
-                      offer={item.product.offer}
+                      offer={item?.product?.price?.offer}
                       totalQuantity={item.quantity}
                       getProducts={getData}
                     />
@@ -85,7 +85,7 @@ function Cart() {
                     Delivery
                   </span>
                   <span className="mb-2 ml-4 text-black font-[400] text-[1rem]">
-                    Delivery date - June 25
+                    Delivery within 10 working days
                   </span>
                 </div>
                 <div className="w-full h-[45%] flex flex-col items-start justify-start border-b-gray-300 border-b-[2px] border-dashed mt-2">

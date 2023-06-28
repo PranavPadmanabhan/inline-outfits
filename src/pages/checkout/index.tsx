@@ -8,6 +8,7 @@ import { getCart } from "../cart";
 import Axios from "@/config/AxiosConfig";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import dynamic from "next/dynamic";
+import { createRazorpayOrder, loadRazorpayScript } from "@/utils/razorpay";
 
 type Address = {
   name: string;
@@ -50,7 +51,7 @@ function Delivery() {
   const { cart, setCart } = useAppContext();
 
   useEffect(() => {
-    getCart(setCart,null,settotalAmount)
+    getCart(setCart, null, settotalAmount);
     getUser();
   }, []);
 
@@ -101,18 +102,49 @@ function Delivery() {
     }
   };
 
+  const initializePayment = async () => {
+    // Load Razorpay script asynchronously
+    const user = JSON.parse(localStorage.getItem("user")!);
+    await loadRazorpayScript();
+
+    // Create Razorpay order
+    const order = await createRazorpayOrder(totalAmount + deliveryFee);
+
+    // Open Razorpay checkout modal
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZOR_PAY_ID!,
+      amount: order.amount,
+      currency: order.currency,
+      order_id: order.id,
+      name: "In&O",
+      description: "Payment for your In&O purchase",
+      handler: function (response: any) {
+        // Handle the payment success
+        console.log("Payment Successful!", response);
+        alert("Successfull");
+      },
+      prefill: {
+        name: user.name,
+        // email: "john@example.com",
+        contact: user.phone,
+      },
+    };
+    const razorpayInstance = new window.Razorpay(options);
+    razorpayInstance.open();
+  };
+
   return (
     <div className="h-screen w-full  flex flex-col  items-center justify-start overflow-y-scroll scrollbar-hide ">
       <Header />
       <div className="w-full h-full flex items-start justify-center">
         <div className="h-auto   w-[50%] flex flex-col items-start justify-start  box-border  ">
           <h1 className="text-lg font-medium my-2 ml-10">Delivery Address</h1>
-          <div className="h-[32%] w-[100%]  flex items-center justify-evenly">
+          <div className="min-h-[32%] h-auto w-[90%]  grid grid-cols-3 gap-y-2 place-content-center place-items-center px-7  box-border">
             {user?.addresses?.map((item: any, i: number) => (
               <GivenAddress
                 key={i}
                 Delete="/svg/delete.svg"
-                AddressType={item.isHomeAddress?"Home":"Office"}
+                AddressType={item.isHomeAddress ? "Home" : "Office"}
                 Name={item.name}
                 Locality={item.locality}
                 City={item.city}
@@ -133,7 +165,9 @@ function Delivery() {
 
           <div className="min-h-[50px] w-[87%] flex flex-col items-start justify-start  border-[1px] border-[#00000013] rounded-lg ml-10 my-5">
             <div className="h-[100%] w-[100%] flex items-center justify-between pl-5 pr-2 pt-1 box-border">
-              <h1 className="text-lg font-medium text-black">Add a new address</h1>
+              <h1 className="text-lg font-medium text-black">
+                Add a new address
+              </h1>
               {newAddress ? (
                 <AiOutlineMinus
                   onClick={() => SetnewAddress(!newAddress)}
@@ -200,14 +234,17 @@ function Delivery() {
             {/* <span className="my-3 ml-4 text-black font-[350] text-[0.9rem] ">
               You saved 500 on this order
             </span> */}
-            <button className="self-center w-[80%] min-h-[43px] rounded-[10px] bg-black flex items-center justify-center mb-1 mt-6">
+            <button
+              onClick={initializePayment}
+              className="self-center w-[80%] min-h-[43px] rounded-[10px] bg-black flex items-center justify-center mb-1 mt-6"
+            >
               <img
                 className="h-[18] w-[18px] ml-1"
                 src="/svg/Cart.svg"
                 alt=""
               />
               <h1 className="text-white text-[1rem] font-medium ml-2">
-                Proceed to Checkout
+                Proceed & Pay
               </h1>
             </button>
           </div>

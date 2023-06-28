@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import GivenAddress from "@/components/GivenAddress";
 import Header from "@/components/Header";
 import NewAddress from "@/components/NewAddress";
@@ -130,7 +131,7 @@ function Profile() {
         </div>
 
         <div className="min-h-[100%] w-[50%] flex flex-col items-start justify-start  mt-5 px-10 box-border">
-          <div className="h-[32%] w-[100%]  flex items-center justify-evenly">
+          <div className="min-h-[32%] h-auto w-[90%]  grid grid-cols-3 gap-x-2 gap-y-2 place-content-center place-items-center px-8  box-border">
             <GivenAddress
               Delete="/svg/delete.svg"
               AddressType="Home"

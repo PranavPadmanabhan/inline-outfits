@@ -1,8 +1,11 @@
 import React from "react";
 import Personalize from "./Personalize";
 import ProductItem from "./ProductItem";
+import { useRouter } from "next/router";
 
 function TeesShowCase({ products }: { products: any[] }) {
+  const router = useRouter();
+
   return (
     <div className="h-[140vh] w-full flex flex-col justify-start items-center my-5">
       <h1 className=" leading-snug tracking-wide  text-6xl font-semibold text-black font-MuseoModerno  mt-10">
@@ -14,12 +17,16 @@ function TeesShowCase({ products }: { products: any[] }) {
       <div className="h-[60vh] w-[90%] grid grid-cols-4  place-items-center">
         {products.slice(0, 4).map((product: any, i: number) => (
           <ProductItem
+            onClick={() => router.push("/shop")}
             key={i}
             image={product.images[0]}
             nameofT={product.name}
             details={product.description}
             offprice={product.price.original}
-            realprice={Math.round(product.price.original * (100/(100 - parseFloat(product.price.offer))))}
+            realprice={Math.round(
+              product.price.original *
+                (100 / (100 - parseFloat(product.price.offer)))
+            )}
             off={product.price.offer}
           />
         ))}

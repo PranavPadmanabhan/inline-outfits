@@ -96,7 +96,7 @@ function Header() {
                     className="w-full min-h-[45px] border-b-[1px] border-b-thin_border flex items-center justify-start pl-1 box-border cursor-pointer"
                   >
                     <span className="text-black font-[600] text-[1rem] ">
-                      Profile
+                      Your Account
                     </span>
                   </div>
                   <div className="w-full min-h-[45px] border-b-[1px] border-b-thin_border flex items-center justify-start pl-1 box-border cursor-pointer">

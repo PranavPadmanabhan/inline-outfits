@@ -14,6 +14,7 @@ declare global {
   interface Window {
     recaptchaVerifier: any; // Replace 'any' with the appropriate type if known
     confirmationResult: any;
+    Razorpay:any
   }
 }
 
