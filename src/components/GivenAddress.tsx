@@ -16,7 +16,7 @@ type props = {
 
 function GivenAddress({Delete,AddressType,Name,Locality,City,PinNumber,PhoneNumber,onClick,onDelete,isSelected}:props) {
   return (
-    <div onClick={onClick} className={`relative h-[100%] max-w-[200px] w-[100%] flex flex-col ${isSelected ? "border-[2px] border-[#1a25be]" : "border-[1px] border-[#00000013]"} justify-start items-center  rounded-xl py-2 box-border`}>
+    <div onClick={onClick} className={`relative h-[100%] min-w-[180px] max-w-[200px] w-[100%] flex flex-col ${isSelected ? "border-[2px] border-[#b11818d3]" : "border-[1px] border-[#00000013]"} justify-start items-center  rounded-xl py-2 box-border cursor-pointer `}>
       <img onClick={onDelete} className="absolute top-1 right-2 h-[22px] w-[22px] mt-3 ml-44" src={Delete} alt="" />
       <img className="h-[40px] w-[45px] mt-1" src={AddressType === "Home"?"/svg/home.svg":"/svg/office.svg"} alt="" />
       <h1 className="text-xs mt-4 text-black"> {Name}</h1>

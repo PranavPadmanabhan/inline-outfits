@@ -13,7 +13,7 @@ function NewAddress({
   setAddress: Dispatch<SetStateAction<any>>;
   loading: boolean;
   updateAddress: any;
-  error: any;
+  error: any[];
   setIsHome?: any;
   isHome?:boolean
 }) {

@@ -58,17 +58,17 @@ function Cart() {
                     className="w-full h-auto flex flex-col items-center justify-start "
                   >
                     <CartItem
-                      name={item.product.name}
-                      description={item.product.description}
-                      image={item.product.images[0]}
+                      name={item?.product?.name}
+                      description={item?.product?.description}
+                      image={item?.product?.images[0]}
                       product={item}
-                      finalPrice={item.product.price.original}
+                      finalPrice={item?.product?.price?.original??0}
                       price={Math.round(
-                        item?.product.price?.original *
-                          (100 / (100 - parseFloat(item?.product.price?.offer)))
+                        item?.product?.price?.original *
+                          (100 / (100 - parseFloat(item?.product?.price?.offer)))
                       )}
                       offer={item?.product?.price?.offer}
-                      totalQuantity={item.quantity}
+                      totalQuantity={item?.quantity}
                       getProducts={getData}
                     />
                     <div className="min-h-[1px] w-[95%] bg-gray-300"></div>

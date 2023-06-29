@@ -1,45 +1,58 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react'
 
-function OrderItem() {
+function OrderItem({image,name,description,finalPrice,offer,price,totalQuantity,color,size}:{
+  image?:string;
+  name?:string;
+  description?:string;
+  price?: string | number;
+  offer?: string | number;
+  finalPrice?: string | number;
+  totalQuantity?: number;
+  size?:string;
+  color?:any;
+}) {
   return (
         
-    <div className="w-[68%] h-full flex items-center justify-start ml-5 mb-2">
+    <div className="w-full h-full flex items-center justify-start px-3 box-border my-2">
     <img
-      src="/svg/T2.svg"
+      src={image}
       alt=""
-      className="h-full w-[40%] max-w-[180px] object-cover rounded-[20px]"
+      className="h-full w-[40%] max-h-[170px] max-w-[140px] object-cover rounded-[20px]"
     />
     <div className="w-full h-full flex flex-col items-start justify-start pl-5 box-border">
       <span className="text-black font-[600] text-[1.1rem] mt-1">
-        Black Tshirt
+        {name}
       </span>
       <p className="text-lightGray text-[0.9rem] font-[400] mb-2">
-        Men printed black t-shirt
+        {description}
       </p>
       <span className="text-black font-[600] text-[1.5rem]">
-        ₹249
-        <>
-          <span className="text-lightGray font-[400] text-[0.96rem] ml-[2px] line-through	">
-            ₹599
+            ₹{offer ? finalPrice :price  }{" "}
+            {offer && (
+              <>
+                <span className="text-lightGray font-[400] text-[0.96rem] ml-[2px] line-through	">
+                  ₹{offer ? price : ""}{" "}
+                </span>
+                <span className="text-lightRed opacity-60 font-[600] ml-1 text-[0.96rem]">
+                  {" "}
+                  {offer}% off
+                </span>
+              </>
+            )}
           </span>
-          <span className="text-lightRed opacity-60 font-[600] ml-1 text-[0.96rem]">
-            {" "}
-            25% off
-          </span>
-        </>
-      </span>
 
       <div className="flex justify-between items-center w-[200px] mt-2">
         <span className="text-black text-[1rem] font-[300] flex flex-col items-center">
-          size <span className="font-[700] mt-1">L</span>
+          size <span className="font-[700] mt-1">{size}</span>
         </span>
 
         <span className="text-black text-[1rem] font-[300] flex flex-col items-center">
-          Quantity <span className="font-[700] mt-1">1</span>
+          Quantity <span className="font-[700] mt-1">{totalQuantity}</span>
         </span>
         <span className="text-black text-[1rem] font-[300] flex flex-col items-center">
           color
-          <span className="font-[700] mt-1 ">Black</span>
+          <span style={{color:color?.code}} className="font-[700] mt-1 ">{color?.name}</span>
         </span>
       </div>
     </div>
