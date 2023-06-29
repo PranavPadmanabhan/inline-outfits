@@ -204,8 +204,11 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
     <div className="h-screen w-full  flex flex-col  items-center justify-start overflow-y-scroll scrollbar-hide ">
       <Header />
       {loading.placingOrder  ? (
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="w-full h-full flex flex-col items-center justify-center">
+          <>
           <ImSpinner4 color="black" size={36} className="animate-rotate" />
+          <p className="text-black text-[1rem] mt-1 text-center">Do not close the window or <br/> press back button</p>
+          </>
         </div>
       ):(
         <div className="w-full h-full flex items-start justify-center">
@@ -310,7 +313,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
                 </span>
               </div>
             </div>
-            <div className="w-full h-[15%] mb-2 flex items-center justify-between border-b-black border-b-[1px] border-dashed my-4">
+            <div className="w-full h-[15%] mb-2 flex items-center justify-between border-b-black border-b-[1px] border-dashed my-8">
               <span className="ml-4 text-black font-[400] text-[1rem]">
                 Total
               </span>
@@ -327,7 +330,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
             </span> */}
             <button
               onClick={initializePayment}
-              className="self-center w-[80%] min-h-[43px] rounded-[10px] bg-black flex items-center justify-center mb-1 mt-6"
+              className="self-center w-[80%] min-h-[43px] rounded-[10px] bg-black flex items-center justify-center mb-1 mt-12"
             >
               <img
                 className="h-[18] w-[18px] ml-1"
