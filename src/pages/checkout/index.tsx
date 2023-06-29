@@ -176,9 +176,12 @@ function Delivery() {
     <div className="h-screen w-full  flex flex-col  items-center justify-start overflow-y-scroll scrollbar-hide ">
       <Header />
       {loading.placingOrder ? (
-        <div className="w-full h-full flex items-center justify-center">
-          <ImSpinner4 color="black" size={36} className="animate-rotate" />
-        </div>
+        <div className="w-full h-full flex flex-col items-center justify-center">
+        <>
+        <ImSpinner4 color="black" size={36} className="animate-rotate" />
+        <p className="text-black text-[1rem] mt-1 text-center">Do not close the window or <br/> press back button</p>
+        </>
+      </div>
       ):(
         <div className="w-full h-full flex items-start justify-center">
         <div className="h-auto   w-[50%] flex flex-col items-start justify-start  box-border  ">
