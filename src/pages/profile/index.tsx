@@ -178,7 +178,7 @@ function Profile() {
                 setAddress={setAddress}
                 loading={loading.saving}
                 updateAddress={updateAddress}
-                error={null}
+                error={[]}
               />
             )}
           </div>
