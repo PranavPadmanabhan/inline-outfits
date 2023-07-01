@@ -164,6 +164,7 @@ function Delivery() {
       if(!data.error){
         alert(data?.message)
       }
+      getCart(setCart)
       setLoading({...loading,placingOrder:false})
 
     } catch (error) {
@@ -339,7 +340,6 @@ function Delivery() {
       </div>
       )
       }
-      
     </div>
   );
 }
