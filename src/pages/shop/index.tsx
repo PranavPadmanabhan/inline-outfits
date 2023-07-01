@@ -23,7 +23,7 @@ function Shop() {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.clear();
+      console.log("hello");
     }
   };
 

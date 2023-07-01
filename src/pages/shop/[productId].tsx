@@ -65,7 +65,7 @@ function ShopItem({ productId }: { productId: any }) {
       setLoading({ ...loading, gettingInformation: false });
     } catch (error) {
       setLoading({ ...loading, gettingInformation: false });
-      console.clear();
+      console.log("hello");
     }
   };
 
@@ -117,7 +117,7 @@ function ShopItem({ productId }: { productId: any }) {
           ? { ...loading, addingToCart: false }
           : { ...loading, buyingItem: false }
       );
-      console.clear();
+      console.log("hello");
     }
   };
 

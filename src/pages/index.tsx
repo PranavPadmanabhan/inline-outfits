@@ -21,7 +21,7 @@ function Index() {
         setProducts(data);
       }
     } catch (error) {
-      console.clear();
+      console.log("hello");
     }
   };
 

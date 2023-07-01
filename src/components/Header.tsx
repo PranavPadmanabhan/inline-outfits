@@ -24,7 +24,7 @@ function Header() {
   }, [router.pathname]);
 
   useEffect(() => {
-    getCart(setCart).then(() => console.clear());
+    getCart(setCart).then(() => console.log("hello"));
     
   }, [router.pathname, isAuthModalVisible]);
 

@@ -4,8 +4,6 @@ import CartItem from "@/components/CartItem";
 import Header from "@/components/Header";
 import Axios from "@/config/AxiosConfig";
 import { useAppContext } from "@/contexts/AppContext";
-import AuthLayout from "@/layout/AuthLayout";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ImSpinner4 } from "react-icons/im";
@@ -177,6 +175,6 @@ export const getCart = async (
     setLoading?.(false);
   } catch (error) {
     setLoading?.(false);
-    console.clear()
+    console.log("hello")
   }
 };

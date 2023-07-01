@@ -61,7 +61,7 @@ function CartItem({
       }
     } catch (error) {
       setLoading({ ...loading, removingItem: false });
-      console.clear();
+      console.log("hello");
     }
   };
 
@@ -85,7 +85,7 @@ function CartItem({
       }
     } catch (error) {
       setLoading({ ...loading, deletingItem: false });
-      console.clear();
+      console.log("hello");
     }
   };
 

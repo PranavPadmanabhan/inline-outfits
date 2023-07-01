@@ -68,7 +68,7 @@ function Delivery() {
         setUser(data);
       }
     } catch (error) {
-      console.clear();
+      console.log("hello");
     }
   };
 
@@ -111,7 +111,7 @@ function Delivery() {
       }
     } catch (error) {
       setLoading({ ...loading, saving: false });
-      console.clear();
+      console.log("hello");
     }
   };
 

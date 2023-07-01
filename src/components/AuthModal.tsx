@@ -66,6 +66,11 @@ function AuthModal() {
       phone: "",
       password: "",
     });
+    setState({
+      name: "",
+      password: "",
+      phone: "",
+    });
   }, [authType]);
 
   const signup = async (e?: any) => {
@@ -77,12 +82,23 @@ function AuthModal() {
     ) {
       try {
         setLoading({ ...loading, signingUp: true });
-        const res = await Axios.post("/auth/signup", {
-          name: state.name,
-          phone: state.phone,
-          password: state.password,
-        });
-        const data = await res.data;
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/signup`,
+          {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+              apikey: process.env.NEXT_PUBLIC_API_KEY!,
+            },
+            body: JSON.stringify({
+              name: state.name,
+              phone: state.phone,
+              password: state.password,
+            }),
+          }
+        );
+        const data = await res.json();
+        console.log(data);
         if (!data.error) {
           setUser(data.user);
           localStorage.setItem("user", JSON.stringify(data.user));
@@ -100,7 +116,7 @@ function AuthModal() {
         setLoading({ ...loading, signingUp: false });
       } catch (error) {
         setLoading({ ...loading, signingUp: false });
-        // console.clear();
+        // console.log("hello");
         console.log(error);
       }
     } else {
@@ -204,7 +220,7 @@ function AuthModal() {
         // Error; SMS not sent
         // ...
         setLoading({ ...loading, sentingOtp: false });
-        console.clear();
+        console.log("hello");
 
         setOtpSent(false);
       });
@@ -227,20 +243,31 @@ function AuthModal() {
       } catch (error) {}
       setLoading({ ...loading, verifying: false });
       setIsAuthModalVisible(false);
-      console.clear();
+      console.log("hello");
     });
   };
 
   const signin = async (e?: any) => {
     e?.preventDefault();
+
     if (state.phone.trim().length !== 0 && state.password.trim().length !== 0) {
       try {
         setLoading({ ...loading, signingIn: true });
-        const res = await Axios.post("/auth/signin", {
-          phone: state.phone,
-          password: state.password,
-        });
-        const data = await res.data;
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/signin`,
+          {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+              apikey: process.env.NEXT_PUBLIC_API_KEY!,
+            },
+            body: JSON.stringify({
+              phone: state.phone,
+              password: state.password,
+            }),
+          }
+        );
+        const data = await res.json();
         if (data.message) {
           setUser(data.user);
           localStorage.setItem("user", JSON.stringify(data.user));
@@ -259,7 +286,7 @@ function AuthModal() {
       } catch (error) {
         setLoading({ ...loading, signingIn: false });
         setIsAuthModalVisible(false);
-        console.clear();
+        // console.log("hello");
       }
     } else {
       if (
@@ -353,14 +380,7 @@ function AuthModal() {
             </button>
           </div>
         ) : (
-          <form
-            onSubmit={(e) => {
-              if (authType === "signup") {
-                signup(e);
-              } else {
-                signin(e);
-              }
-            }}
+          <div
             className="w-1/2 h-full flex flex-col items-center justify-start"
           >
             <div id="recaptcha-container"></div>
@@ -470,13 +490,7 @@ function AuthModal() {
               className={`min-w-[160px] h-[40px] rounded-md bg-black flex items-center justify-center  ${
                 authType === "login" ? "mt-4" : "mt-2"
               }`}
-              onClick={() => {
-                if (authType === "signup") {
-                  signup();
-                } else {
-                  signin();
-                }
-              }}
+              onClick={authType === "login" ? signin : signup}
             >
               {loading.signingUp || loading.signingIn || loading.sentingOtp ? (
                 <ImSpinner4
@@ -491,20 +505,14 @@ function AuthModal() {
               )}
             </button>
             <button
-              onClick={() => {
-                if (authType === "login") {
-                  setAuthType("signup");
-                } else {
-                  setAuthType("login");
-                }
-              }}
+              onClick={() => setAuthType(authType === "login"?"signup":"login")}
               className="text-black text-[0.9rem] mt-2 bg-white "
             >
               {authType === "login"
                 ? "New to In&O ? Create Account"
                 : "Already have account? Login"}
             </button>
-          </form>
+          </div>
         )}
         <div className="w-1/2 h-full flex flex-col items-center justify-center">
           <img
