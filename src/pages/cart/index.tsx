@@ -30,7 +30,7 @@ function Cart() {
   return (
     <div className="h-screen w-full flex flex-col items-center justify-start">
       <Header />
-      {cart?.products?.length <= 0 && (
+      {(cart?.products?.length <= 0 && !loading) && (
         <div className="w-screen h-full flex items-center justify-center">
           <span className="text-black text-[1.4rem] font-semibold ">
             Your Cart is Empty
