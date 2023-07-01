@@ -12,6 +12,7 @@ import dynamic from "next/dynamic";
 import { createRazorpayOrder, loadRazorpayScript } from "@/utils/razorpay";
 import image from "next/image";
 import OrderItem from "@/components/OrderItem";
+import { ImSpinner4 } from "react-icons/im";
 
 type Address = {
   name: string;
@@ -39,6 +40,7 @@ type error = {
 
 type Loading = {
   saving: boolean;
+  placingOrder:boolean;
 };
 
 function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
@@ -59,7 +61,8 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
     state: "",
   });
   const [error, setError] = useState<any>([]);
-  const [loading, setLoading] = useState<Loading>({ saving: false });
+  const [loading, setLoading] = useState<Loading>({ saving: false,placingOrder:false });
+  const [selectedAddress, setSelectedAddress] = useState<any>({});
 
   const { cart, setCart } = useAppContext();
 
@@ -135,68 +138,103 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
 
   const initializePayment = async () => {
     // Load Razorpay script asynchronously
-    const user = JSON.parse(localStorage.getItem("user")!);
-    await loadRazorpayScript();
+    if (Object.keys(selectedAddress).length > 5) {
+      setError(error?.filter((item: string) => item !== "emptyAddress"));
+      const user = JSON.parse(localStorage.getItem("user")!);
+      await loadRazorpayScript();
 
-    // Create Razorpay order
-    const order = await createRazorpayOrder(
-      parseInt(cartItem?.product?.price?.original.toString()) *
-        cartItem?.quantity +
-        deliveryFee
-    );
+      // Create Razorpay order
+      const order = await createRazorpayOrder(
+        parseInt(cartItem?.product?.price?.original.toString()) *
+          cartItem?.quantity +
+          deliveryFee
+      );
 
-    // Open Razorpay checkout modal
-    const options = {
-      key: process.env.NEXT_PUBLIC_RAZOR_PAY_ID!,
-      amount: order.amount,
-      currency: order.currency,
-      order_id: order.id,
-      name: "In&O",
-      description: "Payment for your In&O purchase",
-      handler: function (response: any) {
-        // Handle the payment success
-        console.log("Payment Successful!", response);
-        alert("Successfull");
-      },
-      prefill: {
-        name: user.name,
-        // email: "john@example.com",
-        contact: user.phone,
-      },
-    };
-    const razorpayInstance = new window.Razorpay(options);
-    razorpayInstance.open();
+      // Open Razorpay checkout modal
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZOR_PAY_ID!,
+        amount: order.amount,
+        currency: order.currency,
+        order_id: order.id,
+        name: "In&O",
+        description: "Payment for your In&O purchase",
+        handler: function (response: any) {
+          // Handle the payment success
+          // console.log("Payment Successful!", response);
+          placeOrder()
+        },
+        prefill: {
+          name: user.name,
+          // email: "john@example.com",
+          contact: user.phone,
+        },
+      };
+      const razorpayInstance = new window.Razorpay(options);
+      razorpayInstance.open();
+    } else {
+      setError([...error, "emptyAddress"]);
+    }
+  };
+
+  const placeOrder = async () => {
+    try {
+      setLoading({...loading,placingOrder:true})
+      const res = await Axios.post("/orders", {
+        phone: user.phone,
+        products: [cartItem],
+        address:selectedAddress,
+        price:
+          parseInt(cartItem?.product?.price?.original.toString()) *
+            cartItem?.quantity +
+          deliveryFee
+      });
+      const data = await res.data;
+      if(!data.error){
+        alert(data?.message)
+      }
+      setLoading({...loading,placingOrder:false})
+
+    } catch (error) {
+      setLoading({...loading,placingOrder:false})
+
+    }
   };
 
   return (
     <div className="h-screen w-full  flex flex-col  items-center justify-start overflow-y-scroll scrollbar-hide ">
       <Header />
-      <div className="w-full h-full flex items-start justify-center">
+      {loading.placingOrder  ? (
+        <div className="w-full h-full flex flex-col items-center justify-center">
+          <>
+          <ImSpinner4 color="black" size={36} className="animate-rotate" />
+          <p className="text-black text-[1rem] mt-1 text-center">Do not close the window or <br/> press back button</p>
+          </>
+        </div>
+      ):(
+        <div className="w-full h-full flex items-start justify-center">
         <div className="h-auto   w-[50%] flex flex-col items-start justify-start  box-border  ">
-          <OrderItem />
-          <div className="h-[1px] w-[90%] bg-[#00000025]  "></div>
-          <OrderItem />
+          <h1 className="text-lg font-medium my-2 text-black mt-3 ml-3">
+            Delivery Items
+          </h1>
+          <OrderItem
+            name={cartItem?.product?.name}
+            description={cartItem?.product?.description}
+            image={cartItem?.product?.images[0]}
+            finalPrice={cartItem?.product?.price?.original ?? 0}
+            price={Math.round(
+              (cartItem?.product?.price?.original * 100) /
+                (100 - parseFloat(cartItem?.product?.price?.offer))
+            )}
+            offer={cartItem?.product?.price?.offer}
+            totalQuantity={cartItem?.quantity}
+            color={cartItem?.color}
+            size={cartItem?.size}
+          />
 
-          <h1 className="text-lg font-medium my-2 ml-10 text-black">
+          <h1 className="text-lg font-medium my-2 ml-3 text-black ">
             Delivery Address
           </h1>
-          <div className="min-h-[32%] h-auto w-[90%]  grid grid-cols-3 gap-y-2 place-content-center place-items-center px-7  box-border">
-            {user?.addresses?.map((item: any, i: number) => (
-              <GivenAddress
-                key={i}
-                Delete="/svg/delete.svg"
-                AddressType={item.isHomeAddress ? "Home" : "Office"}
-                Name={item.name}
-                isSelected
-                Locality={item.locality}
-                City={item.city}
-                PinNumber={item.pinCode}
-                PhoneNumber={"+91" + item.phone}
-              />
-            ))}
-          </div>
-
-          <div className="min-h-[50px] w-[87%] flex flex-col items-start justify-start  border-[1px] border-[#00000013] rounded-lg ml-10 my-5">
+          <div className="min-h-[50px] w-[87%] flex flex-col items-start justify-start  border-[1px] border-[#00000013] rounded-lg ml-3 my-5">
             <div className="h-[100%] w-[100%] flex items-center justify-between pl-5 pr-2 pt-1 box-border">
               <h1 className="text-lg font-medium text-black">
                 Add a new address
@@ -229,6 +267,22 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
               />
             )}
           </div>
+          <div className="min-h-[32%] h-auto w-[100%]  grid grid-cols-3 gap-y-2 place-content-center place-items-center  box-border">
+            {user?.addresses?.map((item: any, i: number) => (
+              <GivenAddress
+                key={i}
+                onClick={() => setSelectedAddress(item)}
+                Delete="/svg/delete.svg"
+                AddressType={item.isHomeAddress ? "Home" : "Office"}
+                Name={item.name}
+                Locality={item.locality}
+                City={item.city}
+                PinNumber={item.pinCode}
+                PhoneNumber={"+91" + item.phone}
+                isSelected={item === selectedAddress}
+              />
+            ))}
+          </div>
         </div>
 
         <div className="h-auto  w-[30%] flex flex-col items-center justify-center  ml-16">
@@ -246,7 +300,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
                 <span className="ml-4 mr-2 text-black font-[600] text-[1.5rem]">
                   ₹
                   {parseInt(cartItem?.product?.price?.original.toString()) *
-                    cartItem?.quantity}
+                    cartItem?.quantity ?? 0}
                 </span>
               </div>
 
@@ -259,7 +313,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
                 </span>
               </div>
             </div>
-            <div className="w-full h-[15%] mb-2 flex items-center justify-between border-b-black border-b-[1px] border-dashed my-4">
+            <div className="w-full h-[15%] mb-2 flex items-center justify-between border-b-black border-b-[1px] border-dashed my-8">
               <span className="ml-4 text-black font-[400] text-[1rem]">
                 Total
               </span>
@@ -267,7 +321,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
                 ₹
                 {parseInt(cartItem?.product?.price?.original.toString()) *
                   cartItem?.quantity +
-                  deliveryFee}
+                  deliveryFee ?? 0}
               </span>
             </div>
 
@@ -276,7 +330,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
             </span> */}
             <button
               onClick={initializePayment}
-              className="self-center w-[80%] min-h-[43px] rounded-[10px] bg-black flex items-center justify-center mb-1 mt-6"
+              className="self-center w-[80%] min-h-[43px] rounded-[10px] bg-black flex items-center justify-center mb-1 mt-12"
             >
               <img
                 className="h-[18] w-[18px] ml-1"
@@ -287,9 +341,17 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
                 Proceed & Pay
               </h1>
             </button>
+            {error?.includes("emptyAddress") && (
+              <span className="text-[11px] font-medium text-red-500 self-center ">
+                select any address
+              </span>
+            )}
           </div>
         </div>
       </div>
+      )
+      }
+      
     </div>
   );
 }

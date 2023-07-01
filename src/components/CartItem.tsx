@@ -111,7 +111,7 @@ function CartItem({
             {description}
           </p>
           <span className="text-black font-[600] text-[1.5rem]">
-            ₹{offer ? price : finalPrice}{" "}
+            ₹{offer ? finalPrice :price}{" "}
             {offer && (
               <>
                 <span className="text-lightGray font-[400] text-[0.96rem] ml-[2px] line-through	">
