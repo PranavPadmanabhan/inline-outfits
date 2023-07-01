@@ -100,7 +100,8 @@ function AuthModal() {
         setLoading({ ...loading, signingUp: false });
       } catch (error) {
         setLoading({ ...loading, signingUp: false });
-        console.clear();
+        // console.clear();
+        console.log(error)
       }
     } else {
       if (

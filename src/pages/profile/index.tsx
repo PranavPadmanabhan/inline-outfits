@@ -44,7 +44,7 @@ type State = {
 function Profile() {
   const [newAddress, SetnewAddress] = useState(false);
   const [address, setAddress] = useState<Address>({} as Address);
-  const [error, setError] = useState<error>({} as error);
+  const [error, setError] = useState<string[]>([]);
   const [loading, setLoading] = useState<Loading>({ saving: false });
   const [states, setStates] = useState<State>({
     email: "",
@@ -106,6 +106,7 @@ function Profile() {
               });
             }
           });
+          console.log('error')
         }
       } else {
         try {
@@ -128,9 +129,13 @@ function Profile() {
       }
     } catch (error) {
       setLoading({ ...loading, saving: false });
-      console.clear();
+      // console.clear();
     }
   };
+
+  const update = () => {
+    updateAddress(true)
+  }
 
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-start">
@@ -220,8 +225,8 @@ function Profile() {
                 address={address}
                 setAddress={setAddress}
                 loading={loading.saving}
-                updateAddress={() => updateAddress(true)}
-                error={[]}
+                updateAddress={update}
+                error={error}
               />
             )}
           </div>
