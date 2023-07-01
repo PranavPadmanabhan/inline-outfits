@@ -115,10 +115,10 @@ function AuthModal() {
           });
         }
         setLoading({ ...loading, signingUp: false });
-      } catch (error) {
+      } catch (error:any) {
         setLoading({ ...loading, signingUp: false });
         // console.log("hello");
-        console.log(error);
+        console.log(error.message);
       }
     } else {
       if (
