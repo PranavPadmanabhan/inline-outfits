@@ -85,7 +85,7 @@ function Delivery() {
       ) {
         setLoading({ ...loading, saving: true });
         const user = JSON.parse(localStorage.getItem("user")!);
-        const res = await Axios.put(`/user/${user?.phone}`, {
+        const res = await Axios.put(`/auth/user/${user?.phone}`, {
           addresses: [...user.addresses, address],
         });
         const data = await res.data;
