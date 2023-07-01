@@ -83,8 +83,9 @@ function AuthModal() {
           password: state.password,
         });
         const data = await res.data;
-        if (data.message) {
+        if (!data.error) {
           setUser(data.user);
+          console.log(data.user)
           localStorage.setItem("user", JSON.stringify(data.user));
           // onSignup()
           setIsAuthModalVisible(false);
