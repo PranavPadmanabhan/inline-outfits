@@ -95,6 +95,7 @@ function AuthModal() {
               phone: state.phone,
               password: state.password,
             }),
+            mode:"no-cors"
           }
         );
         const data = await res.json();
@@ -265,6 +266,7 @@ function AuthModal() {
               phone: state.phone,
               password: state.password,
             }),
+            mode:"no-cors"
           }
         );
         const data = await res.json();
