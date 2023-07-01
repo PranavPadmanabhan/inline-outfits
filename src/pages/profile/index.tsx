@@ -203,7 +203,7 @@ function Profile() {
             ))}
           </div>
 
-          <div className="min-h-[50px] w-[87%] flex flex-col items-start justify-start  border-[1px] border-[#00000013] rounded-lg ml-10 my-5">
+          <div className="min-h-[50px] w-[87%] flex flex-col items-start justify-start  border-[1px] border-[#00000013] rounded-lg my-5">
             <div className="h-[100%] w-[100%] flex items-center justify-between px-5 pt-1 box-border">
               <h1 className="text-lg font-medium text-black">
                 Add a new address
