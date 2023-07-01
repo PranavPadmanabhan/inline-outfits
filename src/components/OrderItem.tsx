@@ -19,7 +19,7 @@ function OrderItem() {
       <span className="text-black font-[600] text-[1.5rem]">
         ₹249
         <>
-          <span className="text-lightGray font-[400] text-[0.96rem] ml-[2px] line-through	">
+          <span className="text-lightGray font-[400] text-[0.96rem] ml-[3px] line-through	">
             ₹599
           </span>
           <span className="text-lightRed opacity-60 font-[600] ml-1 text-[0.96rem]">
