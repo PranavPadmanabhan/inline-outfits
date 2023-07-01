@@ -85,7 +85,6 @@ function AuthModal() {
         const data = await res.data;
         if (!data.error) {
           setUser(data.user);
-          console.log(data.user)
           localStorage.setItem("user", JSON.stringify(data.user));
           // onSignup()
           setIsAuthModalVisible(false);
@@ -102,7 +101,7 @@ function AuthModal() {
       } catch (error) {
         setLoading({ ...loading, signingUp: false });
         // console.clear();
-        console.log(error)
+        console.log(error);
       }
     } else {
       if (
