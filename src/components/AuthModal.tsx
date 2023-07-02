@@ -82,24 +82,19 @@ function AuthModal() {
     ) {
       try {
         setLoading({ ...loading, signingUp: true });
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/signup`,
-          {
-            method: "post",
-            headers: {
-              "Content-Type": "application/json",
-              apikey: process.env.NEXT_PUBLIC_API_KEY!,
-            },
-            body: JSON.stringify({
-              name: state.name,
-              phone: state.phone,
-              password: state.password,
-            }),
-            mode:"no-cors"
-          }
-        );
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signup`, {
+          method: "post",
+          body: JSON.stringify({
+            name: state.name,
+            phone: state.phone,
+            password: state.password,
+          }),
+          headers: {
+            apikey: process.env.NEXT_PUBLIC_API_KEY!,
+            "Content-Type": "application/json",
+          },
+        })
         const data = await res.json();
-        console.log(data);
         if (!data.error) {
           setUser(data.user);
           localStorage.setItem("user", JSON.stringify(data.user));
@@ -115,7 +110,7 @@ function AuthModal() {
           });
         }
         setLoading({ ...loading, signingUp: false });
-      } catch (error:any) {
+      } catch (error: any) {
         setLoading({ ...loading, signingUp: false });
         // console.log("hello");
         console.log(error.message);
@@ -254,21 +249,18 @@ function AuthModal() {
     if (state.phone.trim().length !== 0 && state.password.trim().length !== 0) {
       try {
         setLoading({ ...loading, signingIn: true });
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/signin`,
-          {
-            method: "post",
-            headers: {
-              "Content-Type": "application/json",
-              apikey: process.env.NEXT_PUBLIC_API_KEY!,
-            },
-            body: JSON.stringify({
-              phone: state.phone,
-              password: state.password,
-            }),
-            mode:"no-cors"
-          }
-        );
+       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signin`, {
+          method: "post",
+          headers: {
+            apikey: process.env.NEXT_PUBLIC_API_KEY!,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            phone: state.phone,
+            password: state.password,
+          }),
+        })
+         
         const data = await res.json();
         if (data.message) {
           setUser(data.user);
@@ -288,7 +280,6 @@ function AuthModal() {
       } catch (error) {
         setLoading({ ...loading, signingIn: false });
         setIsAuthModalVisible(false);
-        // console.log("hello");
       }
     } else {
       if (
@@ -382,9 +373,7 @@ function AuthModal() {
             </button>
           </div>
         ) : (
-          <div
-            className="w-1/2 h-full flex flex-col items-center justify-start"
-          >
+          <div className="w-1/2 h-full flex flex-col items-center justify-start">
             <div id="recaptcha-container"></div>
             <div
               className={`min-w-[120px] min-h-[50px] ${
@@ -507,7 +496,9 @@ function AuthModal() {
               )}
             </button>
             <button
-              onClick={() => setAuthType(authType === "login"?"signup":"login")}
+              onClick={() =>
+                setAuthType(authType === "login" ? "signup" : "login")
+              }
               className="text-black text-[0.9rem] mt-2 bg-white "
             >
               {authType === "login"

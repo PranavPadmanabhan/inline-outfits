@@ -15,11 +15,14 @@ function Index() {
 
   const getProducts = async () => {
     try {
-      const res = await Axios.get("/products");
-      const data = await res.data;
-      if (!data.error) {
-        setProducts(data);
-      }
+       fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
+        headers: {
+          apikey: process.env.NEXT_PUBLIC_API_KEY!,
+          "Content-Type": "application/json"
+        },
+      }).then((res) =>res.json()).then(data => {
+        setProducts(data)
+      })
     } catch (error) {
       console.log("hello");
     }
