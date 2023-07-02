@@ -40,9 +40,9 @@ function ProductItem({
         effect="blur"
         src={image} // use normal <img> attributes as props
       /> */}
-      <h1 className="self-start text-[1.2rem] font-[700] text-black ">{nameofT}</h1>
-      <h2 className="self-start text-[0.8rem] font-medium text-black">{details}</h2>
-      <div className="self-start h-[20px] w-[100%] flex items-center justify-start">
+      <h1 className="lg:self-start text-center text-[1.2rem] font-[700] text-black ">{nameofT}</h1>
+      <h2 className="lg:self-start text-center text-[0.8rem] font-medium text-black">{details}</h2>
+      <div className="lg:self-start text-center h-[20px] w-[100%] flex items-center lg:justify-start justify-center">
         <h1 className="font-[600] text-[13px] text-black">Rs {offprice}</h1>
         <h1 className="font-medium text-[11px] text-[#00000094] mx-2 line-through  ">
           Rs {realprice}

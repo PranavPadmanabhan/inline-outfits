@@ -5,7 +5,7 @@ type props ={
 
 function Personalize({personalizedT}:props) {
   return (
-    <div className="h-[100%] w-[25%]  flex flex-col justify-start items-start">
+    <div className="h-[100%]   lg:w-[25%]  flex flex-col justify-start lg:items-start items-center">
          <img className=' w-[80%] items-center ' src={personalizedT} alt=""  />
     </div>
   )

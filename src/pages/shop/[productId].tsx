@@ -139,12 +139,12 @@ function ShopItem({ productId }: { productId: any }) {
           <ImSpinner4 color="black" size={36} className="animate-rotate" />
         </div>
       ) : (
-        <div className="h-auto w-full flex items-start justify-center">
-          <div className="h-full w-[40%] flex bg-white justify-center items-start pt-4 box-border ">
+        <div className="h-auto w-full flex lg:flex-row flex-col lg:items-start items-center justify-center">
+          <div className="h-full lg:w-[40%] flex bg-white justify-center items-start pt-4 box-border ">
             <Carouselcomponent images={product?.images ?? []} />
           </div>
-          <div className="h-full w-[50%] flex flex-col bg-white justify-start items-start pl-10">
-            <h1 className="text-2xl font-bold mt-10 text-black">
+          <div className="h-full lg:w-[50%] w-[90%] flex flex-col bg-white justify-start items-start lg:pl-10 pl-5 box-border">
+            <h1 className="text-2xl font-bold lg:mt-10 mt-3 text-black">
               {product?.name}
             </h1>
             <h1 className="text-[16px] text-[#000000a6] font-light my-1">
@@ -184,7 +184,7 @@ function ShopItem({ productId }: { productId: any }) {
               </button>
             </div>
 
-            <h1 className="text-xs mt-2 text-black">Colors</h1>
+            <h1 className="lg:text-xs text-sm mt-2 text-black">Colors</h1>
             <div className="h-[50px] w-auto  flex justify-between items-center my-2">
               {/* <Colour colour="black" colourName="Black" />
 
@@ -202,7 +202,7 @@ function ShopItem({ productId }: { productId: any }) {
               ))}
             </div>
 
-            <h1 className="text-xs mt-2 text-black">Size</h1>
+            <h1 className="lg:text-xs text-sm mt-2 text-black">Size</h1>
             <div className="h-[50px] w-[300px] flex justify-between items-center my-2">
               {sizes.map((item, i) => (
                 <Size
@@ -278,11 +278,11 @@ function ShopItem({ productId }: { productId: any }) {
               </div>
             </div>
 
-            <h1 className="text-lg font-medium my-3 text-black">
+            <h1 className="lg:text-lg text-xl font-medium my-3 text-black">
               Specifications
             </h1>
 
-            <div className="h-[300px] w-[70%]  mb-5">
+            <div className="lg:h-[300px] h-[500px] lg:w-[70%] w-[95%] mb-5">
               <Specification details={product.details} />
             </div>
           </div>
