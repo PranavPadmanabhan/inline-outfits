@@ -112,7 +112,7 @@ function AuthModal() {
         setLoading({ ...loading, signingUp: false });
       } catch (error: any) {
         setLoading({ ...loading, signingUp: false });
-        // console.log("hello");
+        // console.clear();
         console.log(error.message);
       }
     } else {
@@ -216,7 +216,7 @@ function AuthModal() {
         // Error; SMS not sent
         // ...
         setLoading({ ...loading, sentingOtp: false });
-        console.log("hello");
+        console.clear();
 
         setOtpSent(false);
       });
@@ -239,7 +239,7 @@ function AuthModal() {
       } catch (error) {}
       setLoading({ ...loading, verifying: false });
       setIsAuthModalVisible(false);
-      console.log("hello");
+      console.clear();
     });
   };
 

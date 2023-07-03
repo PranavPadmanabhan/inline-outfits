@@ -19,7 +19,7 @@ export const loadRazorpayScript = () => {
       });
       return response.data;
     } catch (error) {
-      console.log("hello")
+      console.clear()
 
     }
   };

@@ -175,6 +175,6 @@ export const getCart = async (
     setLoading?.(false);
   } catch (error) {
     setLoading?.(false);
-    console.log("hello")
+    console.clear()
   }
 };

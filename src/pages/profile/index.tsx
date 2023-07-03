@@ -71,7 +71,7 @@ function Profile() {
         setAddresses(data?.addresses)
       }
     } catch (error) {
-      console.log("hello");
+      console.clear();
     }
   };
 
@@ -129,7 +129,7 @@ function Profile() {
       }
     } catch (error) {
       setLoading({ ...loading, saving: false });
-      // console.log("hello");
+      // console.clear();
     }
   };
 

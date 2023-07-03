@@ -81,7 +81,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
         // console.log(data)
       }
     } catch (error) {
-      console.log("hello");
+      console.clear();
     }
   };
 
@@ -132,7 +132,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
     } catch (error) {
       console.log(error);
       setLoading({ ...loading, saving: false });
-      console.log("hello");
+      console.clear();
     }
   };
 
