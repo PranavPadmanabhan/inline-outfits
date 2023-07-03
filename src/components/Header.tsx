@@ -47,8 +47,14 @@ function Header() {
   };
 
   return (
-    <div className="w-[100%] lg:min-h-[95px] min-h-[60px] flex flex-col items-center justify-center">
-      <div className="w-full h-full flex items-center justify-between border-b-[1px] border-b-black">
+    <div className="w-[100%] fixed top-0 z-[100] lg:min-h-[95px] min-h-[60px] flex flex-col items-center justify-center bg-white">
+      <div
+        className={`w-full h-full flex items-center justify-between ${
+          isNavbarOptionsVisible
+            ? "border-b-[1px] border-b-[#00000057]"
+            : "border-none"
+        }`}
+      >
         <div className="lg:min-h-[50px] lg:w-[12%] h-full w-[20%] ml-3 lg:ml-10">
           {" "}
           <img className="h-[80%] w-[80%]" src="/svg/In&O.svg" alt="" />
@@ -167,7 +173,7 @@ function Header() {
         </div>
         <div
           onClick={() => setIsNavbarOptionsVisible(!isNavbarOptionsVisible)}
-          className="h-[60px] w-[70px] flex flex-col items-center justify-center"
+          className="h-[60px] w-[70px] flex lg:hidden flex-col items-center justify-center"
         >
           <div
             className={`${
@@ -189,14 +195,14 @@ function Header() {
         <div
           className={`${
             isNavbarOptionsVisible ? styles.drawerOpen : styles.drawerClose
-          } w-full  duration-700 bg-white flex flex-col items-center justify-start`}
+          } w-full h-auto duration-700 bg-white flex flex-col items-center justify-start`}
         >
           <div
             onClick={() => {
               setIsNavbarOptionsVisible(false);
               router.push("/");
             }}
-            className="w-full h-[50px] flex items-center justify-center px-5 "
+            className="w-full min-h-[50px] flex items-center justify-center px-5 "
           >
             <div className="w-full h-full flex items-center justify-center border-b-[1px] border-b-[#0000003d] cursor-pointer">
               <h1 className="text-black text-[1.4rem] font-[800] ">Home</h1>
@@ -207,7 +213,7 @@ function Header() {
               setIsNavbarOptionsVisible(false);
               router.push("/shop");
             }}
-            className="w-full h-[50px] flex items-center justify-center px-5 "
+            className="w-full min-h-[50px] flex items-center justify-center px-5 "
           >
             <div className="w-full h-full flex items-center justify-center border-b-[1px] border-b-[#0000003d] cursor-pointer">
               <h1 className="text-black text-[1.4rem] font-[800] ">Shop</h1>
@@ -218,7 +224,7 @@ function Header() {
               setIsNavbarOptionsVisible(false);
               router.push("/");
             }}
-            className="w-full h-[50px] flex items-center justify-center px-5 "
+            className="w-full min-h-[50px] flex items-center justify-center px-5 "
           >
             <div className="w-full h-full flex items-center justify-center border-b-[1px] border-b-[#0000003d] cursor-pointer">
               <h1 className="text-black text-[1.4rem] font-[800] ">
@@ -226,30 +232,62 @@ function Header() {
               </h1>
             </div>
           </div>
-          <div
-            onClick={() => {
-              setIsNavbarOptionsVisible(false);
-              setAuthType("login");
-              setIsAuthModalVisible(true);
-            }}
-            className="w-full h-[50px] flex items-center justify-center px-5 "
-          >
-            <div className="w-full h-full flex items-center justify-center border-b-[1px] border-b-[#0000003d] cursor-pointer">
-              <h1 className="text-black text-[1.4rem] font-[800] ">Log In</h1>
-            </div>
-          </div>
-          <div
-            onClick={() => {
-              setIsNavbarOptionsVisible(false);
-              setAuthType("signup");
-              setIsAuthModalVisible(true);
-            }}
-            className="w-full h-[50px] flex items-center justify-center px-5 "
-          >
-            <div className="w-full h-full flex items-center justify-center cursor-pointer">
-              <h1 className="text-black text-[1.4rem] font-[800] ">Sign Up</h1>
-            </div>
-          </div>
+          {Object.keys(user).length > 0 ? (
+            <>
+              <div
+                onClick={() => {
+                  setIsNavbarOptionsVisible(false);
+                  router.push("/cart");
+                }}
+                className="w-full min-h-[50px] flex items-center justify-center px-5 "
+              >
+                <div className="w-full h-full flex items-center justify-center border-b-[1px] border-b-[#0000003d] cursor-pointer">
+                  <h1 className="text-black text-[1.4rem] font-[800] ">Cart</h1>
+                </div>
+              </div>
+              <div
+                onClick={logout}
+                className="w-full min-h-[50px] flex items-center justify-center px-5 "
+              >
+                <div className="w-full h-full flex items-center justify-center cursor-pointer">
+                  <h1 className="text-black text-[1.4rem] font-[800] ">
+                    Log out
+                  </h1>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div
+                onClick={() => {
+                  setIsNavbarOptionsVisible(false);
+                  setAuthType("login");
+                  setIsAuthModalVisible(true);
+                }}
+                className="w-full min-h-[50px] flex items-center justify-center px-5 "
+              >
+                <div className="w-full h-full flex items-center justify-center border-b-[1px] border-b-[#0000003d] cursor-pointer">
+                  <h1 className="text-black text-[1.4rem] font-[800] ">
+                    Log In
+                  </h1>
+                </div>
+              </div>
+              <div
+                onClick={() => {
+                  setIsNavbarOptionsVisible(false);
+                  setAuthType("signup");
+                  setIsAuthModalVisible(true);
+                }}
+                className="w-full min-h-[50px] flex items-center justify-center px-5 "
+              >
+                <div className="w-full h-full flex items-center justify-center cursor-pointer">
+                  <h1 className="text-black text-[1.4rem] font-[800] ">
+                    Sign Up
+                  </h1>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

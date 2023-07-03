@@ -132,7 +132,7 @@ function ShopItem({ productId }: { productId: any }) {
   };
 
   return (
-    <div className="min-h-[100vh] w-full bg-white flex flex-col items-start justify-center scrollbar-hide">
+    <div className="min-h-[100vh] w-full bg-white flex flex-col items-start justify-center scrollbar-hide pt-[50px] lg:pt-[100px]">
       <Header />
       {loading.gettingInformation ? (
         <div className="h-[80vh]  w-full flex items-center justify-center">

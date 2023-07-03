@@ -174,7 +174,7 @@ function Delivery() {
   };
 
   return (
-    <div className="h-screen w-full  flex flex-col  items-center justify-start overflow-y-scroll scrollbar-hide ">
+    <div className="h-screen w-full  flex flex-col  items-center justify-start overflow-y-scroll scrollbar-hide pt-[50px] lg:pt-[100px]">
       <Header />
       {loading.placingOrder ? (
         <div className="w-full h-full flex flex-col items-center justify-center">
