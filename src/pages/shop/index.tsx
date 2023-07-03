@@ -40,7 +40,7 @@ function Shop() {
             <ImSpinner4 color="black" size={36} className="animate-rotate" />
           </div>
         ) : (
-          <div className="w-full h-full grid grid-cols-4 place-content-start place-items-center overflow-y-scroll scrollbar-hide pt-5 box-border gap-x-6 gap-y-6">
+          <div className="w-full h-full grid lg:grid-cols-4 grid-cols-1 place-content-start place-items-center overflow-y-scroll scrollbar-hide pt-5 box-border gap-x-6 gap-y-6">
             {products.map((product: any, i: number) => (
               <ProductItem
                 key={i}
