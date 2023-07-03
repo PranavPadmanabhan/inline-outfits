@@ -138,7 +138,7 @@ function Profile() {
   }
 
   return (
-    <div className="w-screen h-screen flex flex-col items-center justify-start">
+    <div className="w-screen h-screen flex flex-col items-center justify-start pt-[50px] lg:pt-[100px]">
       <Header />
 
       <div className="h-full w-full flex items-start justify-start  overflow-y-scroll scrollbar-hide">

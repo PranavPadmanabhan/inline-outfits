@@ -33,7 +33,7 @@ function Index() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white w-full flex flex-col items-center justify-start scrollbar-hide">
+    <div className="min-h-screen bg-white w-full flex flex-col items-center justify-start scrollbar-hide pt-[60px]">
       <Header />
       <Landing />
       <TeesShowCase products={products} />

@@ -40,7 +40,7 @@ const Input = ({ state, onChange,placeholder,value,classNames,isLoading,PrefixIc
 
     
   return (
-    <div style={{borderColor:getColor()}} className={` ${classNames?.wrapper}  min-h-[45px] flex items-center justify-between  border-b-[1px]`}>
+    <div style={{borderColor:getColor()}} className={` ${classNames?.wrapper}  lg:min-h-[45px] min-h-[35px] flex items-center justify-between  border-b-[1px]`}>
         <div  className="w-full h-full  flex items-center justify-start ">
             <Icon color={getColor()} size={25} className='mx-2' />
             <input  value={value} onChange={onChange} style={{color:state === 'normal'?'black':getColor()}} type={type?type:"text"} placeholder={placeholder} className={` ${classNames?.input} w-full h-full bg-transparent pl-3 placeholder:text-[1rem] text-[1rem] text-black placeholder:text-white_half_opacity focus:outline-none`} />

@@ -32,8 +32,7 @@ function Shop() {
   }, []);
 
   return (
-    <AuthLayout>
-      <div className="w-screen h-screen bg-white flex flex-col items-center justify-start">
+      <div className="w-screen h-screen bg-white flex flex-col items-center justify-start pt-[50px] lg:pt-[100px]">
         <Header />
         {loading ? (
           <div className="w-full h-full flex flex-col items-center justify-center">
@@ -59,7 +58,6 @@ function Shop() {
           </div>
         )}
       </div>
-    </AuthLayout>
   );
 }
 
