@@ -7,14 +7,14 @@ function TeesShowCase({ products }: { products: any[] }) {
   const router = useRouter();
 
   return (
-    <div className="h-[140vh] w-full flex flex-col justify-start items-center my-5">
-      <h1 className=" leading-snug tracking-wide  text-6xl font-semibold text-black font-MuseoModerno  mt-10">
+    <div className="h-[140vh]  w-full flex flex-col justify-start items-center my-5">
+      <h1 className=" leading-snug tracking-wide  lg:text-6xl text-3xl font-semibold text-black font-MuseoModerno  lg:mt-10 mt-3 ">
         Fasion Up Your Looks
       </h1>
-      <h1 className="text-2xl tracking-wider text-[#A96500] font-MuseoModerno font-semibold -ml-[950px] my-2 ">
+      <h1 className="lg:text-2xl text-xl tracking-wider text-[#A96500] font-MuseoModerno font-semibold lg:-ml-[950px] my-2 ">
         Latest Trending{" "}
       </h1>
-      <div className="h-[60vh] w-[90%] grid grid-cols-4  place-items-center">
+      <div className="lg:h-[60vh] h-[80vh] w-[90%] grid lg:grid-cols-4 grid-cols-1 place-items-center">
         {products.slice(0, 4).map((product: any, i: number) => (
           <ProductItem
             onClick={() => router.push("/shop")}
@@ -56,11 +56,11 @@ function TeesShowCase({ products }: { products: any[] }) {
           off={33}
         /> */}
       </div>
-      <h1 className="text-2xl tracking-wider text-[#A96500] font-MuseoModerno font-semibold -ml-[890px] mt-10 mb-4">
+      <h1 className="text-2xl tracking-wider text-[#A96500] font-MuseoModerno font-semibold lg:-ml-[890px] mt-10 mb-4">
         {" "}
         Personalize your tees
       </h1>
-      <div className="h-[60vh] w-[90%] flex items-center justify-start">
+      <div className="lg:h-[60vh] h-[60vh] w-[90%] flex lg:flex-row flex-col items-center justify-start">
         <Personalize personalizedT="/svg/T1.svg" />
         <Personalize personalizedT="/svg/T2.svg" />
         <Personalize personalizedT="/svg/T3.svg" />
