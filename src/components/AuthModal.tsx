@@ -315,7 +315,7 @@ function AuthModal() {
 
   return (
     <div className="fixed top-0 z-[100] w-full h-full flex flex-col items-center justify-center">
-      <div className="relative w-[50%] h-[60%] rounded-[30px] bg-white shadow-modal_header flex items-center overflow-hidden justify-between">
+      <div className="relative lg:w-[50%] w-[85%]  lg:h-[60%] h-[50%] lg:rounded-[30px] rounded-[20px] bg-white shadow-modal_header flex items-center overflow-hidden justify-between">
         <CloseCircle
           onClick={() => setIsAuthModalVisible(false)}
           className="absolute cursor-pointer top-4 right-4 "
@@ -323,9 +323,9 @@ function AuthModal() {
           color="black"
         />
         {otpSent ? (
-          <div className="w-1/2 h-full flex flex-col items-center justify-start">
+          <div className="lg:w-1/2 w-full h-full flex flex-col items-center justify-start">
             <div
-              className={`min-w-[120px] min-h-[50px] mt-8 mb-5 flex items-center justify-center `}
+              className={`min-w-[120px] lg:min-h-[50px] min-h-[40px] lg:mt-8 mt-4 lg:mb-5 mb-3 flex items-center justify-center `}
             >
               <img className="h-[80%] w-[80%]" src="/svg/In&O.svg" alt="" />
             </div>
@@ -373,12 +373,12 @@ function AuthModal() {
             </button>
           </div>
         ) : (
-          <div className="w-1/2 h-full flex flex-col items-center justify-start">
+          <div className="lg:w-1/2 w-full h-full flex flex-col items-center justify-start">
             <div id="recaptcha-container"></div>
             <div
-              className={`min-w-[120px] min-h-[50px] ${
-                authType === "login" ? "mt-8 ml-4 -mb-1" : "mt-3 ml-4 -mb-3"
-              } mb-6 `}
+              className={`min-w-[120px] lg:min-h-[50px] min-h-[40px] ${
+                authType === "login" ? "lg:mt-8 mt-4 ml-4 -mb-1" : "lg:mt-3 mt-0 ml-4 -mb-3"
+              } lg:mb-6 mb-2 `}
             >
               <img className="h-[80%] w-[80%]" src="/svg/In&O.svg" alt="" />
             </div>
@@ -478,8 +478,8 @@ function AuthModal() {
               </h1>
             </div>
             <button
-              className={`min-w-[160px] h-[40px] rounded-md bg-black flex items-center justify-center  ${
-                authType === "login" ? "mt-4" : "mt-2"
+              className={`min-w-[160px] min-h-[40px] rounded-md bg-black flex items-center justify-center  ${
+                authType === "login" ? "lg:mt-4 mt-2" : "mt-2"
               }`}
               onClick={authType === "login" ? signin : signup}
             >
@@ -507,7 +507,7 @@ function AuthModal() {
             </button>
           </div>
         )}
-        <div className="w-1/2 h-full flex flex-col items-center justify-center">
+        <div className="hidden w-1/2 h-full lg:flex flex-col items-center justify-center">
           <img
             src="/svg/T6.svg"
             alt=""
