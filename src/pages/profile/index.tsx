@@ -2,7 +2,6 @@
 import GivenAddress from "@/components/GivenAddress";
 import Header from "@/components/Header";
 import NewAddress from "@/components/NewAddress";
-import Axios from "@/config/AxiosConfig";
 import { useAppContext } from "@/contexts/AppContext";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
@@ -43,14 +42,23 @@ type State = {
 
 function Profile() {
   const [newAddress, SetnewAddress] = useState(false);
-  const [address, setAddress] = useState<Address>({} as Address);
-  const [error, setError] = useState<string[]>([]);
+  const [address, setAddress] = useState<Address>({
+    address: "",
+    alternateNumber: "",
+    city: "",
+    landMark: "",
+    locality: "",
+    name: "",
+    phone: "",
+    pinCode: "",
+    state: "",
+  });  const [error, setError] = useState<string[]>([]);
   const [loading, setLoading] = useState<Loading>({ saving: false });
   const [states, setStates] = useState<State>({
     email: "",
     name: "",
   });
-  const [addresses, setAddresses] = useState<any[]>([])
+  const [addresses, setAddresses] = useState<any[]>([]);
   const { user, setUser } = useAppContext();
 
   useEffect(() => {
@@ -64,14 +72,22 @@ function Profile() {
   const getUser = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user")!);
-      const res = await Axios.get(`/auth/user/${user?.phone}`);
-      const data = await res.data;
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/user/${user?.phone}`,
+        {
+          headers: {
+            apikey: process.env.NEXT_PUBLIC_API_KEY!,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await res.json();
       if (!data.error) {
-        setStates({name:data.name,email:data?.email});
-        setAddresses(data?.addresses)
+        setStates({ name: data.name, email: data?.email });
+        setAddresses(data?.addresses);
       }
     } catch (error) {
-      console.clear();
+      ;
     }
   };
 
@@ -79,63 +95,84 @@ function Profile() {
     try {
       if (isAddressOnly) {
         if (
-          address.address.trim().length > 0 &&
-          address.alternateNumber.trim().length > 0 &&
-          address.city.trim().length > 0 &&
-          address.name.trim().length > 0 &&
-          address.pinCode.trim().length > 0 &&
-          address.state.trim().length > 0 &&
-          address.locality.trim().length > 0
+          address.address?.trim().length > 0 &&
+          address.city?.trim().length > 0 &&
+          address.name?.trim().length > 0 &&
+          address.pinCode?.trim().length > 0 &&
+          address.state?.trim().length > 0 &&
+          address.locality?.trim().length > 0
         ) {
           setLoading({ ...loading, saving: true });
           const user = JSON.parse(localStorage.getItem("user")!);
-          const res = await Axios.put(`/auth/user/${user?.phone}`, {
-            addresses: [...user.addresses, address],
-          });
-          const data = await res.data;
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/user/${user?.phone}`,
+            {
+              method: "put",
+              body: JSON.stringify({
+                addresses: [...user?.addresses, address],
+              }),
+              headers: {
+                apikey: process.env.NEXT_PUBLIC_API_KEY!,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const data = await res.json();
           if (!data.error) {
             setUser(data);
+          SetnewAddress(false)
           }
           setLoading({ ...loading, saving: false });
         } else {
+          let allErrors: string[] = [];
           Object.values(address).map((item, i) => {
-            if (item.trim().length <= 0) {
-              setError({
-                ...error,
-                [item.toString()]: `${Object.keys(address)[i]} is empty `,
-              });
+            if (!item || item?.trim().length <= 0) {
+              if (!allErrors.includes(Object.keys(address)[i].toString())) {
+                allErrors = [...allErrors, Object.keys(address)[i].toString()];
+              }
+            } else {
+              allErrors = allErrors.filter(
+                (item) => item !== Object.keys(address)[i].toString()
+              );
             }
+            setError(allErrors);
           });
-          console.log('error')
         }
       } else {
         try {
           if (user?.name !== states?.name || user?.email !== states?.email) {
             setLoading({ ...loading, saving: true });
             const user = JSON.parse(localStorage.getItem("user")!);
-            const res = await Axios.put(`/auth/user/${user?.phone}`, {
-              ...states
-            });
-            const data = await res.data;
-            console.log(data)
+            const res = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/auth/user/${user?.phone}`,
+              {
+                method: "put",
+                body: JSON.stringify({
+                  ...states,
+                }),
+                headers: {
+                  apikey: process.env.NEXT_PUBLIC_API_KEY!,
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            const data = await res.json();
             if (!data.error) {
               setUser(data);
             }
             setLoading({ ...loading, saving: false });
           }
         } catch (error) {
-          console.log(error)
+          ;
         }
       }
     } catch (error) {
       setLoading({ ...loading, saving: false });
-      // console.clear();
+      // ;
+      
     }
   };
 
-  const update = () => {
-    updateAddress(true)
-  }
 
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-start pt-[50px] lg:pt-[100px]">
@@ -225,7 +262,7 @@ function Profile() {
                 address={address}
                 setAddress={setAddress}
                 loading={loading.saving}
-                updateAddress={update}
+                updateAddress={() => updateAddress(true)}
                 error={error}
               />
             )}

@@ -27,7 +27,7 @@ function Header() {
   }, [router.pathname]);
 
   useEffect(() => {
-    getCart(setCart).then(() => console.clear());
+    getCart(setCart);
   }, [router.pathname, isAuthModalVisible]);
 
   useEffect(() => {
@@ -180,14 +180,14 @@ function Header() {
               isNavbarOptionsVisible
                 ? styles.firstLineOpen
                 : styles.firstLineClosed
-            } w-[25px] h-[3px] bg-black rounded-x-[20px] duration-700 cursor-pointer`}
+            } w-[25px] h-[3px] bg-black rounded-x-[20px] duration-500 cursor-pointer`}
           ></div>
           <div
             className={`${
               isNavbarOptionsVisible
                 ? styles.secondLineOpen
                 : styles.secondLineClosed
-            } w-[25px] h-[3px] bg-black rounded-x-[20px] duration-700 cursor-pointer`}
+            } w-[25px] h-[3px] bg-black rounded-x-[20px] duration-500 cursor-pointer`}
           ></div>
         </div>
       </div>

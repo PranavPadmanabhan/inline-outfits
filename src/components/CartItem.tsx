@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
-import Axios from "@/config/AxiosConfig";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { ImSpinner4 } from "react-icons/im";
@@ -43,15 +42,25 @@ function CartItem({
       const user = JSON.parse(localStorage.getItem("user")!);
       if (Object.keys(user).length > 0) {
         setLoading({ ...loading, removingItem: true });
-        const res = await Axios.put(`/cart/reduce`, {
-          cartItemId: item.cartItemId,
-          productId: item.productId,
-          phone: user.phone,
-          color: item.color,
-          size: item.size,
-          quantity,
-        });
-        const data = await res.data;
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/cart/reduce`,
+          {
+            method: "put",
+            body: JSON.stringify({
+              cartItemId: item.cartItemId,
+              productId: item.productId,
+              phone: user.phone,
+              color: item.color,
+              size: item.size,
+              quantity,
+            }),
+            headers: {
+              apikey: process.env.NEXT_PUBLIC_API_KEY!,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await res.json();
         if (!data.error) {
           getProducts();
         }
@@ -61,7 +70,7 @@ function CartItem({
       }
     } catch (error) {
       setLoading({ ...loading, removingItem: false });
-      console.clear();
+      ;
     }
   };
 
@@ -70,12 +79,22 @@ function CartItem({
       const user = JSON.parse(localStorage.getItem("user")!);
       if (Object.keys(user).length > 0) {
         setLoading({ ...loading, deletingItem: true });
-        const res = await Axios.put(`/cart/remove`, {
-          cartItemId: item.cartItemId,
-          productId: item.productId,
-          phone: user.phone,
-        });
-        const data = await res.data;
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/cart/remove`,
+          {
+            method: "put",
+            body: JSON.stringify({
+              cartItemId: item.cartItemId,
+              productId: item.productId,
+              phone: user.phone,
+            }),
+            headers: {
+              apikey: process.env.NEXT_PUBLIC_API_KEY!,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await res.json();
         if (!data.error) {
           getProducts(user.phone, user.VerifiedUser);
         }
@@ -85,7 +104,7 @@ function CartItem({
       }
     } catch (error) {
       setLoading({ ...loading, deletingItem: false });
-      console.clear();
+      ;
     }
   };
 
@@ -96,38 +115,39 @@ function CartItem({
   }, [quantity]);
 
   return (
-    <div className="w-full h-[28vh] px-[2%] box-border flex items-center justify-between my-8">
-      <div className="w-[68%] h-full flex items-center justify-start">
+    <div className="w-full lg:h-[28vh] h-[25vh] px-[2%] box-border flex lg:flex-row flex-col items-center justify-between my-8">
+      <div className="w-full lg:w-[68%] h-[80%] lg:h-full flex items-center justify-start">
         <img
           src={image}
           alt=""
-          className="h-full w-[40%] max-w-[180px] object-cover rounded-[20px]"
+          className="h-[90%] lg:h-full lg:w-[40%] w-[35%] max-w-[180px] object-cover rounded-[20px]"
         />
         <div className="w-full h-full flex flex-col items-start justify-start pl-5 box-border">
           <span className="text-black font-[600] text-[1.1rem] mt-1">
             {name}
           </span>
-          <p className="text-lightGray text-[0.9rem] font-[400] mb-2">
+          <p className="text-lightGray text-[0.9rem] font-[400] mb-0 lg:mb-2">
             {description}
           </p>
-          <span className="text-black font-[600] text-[1.5rem]">
-            ₹{offer ? finalPrice :price}{" "}
+          <span className="text-black font-[600] text-[1.1rem] lg:text-[1.5rem]">
+            ₹{offer ? finalPrice : price}{" "}
             {offer && (
               <>
                 <span className="text-lightGray font-[400] text-[0.96rem] ml-[2px] line-through	">
                   ₹{offer ? price : ""}{" "}
                 </span>
-                <span className="text-lightRed opacity-60 font-[600] ml-1 text-[0.96rem]">
+                <span className="text-lightRed opacity-60 font-[600] ml-1 text-[0.9rem] lg:text-[0.96rem]">
                   {" "}
                   {offer}% off
                 </span>
               </>
             )}
           </span>
+          <div className="w-full h-auto flex flex-row lg:flex-col items-center justify-start">
           <span className="text-black text-[1rem] font-[300]">
             size : <span className="font-[700]">{product?.size}</span>
           </span>
-          <span className="text-black text-[1rem] font-[300]">
+          <span className="text-black text-[1rem] font-[300] ml-3">
             color :{" "}
             <span
               style={{ color: product?.color?.code }}
@@ -136,7 +156,8 @@ function CartItem({
               {product?.color?.name}
             </span>
           </span>
-          <div className="min-w-[90px] min-h-[35px] rounded-[5px] border-[1px] border-gray-500 mt-2 flex items-center justify-between px-1 box-border">
+          </div>
+          <div className="min-w-[90px] lg:min-h-[35px] min-h-[30px] rounded-[5px] border-[1px] border-gray-500 mt-2 flex items-center justify-between px-1 box-border">
             <button
               onClick={() => setQuantity(quantity > 0 ? quantity - 1 : 0)}
               className="text-black text-[1.2rem] font-[500] ml-1"
@@ -155,7 +176,40 @@ function CartItem({
           </div>
         </div>
       </div>
-      <div className="h-full w-[32%] flex flex-col items-center justify-end px-[3%] box-border">
+      <div className="w-full h-[40px] mt-1 flex sm:hidden items-center justify-between ">
+      <button
+          onClick={() => deleteItem(product)}
+          className="w-[45%] h-full rounded-[10px] bg-white border-[1px] border-black flex items-center justify-center"
+        >
+          {loading.deletingItem ? (
+            <ImSpinner4 color="black" size={22} className="animate-rotate" />
+          ) : (
+            <>
+              {/* { totalQuantity === quantity &&   */}
+              <img
+                className="h-[15px] w-[15px] ml-1"
+                src="/svg/trash.svg"
+                alt=""
+              />
+              {/* } */}
+              <h1 className="text-black text-[0.9rem] font-bold ml-3">
+                {/* {totalQuantity === quantity ? "Delete" : "Save"} */}
+                delete
+              </h1>
+            </>
+          )}
+        </button>
+        <button
+          onClick={() => router.push(`/checkout/${product.cartItemId}`)}
+          className="w-[45%] h-full rounded-[10px] bg-black flex items-center justify-center "
+        >
+          <img className="h-[15px] w-[15px] ml-1" src="/svg/Cart.svg" alt="" />
+          <h1 className="text-white text-[0.85rem] font-medium ml-2">
+             Checkout
+          </h1>
+        </button>
+      </div>
+      <div className="hidden h-full w-[32%] lg:flex flex-col items-center justify-end px-[3%] box-border">
         <button
           onClick={() => deleteItem(product)}
           className="w-full min-h-[43px] rounded-[10px] bg-white border-[1px] border-black flex items-center justify-center mb-2"

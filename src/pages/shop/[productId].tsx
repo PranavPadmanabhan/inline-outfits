@@ -3,12 +3,9 @@
 import Carouselcomponent from "@/components/Carousel";
 import Colour from "@/components/Colour";
 import Header from "@/components/Header";
-import Personalize from "@/components/Personalize";
 import Size from "@/components/Size";
 import Specification from "@/components/Specification";
-import Axios from "@/config/AxiosConfig";
 import { useAppContext } from "@/contexts/AppContext";
-import AuthLayout from "@/layout/AuthLayout";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -31,12 +28,13 @@ function ShopItem({ productId }: { productId: any }) {
     addingToCart: false,
     buyingItem: false,
   });
-
   const sizes = ["S", "M", "L", "XL", "XXL"];
   const [selectedSize, setSelectedSize] = useState<string | null>("");
   const [selectedColor, setSelectedColor] = useState<any>({});
   const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
+  const [hasError, setHasError] = useState<boolean>(false)
   const { setIsAuthModalVisible, setCart } = useAppContext();
+  const [error, seterror] = useState<string[]>([]);
   const [quantity, setQuantity] = useState<number>(0);
   const handleClickSizeButton = (size: string) => {
     if (selectedSize === size) {
@@ -57,15 +55,24 @@ function ShopItem({ productId }: { productId: any }) {
   const getProduct = async () => {
     try {
       setLoading({ ...loading, gettingInformation: true });
-      const res = await Axios.get(`/products/product?id=${productId}`);
-      const data = await res.data;
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/products/product?id=${productId}`,
+        {
+          headers: {
+            apikey: process.env.NEXT_PUBLIC_API_KEY!,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await res.json();
       if (!data.error) {
         setProduct(data);
       }
       setLoading({ ...loading, gettingInformation: false });
     } catch (error) {
       setLoading({ ...loading, gettingInformation: false });
-      console.clear();
+      ;
+      setHasError(true)
     }
   };
 
@@ -74,6 +81,11 @@ function ShopItem({ productId }: { productId: any }) {
     type: "add" | "buy",
     callback?: (data: any) => void
   ) => {
+    let errFinder = {
+      color: Object.keys(selectedColor).length > 0,
+      size: selectedSize? true:false,
+      quantity: quantity > 0,
+    };
     try {
       const user = JSON.parse(localStorage.getItem("user")!);
       if (
@@ -87,14 +99,21 @@ function ShopItem({ productId }: { productId: any }) {
               ? { ...loading, addingToCart: true }
               : { ...loading, buyingItem: true }
           );
-          const res = await Axios.post(`/cart`, {
-            productId,
-            phone: user.phone,
-            color: selectedColor,
-            size: selectedSize,
-            quantity: quantity,
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`, {
+            method: "post",
+            body: JSON.stringify({
+              productId,
+              phone: user.phone,
+              color: selectedColor,
+              size: selectedSize,
+              quantity: quantity,
+            }),
+            headers: {
+              apikey: process.env.NEXT_PUBLIC_API_KEY!,
+              "Content-Type": "application/json",
+            },
           });
-          const data = await res.data;
+          const data = await res.json();
           if (!data.error) {
             setIsAddedToCart(true);
             getCart(setCart);
@@ -109,7 +128,17 @@ function ShopItem({ productId }: { productId: any }) {
           setIsAuthModalVisible(true);
         }
       } else {
-        return;
+        let allErrors: any[] = [];
+        Object.values(errFinder).map((item, i) => {
+          if (item === false) {
+            allErrors = [...allErrors, Object.keys(errFinder)[i].toString()];
+          } else {
+            allErrors = allErrors.filter(
+              (item) => item !== Object.keys(errFinder)[i].toString()
+            );
+          }
+          seterror(allErrors);
+        });
       }
     } catch (error) {
       setLoading(
@@ -117,7 +146,7 @@ function ShopItem({ productId }: { productId: any }) {
           ? { ...loading, addingToCart: false }
           : { ...loading, buyingItem: false }
       );
-      console.clear();
+      ;
     }
   };
 
@@ -134,6 +163,14 @@ function ShopItem({ productId }: { productId: any }) {
   return (
     <div className="min-h-[100vh] w-full bg-white flex flex-col items-start justify-center scrollbar-hide pt-[50px] lg:pt-[100px]">
       <Header />
+      {
+          hasError && (
+            <div className="w-full h-[80vh] flex flex-col items-center justify-center">
+             <h1 className="text-[1rem] text-black">Something went wrong!!</h1>
+             <button onClick={getProduct} className="bg-transparent text-black text-[0.85rem] mt-1">Try again</button>
+          </div>
+          )
+        }
       {loading.gettingInformation ? (
         <div className="h-[80vh]  w-full flex items-center justify-center">
           <ImSpinner4 color="black" size={36} className="animate-rotate" />
@@ -183,7 +220,11 @@ function ShopItem({ productId }: { productId: any }) {
                 +
               </button>
             </div>
-
+            {error.includes("quantity") && (
+            <span className="text-[11px] font-medium text-red-500">
+              quantity is required
+            </span>
+          )}
             <h1 className="lg:text-xs text-sm mt-2 text-black">Colors</h1>
             <div className="h-[50px] w-auto  flex justify-between items-center my-2">
               {/* <Colour colour="black" colourName="Black" />
@@ -201,7 +242,11 @@ function ShopItem({ productId }: { productId: any }) {
                 />
               ))}
             </div>
-
+            {error.includes("color") && (
+            <span className="text-[11px] font-medium text-red-500">
+              color is required
+            </span>
+          )}
             <h1 className="lg:text-xs text-sm mt-2 text-black">Size</h1>
             <div className="h-[50px] w-[300px] flex justify-between items-center my-2">
               {sizes.map((item, i) => (
@@ -214,6 +259,11 @@ function ShopItem({ productId }: { productId: any }) {
               ))}
               <div className="text-xs w-[100px] ">Size Chart</div>
             </div>
+            {error.includes("size") && (
+            <span className="text-[11px] font-medium text-red-500 ">
+              size is required
+            </span>
+          )}
             <div className="min-h-[45px] w-[260px] flex justify-between items-center my-2  ">
               <div
                 onClick={() => {

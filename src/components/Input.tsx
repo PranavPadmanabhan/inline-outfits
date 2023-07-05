@@ -1,7 +1,7 @@
 import { errorColor, normalInputColor, successColor } from '@/constants/constants'
-import React from 'react'
+import React, { useState } from 'react'
 import { MdError } from 'react-icons/md'
-import { AiOutlineCheck } from 'react-icons/ai'
+import { AiOutlineCheck,AiOutlineEye,AiOutlineEyeInvisible } from 'react-icons/ai'
 import { ImSpinner2 } from 'react-icons/im'
 
 type state = "normal" | "error" | "success"
@@ -12,6 +12,7 @@ type classNames = {
 }
 
 const Input = ({ state, onChange,placeholder,value,classNames,isLoading,PrefixIcon:Icon,type }:{state:state; onChange?:React.ChangeEventHandler<HTMLInputElement>;value:string;placeholder:string,classNames?:classNames,isLoading?:boolean,PrefixIcon?:any,type?:string}) => {
+    const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false)
     const getColor = () => {
         switch(state){
             case 'normal':
@@ -43,8 +44,10 @@ const Input = ({ state, onChange,placeholder,value,classNames,isLoading,PrefixIc
     <div style={{borderColor:getColor()}} className={` ${classNames?.wrapper}  lg:min-h-[45px] min-h-[35px] flex items-center justify-between  border-b-[1px]`}>
         <div  className="w-full h-full  flex items-center justify-start ">
             <Icon color={getColor()} size={25} className='mx-2' />
-            <input  value={value} onChange={onChange} style={{color:state === 'normal'?'black':getColor()}} type={type?type:"text"} placeholder={placeholder} className={` ${classNames?.input} w-full h-full bg-transparent pl-3 placeholder:text-[1rem] text-[1rem] text-black placeholder:text-white_half_opacity focus:outline-none`} />
+            <input  value={value} onChange={onChange} style={{color:state === 'normal'?'black':getColor()}} type={type?(type === "password" && isPasswordVisible)?"text":"password":"text"} placeholder={placeholder} className={` ${classNames?.input} w-full h-full bg-transparent pl-3 placeholder:text-[1rem] text-[1rem] text-black placeholder:text-white_half_opacity focus:outline-none`} />
         </div>
+         {(!isPasswordVisible && type ) && <AiOutlineEye onClick={() => setIsPasswordVisible(true)} color='black' size={22} className='mr-1'/>}
+         { (isPasswordVisible && type ) && <AiOutlineEyeInvisible onClick={() => setIsPasswordVisible(false)} color='black' size={22} className='mr-1'/>}
          {!isLoading && getIcon()}
          {isLoading && <ImSpinner2 color='white' size={22} className='animate-rotate' />}
     </div>
