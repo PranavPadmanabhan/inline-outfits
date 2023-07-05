@@ -79,3 +79,13 @@
     min-height: 0;   
     transition: 0.7s ease ;
   }
+
+  .scroll_cart {
+    height: 100%;
+  }
+
+  @media (max-width:600px){
+    .scroll_cart{
+      height: calc(100% -70px);
+    }
+  }
