@@ -115,12 +115,12 @@ function CartItem({
   }, [quantity]);
 
   return (
-    <div className="w-full h-[28vh] px-[2%] box-border flex items-center justify-between my-8">
-      <div className="w-[68%] h-full flex items-center justify-start">
+    <div className="w-full lg:h-[28vh] h-[25vh] px-[2%] box-border flex items-center justify-between my-8">
+      <div className="w-full lg:w-[68%] h-full flex items-center justify-start">
         <img
           src={image}
           alt=""
-          className="h-full w-[40%] max-w-[180px] object-cover rounded-[20px]"
+          className="h-full lg:w-[40%] w-[35%] max-w-[180px] object-cover rounded-[20px]"
         />
         <div className="w-full h-full flex flex-col items-start justify-start pl-5 box-border">
           <span className="text-black font-[600] text-[1.1rem] mt-1">
@@ -143,10 +143,11 @@ function CartItem({
               </>
             )}
           </span>
+          <div className="w-full h-auto flex flex-row lg:flex-col items-center justify-start">
           <span className="text-black text-[1rem] font-[300]">
             size : <span className="font-[700]">{product?.size}</span>
           </span>
-          <span className="text-black text-[1rem] font-[300]">
+          <span className="text-black text-[1rem] font-[300] ml-3">
             color :{" "}
             <span
               style={{ color: product?.color?.code }}
@@ -155,6 +156,7 @@ function CartItem({
               {product?.color?.name}
             </span>
           </span>
+          </div>
           <div className="min-w-[90px] min-h-[35px] rounded-[5px] border-[1px] border-gray-500 mt-2 flex items-center justify-between px-1 box-border">
             <button
               onClick={() => setQuantity(quantity > 0 ? quantity - 1 : 0)}
@@ -174,7 +176,7 @@ function CartItem({
           </div>
         </div>
       </div>
-      <div className="h-full w-[32%] flex flex-col items-center justify-end px-[3%] box-border">
+      <div className="hidden h-full w-[32%] lg:flex flex-col items-center justify-end px-[3%] box-border">
         <button
           onClick={() => deleteItem(product)}
           className="w-full min-h-[43px] rounded-[10px] bg-white border-[1px] border-black flex items-center justify-center mb-2"

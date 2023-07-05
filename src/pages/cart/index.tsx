@@ -25,7 +25,7 @@ function Cart() {
   }, []);
 
   return (
-    <div className="h-screen w-full flex flex-col items-center justify-start">
+    <div className="h-screen w-full flex flex-col items-center justify-start pt-[50px] lg:pt-[100px]">
       <Header />
       {cart?.products?.length <= 0 && !loading && (
         <div className="w-screen h-full flex items-center justify-center">
@@ -40,7 +40,7 @@ function Cart() {
         </div>
       ) : (
         <div className="w-full h-full flex items-center justify-between">
-          <div className="w-[65%] h-full flex flex-col items-center justify-start bg-white">
+          <div className="w-full lg:w-[65%] h-full flex flex-col items-center justify-start bg-white">
             {cart?.products?.length > 0 && (
               <InfiniteScroll
                 className="w-full h-full flex flex-col items-center justify-start overflow-y-scroll scrollbar-hide"
@@ -76,7 +76,7 @@ function Cart() {
             )}
           </div>
           {cart?.products?.length > 0 && (
-            <div className="w-[35%] h-full bg-white flex flex-col items-center justify-start">
+            <div className="hidden w-[35%] h-full bg-white lg:flex flex-col items-center justify-start">
               <div className="w-[70%] h-[72%] min-h-[60vh] border-[1px] border-gray-400 rounded-[10px] flex flex-col px-[5%] pt-4 box-border ">
                 <div className="w-full h-[20%] flex flex-col items-start justify-start border-b-[2px] border-dashed">
                   <span className="mb-2 ml-4 text-black font-[600] text-[1.2rem] ">
