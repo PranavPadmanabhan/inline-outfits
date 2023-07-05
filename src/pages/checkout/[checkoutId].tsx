@@ -6,13 +6,12 @@ import { useAppContext } from "@/contexts/AppContext";
 import React, { useEffect, useState } from "react";
 import { getCart } from "../cart";
 import { GetServerSideProps } from "next";
-import Axios from "@/config/AxiosConfig";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import dynamic from "next/dynamic";
 import { createRazorpayOrder, loadRazorpayScript } from "@/utils/razorpay";
-import image from "next/image";
 import OrderItem from "@/components/OrderItem";
 import { ImSpinner4 } from "react-icons/im";
+import { useRouter } from "next/router";
 
 type Address = {
   name: string;
@@ -63,7 +62,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
   const [error, setError] = useState<any>([]);
   const [loading, setLoading] = useState<Loading>({ saving: false,placingOrder:false });
   const [selectedAddress, setSelectedAddress] = useState<any>({});
-
+  const router = useRouter()
   const { cart, setCart } = useAppContext();
 
   useEffect(() => {
@@ -74,14 +73,22 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
   const getUser = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user")!);
-      const res = await Axios.get(`/auth/user/${user?.phone}`);
-      const data = await res.data;
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/user/${user?.phone}`,
+        {
+          headers: {
+            apikey: process.env.NEXT_PUBLIC_API_KEY!,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await res.json();
       if (!data.error) {
         setUser(data);
         // console.log(data)
       }
     } catch (error) {
-      console.clear();
+      ;
     }
   };
 
@@ -104,10 +111,20 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
         } else {
           addresses = [{ ...address, isHomeAddress }];
         }
-        const res = await Axios.put(`/auth/user/${user?.phone}`, {
-          addresses,
-        });
-        const data = await res.data;
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/user/${user?.phone}`,
+          {
+            method: "put",
+            body: JSON.stringify({
+              addresses
+            }),
+            headers: {
+              apikey: process.env.NEXT_PUBLIC_API_KEY!,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await res.json();
         if (!data.error) {
           getUser();
           setError([]);
@@ -130,9 +147,9 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
         });
       }
     } catch (error) {
-      console.log(error);
+      ;
       setLoading({ ...loading, saving: false });
-      console.clear();
+      ;
     }
   };
 
@@ -179,18 +196,30 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
   const placeOrder = async () => {
     try {
       setLoading({...loading,placingOrder:true})
-      const res = await Axios.post("/orders", {
-        phone: user.phone,
-        products: [cartItem],
-        address:selectedAddress,
-        price:
-          parseInt(cartItem?.product?.price?.original.toString()) *
-            cartItem?.quantity +
-          deliveryFee
-      });
-      const data = await res.data;
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/orders`,
+        {
+          method: "post",
+          body: JSON.stringify({
+            phone: user.phone,
+            products: [cartItem],
+            address:selectedAddress,
+            price:
+              parseInt(cartItem?.product?.price?.original.toString()) *
+                cartItem?.quantity +
+              deliveryFee
+          }),
+          headers: {
+            apikey: process.env.NEXT_PUBLIC_API_KEY!,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await res.json();
       if(!data.error){
         alert(data?.message)
+        getCart(setCart)
+        router.push("/shop")
       }
       setLoading({...loading,placingOrder:false})
 

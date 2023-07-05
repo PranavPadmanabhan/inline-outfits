@@ -28,33 +28,9 @@ function TeesShowCase({ products }: { products: any[] }) {
                 (100 / (100 - parseFloat(product.price.offer)))
             )}
             off={product.price.offer}
+            className="h-[50vh]"
           />
         ))}
-        {/* <ProductItem
-          image="/svg/T3.svg"
-          nameofT="Stripped Tees"
-          details="Stripped Tees white and black colour"
-          offprice={399}
-          realprice={599}
-          off={33}
-        />
-        <ProductItem
-          image="/svg/T2.svg"
-          nameofT="Stripped Tees"
-          details="Stripped Tees white and black colour"
-          offprice={399}
-          realprice={599}
-          off={33}
-        />
-
-        <ProductItem
-          image="/svg/T1.svg"
-          nameofT="Stripped Tees"
-          details="Stripped Tees white and black colour"
-          offprice={399}
-          realprice={599}
-          off={33}
-        /> */}
       </div>
       <h1 className="text-2xl tracking-wider text-[#A96500] font-MuseoModerno font-semibold lg:-ml-[890px] mt-10 mb-4">
         {" "}

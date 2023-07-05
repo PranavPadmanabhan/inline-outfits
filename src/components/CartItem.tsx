@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
-import Axios from "@/config/AxiosConfig";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { ImSpinner4 } from "react-icons/im";
@@ -43,15 +42,25 @@ function CartItem({
       const user = JSON.parse(localStorage.getItem("user")!);
       if (Object.keys(user).length > 0) {
         setLoading({ ...loading, removingItem: true });
-        const res = await Axios.put(`/cart/reduce`, {
-          cartItemId: item.cartItemId,
-          productId: item.productId,
-          phone: user.phone,
-          color: item.color,
-          size: item.size,
-          quantity,
-        });
-        const data = await res.data;
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/cart/reduce`,
+          {
+            method: "put",
+            body: JSON.stringify({
+              cartItemId: item.cartItemId,
+              productId: item.productId,
+              phone: user.phone,
+              color: item.color,
+              size: item.size,
+              quantity,
+            }),
+            headers: {
+              apikey: process.env.NEXT_PUBLIC_API_KEY!,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await res.json();
         if (!data.error) {
           getProducts();
         }
@@ -61,7 +70,7 @@ function CartItem({
       }
     } catch (error) {
       setLoading({ ...loading, removingItem: false });
-      console.clear();
+      ;
     }
   };
 
@@ -70,12 +79,22 @@ function CartItem({
       const user = JSON.parse(localStorage.getItem("user")!);
       if (Object.keys(user).length > 0) {
         setLoading({ ...loading, deletingItem: true });
-        const res = await Axios.put(`/cart/remove`, {
-          cartItemId: item.cartItemId,
-          productId: item.productId,
-          phone: user.phone,
-        });
-        const data = await res.data;
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/cart/remove`,
+          {
+            method: "put",
+            body: JSON.stringify({
+              cartItemId: item.cartItemId,
+              productId: item.productId,
+              phone: user.phone,
+            }),
+            headers: {
+              apikey: process.env.NEXT_PUBLIC_API_KEY!,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await res.json();
         if (!data.error) {
           getProducts(user.phone, user.VerifiedUser);
         }
@@ -85,7 +104,7 @@ function CartItem({
       }
     } catch (error) {
       setLoading({ ...loading, deletingItem: false });
-      console.clear();
+      ;
     }
   };
 
@@ -111,7 +130,7 @@ function CartItem({
             {description}
           </p>
           <span className="text-black font-[600] text-[1.5rem]">
-            ₹{offer ? finalPrice :price}{" "}
+            ₹{offer ? finalPrice : price}{" "}
             {offer && (
               <>
                 <span className="text-lightGray font-[400] text-[0.96rem] ml-[2px] line-through	">

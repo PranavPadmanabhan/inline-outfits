@@ -1,4 +1,3 @@
-import Axios from "@/config/AxiosConfig";
 
 export const loadRazorpayScript = () => {
     return new Promise((resolve, reject) => {
@@ -14,13 +13,19 @@ export const loadRazorpayScript = () => {
   export const createRazorpayOrder = async (price:any) => {
     try {
       // Make an API call to your server to create the Razorpay order
-      const response = await Axios.post('/payment/initiate',{
-        price:price
-      });
-      return response.data;
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payment/initiate`, {
+        method: "post",
+        body: JSON.stringify({
+          price:price
+        }),
+        headers: {
+          apikey: process.env.NEXT_PUBLIC_API_KEY!,
+          "Content-Type": "application/json",
+        },
+      })
+      return response.json();
     } catch (error) {
-      console.clear()
-
+      
     }
   };
   

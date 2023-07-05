@@ -4,7 +4,6 @@ import Input from "./Input";
 import { User, Key, Call, CloseCircle } from "iconsax-react";
 import { passwordRegex, phoneRegex } from "@/constants/constants";
 import { useAppContext } from "@/contexts/AppContext";
-import Axios from "@/config/AxiosConfig";
 import { ImSpinner4 } from "react-icons/im";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { auth } from "@/config/firebaseConfig";
@@ -112,7 +111,7 @@ function AuthModal() {
         setLoading({ ...loading, signingUp: false });
       } catch (error: any) {
         setLoading({ ...loading, signingUp: false });
-        // console.clear();
+        // ;
         console.log(error.message);
       }
     } else {
@@ -216,7 +215,7 @@ function AuthModal() {
         // Error; SMS not sent
         // ...
         setLoading({ ...loading, sentingOtp: false });
-        console.clear();
+        ;
 
         setOtpSent(false);
       });
@@ -227,11 +226,21 @@ function AuthModal() {
     window.confirmationResult.confirm(otp).then(async (resp: any) => {
       try {
         console.log(resp.user);
-        const res = await Axios.put(`/user/${state.phone}`, {
-          phone: state.phone,
-          password: state.password,
-        });
-        const data = await res.data;
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/user/${state?.phone}`,
+          {
+            method:'put',
+            body:JSON.stringify({
+              phone: state.phone,
+              password: state.password,
+            }),
+            headers: {
+              apikey: process.env.NEXT_PUBLIC_API_KEY!,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await res.json();
         if (data.message) {
           setUser(data.user);
           localStorage.setItem("user", JSON.stringify(data.user));
@@ -239,7 +248,7 @@ function AuthModal() {
       } catch (error) {}
       setLoading({ ...loading, verifying: false });
       setIsAuthModalVisible(false);
-      console.clear();
+      ;
     });
   };
 

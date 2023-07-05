@@ -1,4 +1,3 @@
-import Axios from "@/config/AxiosConfig";
 import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 
 type AppContext = {

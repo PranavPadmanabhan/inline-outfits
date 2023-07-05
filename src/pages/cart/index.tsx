@@ -2,10 +2,9 @@
 /* eslint-disable @next/next/no-img-element */
 import CartItem from "@/components/CartItem";
 import Header from "@/components/Header";
-import Axios from "@/config/AxiosConfig";
 import { useAppContext } from "@/contexts/AppContext";
 import { useRouter } from "next/router";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ImSpinner4 } from "react-icons/im";
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -28,7 +27,7 @@ function Cart() {
   return (
     <div className="h-screen w-full flex flex-col items-center justify-start">
       <Header />
-      {(cart?.products?.length <= 0 && !loading) && (
+      {cart?.products?.length <= 0 && !loading && (
         <div className="w-screen h-full flex items-center justify-center">
           <span className="text-black text-[1.4rem] font-semibold ">
             Your Cart is Empty
@@ -60,10 +59,11 @@ function Cart() {
                       description={item?.product?.description}
                       image={item?.product?.images[0]}
                       product={item}
-                      finalPrice={item?.product?.price?.original??0}
+                      finalPrice={item?.product?.price?.original ?? 0}
                       price={Math.round(
                         item?.product?.price?.original *
-                          (100 / (100 - parseFloat(item?.product?.price?.offer)))
+                          (100 /
+                            (100 - parseFloat(item?.product?.price?.offer)))
                       )}
                       offer={item?.product?.price?.offer}
                       totalQuantity={item?.quantity}
@@ -115,7 +115,10 @@ function Cart() {
                     ₹{totalAmount + deliveryFee}
                   </span>
                 </div>
-                <button onClick={() =>router.push("/checkout")} className="self-center w-[80%] min-h-[43px] rounded-[10px] bg-black flex items-center justify-center mb-1">
+                <button
+                  onClick={() => router.push("/checkout")}
+                  className="self-center w-[80%] min-h-[43px] rounded-[10px] bg-black flex items-center justify-center mb-1"
+                >
                   <img
                     className="h-[18] w-[18px] ml-1"
                     src="/svg/Cart.svg"
@@ -146,8 +149,16 @@ export const getCart = async (
   try {
     setLoading?.(true);
     const user = JSON.parse(localStorage.getItem("user")!);
-    const res = await Axios.get(`/cart/${user?.phone}`);
-    const data = await res.data;
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/cart/${user?.phone}`,
+      {
+        headers: {
+          apikey: process.env.NEXT_PUBLIC_API_KEY!,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await res.json();
     if (!data.error) {
       setCart(data);
       if (data.products.length > 0) {
@@ -175,6 +186,6 @@ export const getCart = async (
     setLoading?.(false);
   } catch (error) {
     setLoading?.(false);
-    console.clear()
+    ;
   }
 };

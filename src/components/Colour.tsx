@@ -12,11 +12,11 @@ function Colour({ colour, colourName, isActive, onClick }: props) {
       <div
         style={{ backgroundColor: colour }}
         className={`h-[35px] ${
-          isActive ? "border-[2px] border-blue-500" : "border-[1px] border-black"
+          isActive ? "border-[2px] border-[#0d0f8b]" : "border-[1px] border-black"
         } w-[35px] rounded-full `}
       ></div>
       <h1
-        className={`${isActive ? "text-blue-500" : "text-black"} text-[10px]`}
+        className={`${isActive ? "text-[#0d0f8b] font-extrabold" : "text-black font-normal"} text-[10px]`}
       >
         {colourName}
       </h1>

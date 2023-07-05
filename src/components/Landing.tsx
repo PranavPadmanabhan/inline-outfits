@@ -5,7 +5,7 @@ import React from 'react'
 function Landing() {
   const router = useRouter()
   return (
-    <div className='h-[80vh] w-full flex flex-col-reverse lg:flex-row justify-evenly items-center  bg-black '>
+    <div className='h-[80vh] w-full flex flex-col-reverse lg:flex-row justify-evenly items-center  bg-black pb-5 lg:pb-0'>
         <div className="lg:h-full h-[40%] lg:w-[50%] w-[84%] flex flex-col lg:items-left items-center justify-center lg:pl-48 box-border ">
             <h1 className=" leading-snug tracking-wide lg:w-[80%] w-[70%] lg:text-6xl text-4xl text-center lg:text-left font-semibold text-white font-MuseoModerno mb-1 ">Fasion Up Your Looks</h1>
             <h1 className="lg:text-[15px] text-[13px] text-white  lg:w-[80%] w-[85%] text-center lg:text-left tracking-wider">Discover Your Style and Unleash Your Confidence with Our Stunning Collection of Dresses!</h1>
