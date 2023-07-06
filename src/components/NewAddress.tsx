@@ -193,7 +193,7 @@ function NewAddress({
       </div>
       <button
         onClick={updateAddress}
-        className=" h-[40px] w-[120px] bg-black text-xs text-white my-3 rounded-lg tracking-wide ml-[300px]"
+        className="self-start h-[40px] w-[120px] bg-black text-xs text-white my-6 rounded-lg tracking-wide"
       >
         {loading ? "Saving.." : "Save"}
       </button>

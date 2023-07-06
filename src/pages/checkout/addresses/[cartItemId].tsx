@@ -4,7 +4,6 @@ import Header from "@/components/Header";
 import NewAddress from "@/components/NewAddress";
 import { useAppContext } from "@/contexts/AppContext";
 import React, { useEffect, useState } from "react";
-import { getCart } from "../cart";
 import { GetServerSideProps } from "next";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import dynamic from "next/dynamic";
@@ -12,6 +11,7 @@ import { createRazorpayOrder, loadRazorpayScript } from "@/utils/razorpay";
 import OrderItem from "@/components/OrderItem";
 import { ImSpinner4 } from "react-icons/im";
 import { useRouter } from "next/router";
+import { getCart } from "@/pages/cart";
 
 type Address = {
   name: string;
@@ -42,7 +42,7 @@ type Loading = {
   placingOrder: boolean;
 };
 
-function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
+function IndividualDeliveryAddress({ cartItemId }: { cartItemId: string }) {
   const [newAddress, SetnewAddress] = useState(false);
   const [cartItem, SetCartItem] = useState<any>({});
   const [deliveryFee, setDeliveryFee] = useState<number>(50);
@@ -70,7 +70,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
   const { cart, setCart } = useAppContext();
 
   useEffect(() => {
-    getCart(setCart, setLoadingProduct, null, SetCartItem, checkoutId);
+    getCart(setCart, setLoadingProduct, null, SetCartItem, cartItemId);
     getUser();
   }, []);
 
@@ -89,7 +89,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
       const data = await res.json();
       if (!data.error) {
         setUser(data);
-        // console.log(data)
+        localStorage.setItem("user",JSON.stringify(data))
       }
     } catch (error) {}
   };
@@ -110,7 +110,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
           {
             method: "put",
             body: JSON.stringify({
-              addresses: [...user.addresses, {...address,isHomeAddress}],
+                addresses : [...user?.addresses, { ...address, isHomeAddress }]
             }),
             headers: {
               apikey: process.env.NEXT_PUBLIC_API_KEY!,
@@ -228,36 +228,18 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
         <div className="w-full h-full flex flex-col items-center justify-center">
           <>
             <ImSpinner4 color="black" size={36} className="animate-rotate" />
-            <p className="text-black text-[1rem] mt-1 text-center">
+            <p className="text-black text-[1rem] mt-1 firsttext-center">
               Do not close the window or <br /> press back button
             </p>
           </>
         </div>
       ) : (
-        <div className="w-full h-full flex items-start justify-center">
-          <div className="h-auto w-full  sm:w-[50%] flex flex-col items-start justify-start  box-border  ">
-            <h1 className="text-lg font-medium my-2 text-black mt-3 ml-3">
-              Delivery Items
-            </h1>
-            <OrderItem
-              name={cartItem?.product?.name}
-              description={cartItem?.product?.description}
-              image={cartItem?.product?.images[0]}
-              finalPrice={cartItem?.product?.price?.original ?? 0}
-              price={Math.round(
-                (cartItem?.product?.price?.original * 100) /
-                  (100 - parseFloat(cartItem?.product?.price?.offer))
-              )}
-              offer={cartItem?.product?.price?.offer}
-              totalQuantity={cartItem?.quantity}
-              color={cartItem?.color}
-              size={cartItem?.size}
-            />
-
+        <div className="w-full h-full flex lg:hidden items-start justify-center">
+          <div className="h-auto w-full sm:w-[50%] flex flex-col items-start justify-start  box-border  ">
             <h1 className="hidden sm:block text-lg font-medium my-2 ml-3 text-black ">
               Delivery Address
             </h1>
-            <div className="hidden min-h-[50px] w-[87%] sm:flex flex-col items-start justify-start  border-[1px] border-[#00000013] rounded-lg ml-3 my-5">
+            <div className="min-h-[50px] self-center w-[95%] flex flex-col items-start justify-start border-[1px] border-[#00000013] rounded-lg my-5">
               <div className="h-[100%] w-[100%] flex items-center justify-between pl-5 pr-2 pt-1 box-border">
                 <h1 className="text-lg font-medium text-black">
                   Add a new address
@@ -290,7 +272,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
                 />
               )}
             </div>
-            <div className="hidden min-h-[32%] h-auto w-[100%]  sm:grid grid-cols-3 gap-y-2 place-content-center place-items-center  box-border">
+            <div className="min-h-[32%] self-center h-auto w-[100%] grid grid-cols-2 gap-y-2 gap-x-2 place-content-center place-items-center px-2 box-border">
               {user?.addresses?.map((item: any, i: number) => (
                 <GivenAddress
                   key={i}
@@ -306,74 +288,15 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
                 />
               ))}
             </div>
-          </div>
-
-          <div className="hidden h-auto  w-[30%] sm:flex flex-col items-center justify-center  ml-16">
-            <div className="w-[85%]  h-[65%] min-h-[60vh] border-[1px] border-[#00000013] rounded-[10px] flex flex-col px-[5%] pt-8 box-border mt-4">
-              <div className="w-full h-[12%] flex flex-col items-start justify-start border-b-[2px] border-dashed">
-                <span className="mb-2 ml-4 text-black font-[600] text-[1.2rem] ">
-                  Price Details
-                </span>
-              </div>
-              <div className="w-full h-[45%] flex flex-col items-start justify-evenly border-b-black border-b-[1px] border-dashed mt-4">
-                <div className="w-full h-auto mb-2 flex items-center justify-between">
-                  <span className="ml-4 text-black font-[400] text-[1rem]">
-                    Net Amount
-                  </span>
-                  <span className="ml-4 mr-2 text-black font-[600] text-[1.5rem]">
-                    ₹
-                    {parseInt(cartItem?.product?.price?.original.toString()) *
-                      cartItem?.quantity ?? 0}
-                  </span>
-                </div>
-
-                <div className="w-full h-auto mb-2 flex items-center justify-between">
-                  <span className="ml-4 text-black font-[400] text-[1rem]">
-                    Delivery
-                  </span>
-                  <span className="ml-4 mr-2 text-black font-[600] text-[1.5rem]">
-                    ₹{deliveryFee}
-                  </span>
-                </div>
-              </div>
-              <div className="w-full h-[15%] mb-2 flex items-center justify-between border-b-black border-b-[1px] border-dashed my-8">
-                <span className="ml-4 text-black font-[400] text-[1rem]">
-                  Total
-                </span>
-                <span className="ml-4 mr-2 text-black font-[600] text-[1.5rem]">
-                  ₹
-                  {parseInt(cartItem?.product?.price?.original.toString()) *
-                    cartItem?.quantity +
-                    deliveryFee ?? 0}
-                </span>
-              </div>
-
-              {/* <span className="my-3 ml-4 text-black font-[350] text-[0.9rem] ">
-              You saved 500 on this order
-            </span> */}
-              <button
-                onClick={initializePayment}
-                className="self-center w-[80%] min-h-[43px] rounded-[10px] bg-black flex items-center justify-center mb-1 mt-12"
-              >
-                <img
-                  className="h-[18] w-[18px] ml-1"
-                  src="/svg/Cart.svg"
-                  alt=""
-                />
-                <h1 className="text-white text-[1rem] font-medium ml-2">
-                  Proceed & Pay
-                </h1>
-              </button>
-              {error?.includes("emptyAddress") && (
-                <span className="text-[11px] font-medium text-red-500 self-center ">
-                  select any address
-                </span>
-              )}
-            </div>
+            {error?.includes("emptyAddress") && (
+              <span className="text-[11px] font-medium text-red-500 self-center ">
+                select any address
+              </span>
+            )}
           </div>
         </div>
       )}
-      {!loadingProduct && (
+      {!loadingProduct && !newAddress && (
         <div className="fixed bottom-0 bg-white flex lg:hidden items-center justify-between w-full min-h-[60px] border-t-[1px] border-t-black  px-5 box-border">
           <span className=" text-black font-[600] text-[1.2rem]">
             Total : ₹
@@ -382,7 +305,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
               deliveryFee ?? 0}
           </span>
           <button
-            onClick={() => router.push(`/checkout/addresses/${checkoutId}`)}
+            onClick={initializePayment}
             className="self-center w-[50%] h-[60%] min-h-[40px] rounded-[10px] bg-black flex items-center justify-center"
           >
             <img
@@ -391,7 +314,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
               alt=""
             />
             <h1 className="text-white text-[0.8rem] font-medium ml-2">
-              Proceed to Checkout
+              Place Order
             </h1>
           </button>
         </div>
@@ -400,15 +323,15 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
   );
 }
 
-export default dynamic(() => Promise.resolve(IndividualDelivery), {
-  ssr: false,
+export default dynamic(() => Promise.resolve(IndividualDeliveryAddress), {
+  ssr: false
 });
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const checkoutId = context.query.checkoutId;
+  const cartItemId = context.query.cartItemId;
   return {
     props: {
-      checkoutId,
+      cartItemId,
     },
   };
 };

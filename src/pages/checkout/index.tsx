@@ -56,6 +56,7 @@ function Delivery() {
   });
   const [totalAmount, settotalAmount] = useState<any>(0);
   const [selectedAddress, setSelectedAddress] = useState<any>({});
+  const [isHomeAddress, setIsHomeAddress] = useState<boolean>(true);
   const router = useRouter();
   const { cart, setCart } = useAppContext();
 
@@ -94,13 +95,12 @@ function Delivery() {
         address.locality.trim().length > 0
       ) {
         setLoading({ ...loading, saving: true });
-        const user = JSON.parse(localStorage.getItem("user")!);
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/auth/user/${user?.phone}`,
           {
             method: "put",
             body: JSON.stringify({
-              addresses: [...user.addresses, address],
+              addresses: [...user.addresses, {...address,isHomeAddress}],
             }),
             headers: {
               apikey: process.env.NEXT_PUBLIC_API_KEY!,
@@ -138,7 +138,6 @@ function Delivery() {
     // Load Razorpay script asynchronously
     if (Object.keys(selectedAddress).length > 5) {
       setError(error?.filter((item: string) => item !== "emptyAddress"));
-      const user = JSON.parse(localStorage.getItem("user")!);
       await loadRazorpayScript();
 
       // Create Razorpay order
@@ -290,6 +289,8 @@ function Delivery() {
                   loading={loading.saving}
                   updateAddress={updateAddress}
                   error={error}
+                  isHome={isHomeAddress}
+                  setIsHome={setIsHomeAddress}
                 />
               )}
             </div>
@@ -386,13 +387,7 @@ function Delivery() {
             Total : ₹{totalAmount ? totalAmount + deliveryFee : "0"}
           </span>
           <button
-            onClick={() => {
-              if (totalAmount > 300) {
-                router.push("/checkout");
-              } else {
-                return;
-              }
-            }}
+            onClick={() => router.push("/checkout/addresses")}
             className="self-center w-[50%] h-[60%] min-h-[40px] rounded-[10px] bg-black flex items-center justify-center"
           >
             <img
