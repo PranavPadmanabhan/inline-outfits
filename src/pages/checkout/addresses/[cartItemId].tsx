@@ -40,6 +40,7 @@ type error = {
 type Loading = {
   saving: boolean;
   placingOrder: boolean;
+  paying:boolean
 };
 
 function IndividualDeliveryAddress({ cartItemId }: { cartItemId: string }) {
@@ -63,6 +64,7 @@ function IndividualDeliveryAddress({ cartItemId }: { cartItemId: string }) {
   const [loading, setLoading] = useState<Loading>({
     saving: false,
     placingOrder: false,
+    paying:false
   });
   const [selectedAddress, setSelectedAddress] = useState<any>({});
   const router = useRouter();
@@ -148,6 +150,7 @@ function IndividualDeliveryAddress({ cartItemId }: { cartItemId: string }) {
   const initializePayment = async () => {
     // Load Razorpay script asynchronously
     if (Object.keys(selectedAddress).length > 5) {
+      setLoading({...loading,paying:true})
       setError(error?.filter((item: string) => item !== "emptyAddress"));
       await loadRazorpayScript();
 
@@ -179,8 +182,11 @@ function IndividualDeliveryAddress({ cartItemId }: { cartItemId: string }) {
       };
       const razorpayInstance = new window.Razorpay(options);
       razorpayInstance.open();
+      setLoading({...loading,paying:false})
     } else {
       setError([...error, "emptyAddress"]);
+      setLoading({...loading,paying:false})
+
     }
   };
 
@@ -308,7 +314,12 @@ function IndividualDeliveryAddress({ cartItemId }: { cartItemId: string }) {
             onClick={initializePayment}
             className="self-center w-[50%] h-[60%] min-h-[40px] rounded-[10px] bg-black flex items-center justify-center"
           >
-            <img
+            {
+              loading.paying ? (
+                <ImSpinner4 color="white" size={24} className="animate-rotate" />
+              ):(
+                <>
+                <img
               className="h-[13px] w-[13px] ml-1"
               src="/svg/Cart.svg"
               alt=""
@@ -316,6 +327,9 @@ function IndividualDeliveryAddress({ cartItemId }: { cartItemId: string }) {
             <h1 className="text-white text-[0.8rem] font-medium ml-2">
               Place Order
             </h1>
+                </>
+              )
+            }
           </button>
         </div>
       )}

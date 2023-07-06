@@ -5,6 +5,8 @@ import { getCart } from "@/pages/cart";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styles from "@/styles/Extras.module.css";
+import { Detector } from "react-detect-offline";
+import { MdPortableWifiOff, MdOutlineWifiTethering } from "react-icons/md";
 
 function Header() {
   const router = useRouter();
@@ -18,9 +20,12 @@ function Header() {
     setAuthType,
     cart,
     setCart,
+    isOnline,
+    setIsOnline,
   } = useAppContext();
   const [isNavbarOptionsVisible, setIsNavbarOptionsVisible] =
     useState<boolean>(false);
+  const [isTimeUp, setisTimeUp] = useState<boolean>(true);
 
   useEffect(() => {
     setIsOptionsVisible(false);
@@ -30,6 +35,12 @@ function Header() {
     getCart(setCart);
   }, [router.pathname, isAuthModalVisible]);
 
+  useEffect(() => {
+    setisTimeUp(false);
+    setTimeout(() => {
+      setisTimeUp(true);
+    }, 3000);
+  }, [isOnline]);
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user")!);
     if (user) {
@@ -48,6 +59,35 @@ function Header() {
 
   return (
     <div className="w-[100%] fixed top-0 z-[100] lg:min-h-[95px] min-h-[60px] flex flex-col items-center justify-center bg-white">
+      <Detector
+        onChange={(online) => {
+          console.log(online);
+          setIsOnline(online);
+        }}
+        render={({ online }) => {
+          if (online && !isTimeUp) {
+            return (
+              <div className="w-full min-h-[25px] bg-green-500 flex items-center justify-center ">
+                <MdOutlineWifiTethering color="black" size={16} />
+                <h1 className="text-black text-[0.7rem] ml-1 font-normal">
+                  you are back..
+                </h1>
+              </div>
+            );
+          } else if (!isOnline) {
+            return (
+              <div className="w-full min-h-[25px] bg-red-500 flex items-center justify-center ">
+                <MdPortableWifiOff color="black" size={16} />
+                <h1 className="text-black text-[0.7rem] ml-1 font-normal">
+                  bad internet connection..
+                </h1>
+              </div>
+            );
+          } else {
+            return <div />;
+          }
+        }}
+      />
       <div
         className={`w-full h-full flex items-center justify-between ${
           isNavbarOptionsVisible

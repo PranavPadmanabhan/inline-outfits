@@ -41,6 +41,7 @@ type error = {
 type Loading = {
   saving: boolean;
   placingOrder: boolean;
+  paying:boolean
 };
 
 function DeliveryAddress() {
@@ -54,6 +55,7 @@ function DeliveryAddress() {
   const [loading, setLoading] = useState<Loading>({
     saving: false,
     placingOrder: false,
+    paying:false
   });
   const [totalAmount, settotalAmount] = useState<any>(0);
   const [selectedAddress, setSelectedAddress] = useState<any>({});
@@ -137,6 +139,7 @@ function DeliveryAddress() {
   const initializePayment = async () => {
     // Load Razorpay script asynchronously
     if (Object.keys(selectedAddress).length > 5) {
+      setLoading({...loading,paying:true})
       setError(error?.filter((item: string) => item !== "emptyAddress"));
       await loadRazorpayScript();
 
@@ -164,8 +167,11 @@ function DeliveryAddress() {
       };
       const razorpayInstance = new window.Razorpay(options);
       razorpayInstance.open();
+      setLoading({...loading,paying:false})
+
     } else {
       setError([...error, "emptyAddress"]);
+      setLoading({...loading,paying:false})
     }
   };
 
@@ -217,14 +223,14 @@ function DeliveryAddress() {
         </div>
       ) : (
         <div className="w-full h-full flex items-start justify-center">
-          <div className="h-auto w-full  sm:w-[50%] flex flex-col items-start justify-start  box-border  ">
+          <div className="h-auto w-full  sm:w-[50%] flex flex-col items-center justify-start  box-border  ">
             <h1 className="hidden lg:flex text-lg font-medium my-2 text-black mt-3 ml-3">
               Delivery Items
             </h1>
             <h1 className="block lg:hidden text-lg font-medium my-2  text-black mt-3 ml-3">
               Delivery Addresses
             </h1>
-            <div className="min-h-[50px] w-[87%] flex lg:hidden flex-col items-start justify-start ml-3 border-[1px] border-[#00000013] rounded-lg my-5">
+            <div className="min-h-[50px] w-[95%] flex lg:hidden flex-col items-start justify-start border-[1px] border-[#00000013] rounded-lg my-5">
               <div className="h-[100%] w-[100%] flex items-center justify-between pl-5 pr-2 pt-1 box-border">
                 <h1 className="text-lg font-medium text-black">
                   Add a new address
@@ -299,14 +305,22 @@ function DeliveryAddress() {
             onClick={initializePayment}
             className="self-center w-[50%] h-[60%] min-h-[40px] rounded-[10px] bg-black flex items-center justify-center"
           >
-            <img
+             {
+              loading.paying ? (
+                <ImSpinner4 color="white" size={24} className="animate-rotate" />
+              ):(
+                <>
+                <img
               className="h-[13px] w-[13px] ml-1"
               src="/svg/Cart.svg"
               alt=""
             />
             <h1 className="text-white text-[0.8rem] font-medium ml-2">
-              Proceed to Checkout
+              Place Order
             </h1>
+                </>
+              )
+            }
           </button>
         </div>
       )}

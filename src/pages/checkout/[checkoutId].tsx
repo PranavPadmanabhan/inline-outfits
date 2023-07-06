@@ -40,6 +40,7 @@ type error = {
 type Loading = {
   saving: boolean;
   placingOrder: boolean;
+  paying: boolean;
 };
 
 function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
@@ -63,6 +64,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
   const [loading, setLoading] = useState<Loading>({
     saving: false,
     placingOrder: false,
+    paying: false,
   });
   const [selectedAddress, setSelectedAddress] = useState<any>({});
   const router = useRouter();
@@ -110,7 +112,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
           {
             method: "put",
             body: JSON.stringify({
-              addresses: [...user.addresses, {...address,isHomeAddress}],
+              addresses: [...user.addresses, { ...address, isHomeAddress }],
             }),
             headers: {
               apikey: process.env.NEXT_PUBLIC_API_KEY!,
@@ -148,6 +150,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
   const initializePayment = async () => {
     // Load Razorpay script asynchronously
     if (Object.keys(selectedAddress).length > 5) {
+      setLoading({ ...loading, paying: true });
       setError(error?.filter((item: string) => item !== "emptyAddress"));
       await loadRazorpayScript();
 
@@ -179,8 +182,10 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
       };
       const razorpayInstance = new window.Razorpay(options);
       razorpayInstance.open();
+      setLoading({ ...loading, paying: false });
     } else {
       setError([...error, "emptyAddress"]);
+      setLoading({ ...loading, paying: false });
     }
   };
 
@@ -355,14 +360,24 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
                 onClick={initializePayment}
                 className="self-center w-[80%] min-h-[43px] rounded-[10px] bg-black flex items-center justify-center mb-1 mt-12"
               >
-                <img
-                  className="h-[18] w-[18px] ml-1"
-                  src="/svg/Cart.svg"
-                  alt=""
-                />
-                <h1 className="text-white text-[1rem] font-medium ml-2">
-                  Proceed & Pay
-                </h1>
+                {loading.paying ? (
+                  <ImSpinner4
+                    color="white"
+                    size={24}
+                    className="animate-rotate"
+                  />
+                ) : (
+                  <>
+                    <img
+                      className="h-[13px] w-[13px] ml-1"
+                      src="/svg/Cart.svg"
+                      alt=""
+                    />
+                    <h1 className="text-white text-[0.8rem] font-medium ml-2">
+                      Proceed & Pay
+                    </h1>
+                  </>
+                )}
               </button>
               {error?.includes("emptyAddress") && (
                 <span className="text-[11px] font-medium text-red-500 self-center ">
