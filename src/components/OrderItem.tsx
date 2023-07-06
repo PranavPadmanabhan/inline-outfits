@@ -42,7 +42,7 @@ function OrderItem({image,name,description,finalPrice,offer,price,totalQuantity,
             )}
           </span>
 
-      <div className="flex justify-between items-center w-[200px] mt-2">
+      <div className="flex justify-between items-center w-[170px] sm:w-[200px] mt-2">
         <span className="text-black text-[1rem] font-[300] flex flex-col items-center">
           size <span className="font-[700] mt-1">{size}</span>
         </span>

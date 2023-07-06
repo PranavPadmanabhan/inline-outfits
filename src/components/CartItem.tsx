@@ -115,7 +115,7 @@ function CartItem({
   }, [quantity]);
 
   return (
-    <div className="w-full lg:h-[28vh] h-[25vh] px-[2%] box-border flex lg:flex-row flex-col items-center justify-between my-8">
+    <div className="w-full lg:min-h-[28vh] min-h-[25vh] px-[2%] box-border flex lg:flex-row flex-col items-center justify-between my-8">
       <div className="w-full lg:w-[68%] h-[80%] lg:h-full flex items-center justify-start">
         <img
           src={image}

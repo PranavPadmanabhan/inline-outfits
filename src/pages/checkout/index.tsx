@@ -11,6 +11,8 @@ import { createRazorpayOrder, loadRazorpayScript } from "@/utils/razorpay";
 import OrderItem from "@/components/OrderItem";
 import styles from "@/styles/Extras.module.css";
 import { ImSpinner4 } from "react-icons/im";
+import { useRouter } from "next/router";
+import InfiniteScroll from "react-infinite-scroller";
 
 type Address = {
   name: string;
@@ -47,17 +49,18 @@ function Delivery() {
   const [user, setUser] = useState<any>({});
   const [address, setAddress] = useState<Address>({} as Address);
   const [error, setError] = useState<any[]>([]);
+  const [loadinProduct, setLoadinProduct] = useState<boolean>(false);
   const [loading, setLoading] = useState<Loading>({
     saving: false,
     placingOrder: false,
   });
   const [totalAmount, settotalAmount] = useState<any>(0);
   const [selectedAddress, setSelectedAddress] = useState<any>({});
-
+  const router = useRouter();
   const { cart, setCart } = useAppContext();
 
   useEffect(() => {
-    getCart(setCart, null, settotalAmount);
+    getCart(setCart, setLoadinProduct, settotalAmount);
     getUser();
   }, []);
 
@@ -77,9 +80,7 @@ function Delivery() {
       if (!data.error) {
         setUser(data);
       }
-    } catch (error) {
-      ;
-    }
+    } catch (error) {}
   };
 
   const updateAddress = async () => {
@@ -130,7 +131,6 @@ function Delivery() {
       }
     } catch (error) {
       setLoading({ ...loading, saving: false });
-      ;
     }
   };
 
@@ -199,9 +199,15 @@ function Delivery() {
   };
 
   return (
-    <div className="h-screen w-full  flex flex-col  items-center justify-start overflow-y-scroll scrollbar-hide pt-[50px] lg:pt-[100px]">
+    <div className="relative h-screen w-full  flex flex-col  items-center justify-start overflow-y-scroll scrollbar-hide pt-[50px] lg:pt-[100px] pb-[90px] sm:pb-0">
       <Header />
-      {loading.placingOrder ? (
+      {loadinProduct ? (
+        <div className="w-full h-full flex flex-col items-center justify-center">
+          <>
+            <ImSpinner4 color="black" size={36} className="animate-rotate" />
+          </>
+        </div>
+      ) : loading.placingOrder ? (
         <div className="w-full h-full flex flex-col items-center justify-center">
           <>
             <ImSpinner4 color="black" size={36} className="animate-rotate" />
@@ -212,12 +218,19 @@ function Delivery() {
         </div>
       ) : (
         <div className="w-full h-full flex items-start justify-center">
-          <div className="h-auto   w-[50%] flex flex-col items-start justify-start  box-border  ">
+          <div className="h-auto w-full  sm:w-[50%] flex flex-col items-start justify-start  box-border  ">
             <h1 className="text-lg font-medium my-2 text-black mt-3 ml-3">
               Delivery Items
             </h1>
-            <div
+            {/* <div
               className={`${styles.scroll} flex flex-col items-center justify-start w-full h-[30vh] rounded-lg border-[1px] ml-3 border-[#00000013] overflow-y-scroll`}
+            > */}
+            <InfiniteScroll
+              className="w-full h-[80vh] sm:h-[30vh] flex flex-col items-center justify-start overflow-y-scroll scrollbar-hide pb-[70px] sm:pb-0"
+              pageStart={0}
+              loadMore={() => null}
+              hasMore={true || false}
+              loader={<div className="loader" key={0}></div>}
             >
               {cart?.products?.map((item: any, i: number) => {
                 return (
@@ -243,12 +256,13 @@ function Delivery() {
                   </div>
                 );
               })}
-            </div>
+            </InfiniteScroll>
+            {/* </div> */}
 
-            <h1 className="text-lg font-medium my-2  text-black mt-3 ml-3">
+            <h1 className="hidden sm:block text-lg font-medium my-2  text-black mt-3 ml-3">
               Delivery Addresses
             </h1>
-            <div className="min-h-[50px] w-[87%] flex flex-col items-start justify-start ml-3 border-[1px] border-[#00000013] rounded-lg my-5">
+            <div className="hidden  min-h-[50px] w-[87%] sm:flex flex-col items-start justify-start ml-3 border-[1px] border-[#00000013] rounded-lg my-5">
               <div className="h-[100%] w-[100%] flex items-center justify-between pl-5 pr-2 pt-1 box-border">
                 <h1 className="text-lg font-medium text-black">
                   Add a new address
@@ -279,7 +293,7 @@ function Delivery() {
                 />
               )}
             </div>
-            <div className="min-h-[32%] h-auto w-[100%]  grid grid-cols-3 gap-y-2 place-content-start place-items-center  box-border">
+            <div className="hidden min-h-[32%] h-auto w-[100%]  sm:grid grid-cols-3 gap-y-2 place-content-start place-items-center  box-border">
               {user?.addresses?.map((item: any, i: number) => (
                 <GivenAddress
                   onClick={() => setSelectedAddress(item)}
@@ -306,7 +320,7 @@ function Delivery() {
             </div>
           </div>
 
-          <div className="h-auto  w-[30%] flex flex-col items-center justify-center  ml-16">
+          <div className=" hidden h-auto  w-[30%] sm:flex flex-col items-center justify-center  ml-16">
             <div className="w-[85%]  h-[65%] min-h-[60vh] border-[1px] border-[#00000013] rounded-[10px] flex flex-col px-[5%] pt-8 box-border mt-4">
               <div className="w-full h-[12%] flex flex-col items-start justify-start border-b-[2px] border-dashed">
                 <span className="mb-2 ml-4 text-black font-[600] text-[1.2rem] ">
@@ -364,6 +378,32 @@ function Delivery() {
               )}
             </div>
           </div>
+        </div>
+      )}
+      {!loadinProduct && (
+        <div className="fixed bottom-0 bg-white flex lg:hidden items-center justify-between w-full min-h-[60px] border-t-[1px] border-t-black  px-5 box-border">
+          <span className=" text-black font-[600] text-[1.2rem]">
+            Total : ₹{totalAmount ? totalAmount + deliveryFee : "0"}
+          </span>
+          <button
+            onClick={() => {
+              if (totalAmount > 300) {
+                router.push("/checkout");
+              } else {
+                return;
+              }
+            }}
+            className="self-center w-[50%] h-[60%] min-h-[40px] rounded-[10px] bg-black flex items-center justify-center"
+          >
+            <img
+              className="h-[13px] w-[13px] ml-1"
+              src="/svg/Cart.svg"
+              alt=""
+            />
+            <h1 className="text-white text-[0.8rem] font-medium ml-2">
+              Proceed to Checkout
+            </h1>
+          </button>
         </div>
       )}
     </div>

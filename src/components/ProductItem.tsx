@@ -36,7 +36,7 @@ function ProductItem({
     >
       <div className={`${className} relative w-[100%] lg:h-[300px] lg:max-h-[300px] h-[30vh] max-h-auto flex flex-col items-center justify-center rounded-[20px] overflow-hidden`}>
         <img
-          className=" w-[100%] h-[100%] items-center object-cover rounded-[20px] mb-1 pointer-events-none"
+          className=" w-[100%] h-[100%] items-center object-fill rounded-[20px] mb-1 pointer-events-none"
           src={image}
           alt=""
           style={{display:!loading?"block":'none'}}
@@ -50,13 +50,13 @@ function ProductItem({
           </div>
         )}
       </div>
-      <h1 className="self-start text-center text-[1.2rem] font-[700] text-black lg:ml-0 ml-2">
+      <h1 className="self-start text-left text-[1.2rem] font-[700] text-black lg:ml-0 ml-2">
         {nameofT}
       </h1>
       <p className="self-start text-left text-[0.75rem] lg:text-[0.8rem] max-w-[90%] break-words font-medium text-black lg:ml-0 ml-2">
         {details}
       </p>
-      <div className="self-start text-center h-[20px] w-[100%] flex items-center justify-start lg:ml-0 ml-2">
+      <div className="self-start text-left h-[20px] w-[100%] flex items-center justify-start lg:ml-0 ml-2">
         <h1 className="font-[600] text-[0.89rem] lg:text-[13px] text-black">₹{offprice}</h1>
         <h1 className="font-medium text-[0.7rem] lg:text-[11px] text-[#00000094] mx-2 line-through  ">
         ₹{realprice}
