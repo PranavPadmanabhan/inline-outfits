@@ -11,7 +11,8 @@ type AppContext = {
   setAuthType:Dispatch<SetStateAction<"login" | "signup">>;
   cart:any;
   setCart:any
-
+  isOnline: boolean;
+  setIsOnline: Dispatch<SetStateAction<boolean>>;
 };
 
 const appContext = React.createContext<AppContext>({} as AppContext);
@@ -22,6 +23,7 @@ function AppContextProvider({ children }: { children: React.ReactNode|any }) {
   const [user, setUser] = useState<any>({})
   const [authType, setAuthType] = useState<"login" | "signup">("login");
   const [cart, setCart] = useState<any>([]);
+  const [isOnline, setIsOnline] = useState<boolean>(true)
 
 
 
@@ -36,7 +38,9 @@ function AppContextProvider({ children }: { children: React.ReactNode|any }) {
     authType,
     setAuthType,
     cart,
-    setCart
+    setCart,
+    isOnline,
+    setIsOnline
   };
 
   useEffect(() =>{
