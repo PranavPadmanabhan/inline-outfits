@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
+import ProductUpload from './ProductUpload'
 
 function OrderedProduct() {
+
+
+
+   
   return (
     
 
@@ -33,7 +38,9 @@ function OrderedProduct() {
 
       <div className="flex justify-between items-center w-[200px] h-[35px] my-2">
         <button className='h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] bg-[#c5e610]'> Send To Print</button>
-        <button className='h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] bg-[#00CCCC]'> Shipped</button>
+        <button  className='h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] bg-[#00CCCC]'> Shipped</button>
+
+        
 
         
 
