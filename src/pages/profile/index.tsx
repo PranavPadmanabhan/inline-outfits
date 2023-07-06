@@ -91,7 +91,7 @@ function Profile() {
     }
   };
 
-  const updateAddress = async (isAddressOnly: boolean) => {
+  const updateAddress = async (isAddressOnly: boolean,addresses?:any) => {
     try {
       if (isAddressOnly) {
         if (
@@ -109,7 +109,7 @@ function Profile() {
             {
               method: "put",
               body: JSON.stringify({
-                addresses: [...user?.addresses, address],
+                addresses: addresses?addresses:[...user?.addresses, address],
               }),
               headers: {
                 apikey: process.env.NEXT_PUBLIC_API_KEY!,
@@ -231,18 +231,23 @@ function Profile() {
 
         <div className="min-h-[100%] w-[50%] flex flex-col items-start justify-start  mt-5 px-10 box-border">
           <div className="min-h-[32%] h-auto w-[100%]  grid grid-cols-3 gap-y-2 place-content-center place-items-center  box-border">
-            {addresses?.map((item: any, i: number) => (
-              <GivenAddress
-                key={i}
-                Delete="/svg/delete.svg"
-                AddressType={item.isHomeAddress ? "Home" : "Office"}
-                Name={item.name}
-                Locality={item.locality}
-                City={item.city}
-                PinNumber={item.pinCode}
-                PhoneNumber={"+91" + item.phone}
-              />
-            ))}
+            {addresses?.map((item: any, i: number) => {
+              return (
+                <GivenAddress
+                  key={i}
+                  Delete="/svg/delete.svg"
+                  get={getUser}
+                  user={user}
+                  id={item._id}
+                  AddressType={item.isHomeAddress ? "Home" : "Office"}
+                  Name={item.name}
+                  Locality={item.locality}
+                  City={item.city}
+                  PinNumber={item.pinCode}
+                  PhoneNumber={"+91" + item.phone}
+                />
+              )
+            })}
           </div>
 
           <div className="min-h-[50px] w-[87%] flex flex-col items-start justify-start  border-[1px] border-[#00000013] rounded-lg my-5">

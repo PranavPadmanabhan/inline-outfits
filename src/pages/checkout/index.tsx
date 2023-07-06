@@ -302,6 +302,9 @@ function Delivery() {
             <div className="hidden min-h-[32%] h-auto w-[100%]  sm:grid grid-cols-3 gap-y-2 place-content-start place-items-center  box-border">
               {user?.addresses?.map((item: any, i: number) => (
                 <GivenAddress
+                  user={user}
+                  id={item._id}
+                  get={getUser}
                   onClick={() => setSelectedAddress(item)}
                   key={i}
                   Delete="/svg/delete.svg"

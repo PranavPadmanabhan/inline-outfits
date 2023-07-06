@@ -269,6 +269,9 @@ function DeliveryAddress() {
                   onClick={() => setSelectedAddress(item)}
                   key={i}
                   Delete="/svg/delete.svg"
+                  id={item._id}
+                  user={user}
+                  get={getUser}
                   AddressType={item.isHomeAddress ? "Home" : "Office"}
                   Name={item.name}
                   Locality={item.locality}

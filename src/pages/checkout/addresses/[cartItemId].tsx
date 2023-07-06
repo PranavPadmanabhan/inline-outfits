@@ -282,6 +282,9 @@ function IndividualDeliveryAddress({ cartItemId }: { cartItemId: string }) {
               {user?.addresses?.map((item: any, i: number) => (
                 <GivenAddress
                   key={i}
+                  id={item._id}
+                  user={user}
+                  get={getUser}
                   onClick={() => setSelectedAddress(item)}
                   Delete="/svg/delete.svg"
                   AddressType={item.isHomeAddress ? "Home" : "Office"}
