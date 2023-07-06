@@ -236,7 +236,7 @@ function IndividualDeliveryAddress({ cartItemId }: { cartItemId: string }) {
       ) : (
         <div className="w-full h-full flex lg:hidden items-start justify-center">
           <div className="h-auto w-full sm:w-[50%] flex flex-col items-start justify-start  box-border  ">
-            <h1 className="hidden sm:block text-lg font-medium my-2 ml-3 text-black ">
+            <h1 className="lg:hidden text-lg font-medium my-2 ml-3 text-black ">
               Delivery Address
             </h1>
             <div className="min-h-[50px] self-center w-[95%] flex flex-col items-start justify-start border-[1px] border-[#00000013] rounded-lg my-5">

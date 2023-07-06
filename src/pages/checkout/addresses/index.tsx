@@ -218,13 +218,13 @@ function DeliveryAddress() {
       ) : (
         <div className="w-full h-full flex items-start justify-center">
           <div className="h-auto w-full  sm:w-[50%] flex flex-col items-start justify-start  box-border  ">
-            <h1 className="text-lg font-medium my-2 text-black mt-3 ml-3">
+            <h1 className="hidden lg:flex text-lg font-medium my-2 text-black mt-3 ml-3">
               Delivery Items
             </h1>
-            <h1 className="hidden sm:block text-lg font-medium my-2  text-black mt-3 ml-3">
+            <h1 className="block lg:hidden text-lg font-medium my-2  text-black mt-3 ml-3">
               Delivery Addresses
             </h1>
-            <div className="hidden  min-h-[50px] w-[87%] sm:flex flex-col items-start justify-start ml-3 border-[1px] border-[#00000013] rounded-lg my-5">
+            <div className="min-h-[50px] w-[87%] flex lg:hidden flex-col items-start justify-start ml-3 border-[1px] border-[#00000013] rounded-lg my-5">
               <div className="h-[100%] w-[100%] flex items-center justify-between pl-5 pr-2 pt-1 box-border">
                 <h1 className="text-lg font-medium text-black">
                   Add a new address
