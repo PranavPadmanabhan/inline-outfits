@@ -61,13 +61,12 @@ function Header() {
     <div className="w-[100%] fixed top-0 z-[100] lg:min-h-[95px] min-h-[60px] flex flex-col items-center justify-center bg-white">
       <Detector
         onChange={(online) => {
-          console.log(online);
           setIsOnline(online);
         }}
         render={({ online }) => {
           if (online && !isTimeUp) {
             return (
-              <div className="w-full min-h-[25px] bg-green-500 flex items-center justify-center ">
+              <div className={`lg:fixed relative top-0 w-full min-h-[25px] bg-green-500 flex items-center justify-center `}>
                 <MdOutlineWifiTethering color="black" size={16} />
                 <h1 className="text-black text-[0.7rem] ml-1 font-normal">
                   you are back..
@@ -76,7 +75,7 @@ function Header() {
             );
           } else if (!isOnline) {
             return (
-              <div className="w-full min-h-[25px] bg-red-500 flex items-center justify-center ">
+              <div className="lg:fixed relative top-0 w-full min-h-[25px] bg-red-500 flex items-center justify-center ">
                 <MdPortableWifiOff color="black" size={16} />
                 <h1 className="text-black text-[0.7rem] ml-1 font-normal">
                   bad internet connection..
@@ -93,7 +92,7 @@ function Header() {
           isNavbarOptionsVisible
             ? "border-b-[1px] border-b-[#00000057]"
             : "border-none"
-        }`}
+        } mt-0 lg:mt-4`}
       >
         <div className="lg:min-h-[50px] lg:w-[12%] h-full w-[20%] ml-3 lg:ml-10">
           {" "}
