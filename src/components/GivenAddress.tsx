@@ -62,7 +62,7 @@ function GivenAddress({
   return (
     <div
       onClick={onClick}
-      className={`relative h-[100%] min-w-[180px] max-w-[200px] w-[100%] flex flex-col ${
+      className={`relative h-[100%] lg:min-w-[180px] lg:max-w-[200px] w-[100%] flex flex-col ${
         isSelected
           ? "border-[2px] border-[#b11818d3]"
           : "border-[1px] border-[#00000013]"
