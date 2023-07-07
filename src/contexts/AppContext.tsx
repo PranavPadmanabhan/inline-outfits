@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 
 type AppContext = {
@@ -11,18 +12,20 @@ type AppContext = {
   setAuthType:Dispatch<SetStateAction<"login" | "signup">>;
   cart:any;
   setCart:any
+  isProductUploadModalVisible: boolean;
+  setIsProductUploadModalVisible: Dispatch<SetStateAction<boolean>>;
 };
 
 const appContext = React.createContext<AppContext>({} as AppContext);
 
 function AppContextProvider({ children }: { children: React.ReactNode|any }) {
   const [isAuthModalVisible, setIsAuthModalVisible] = useState<boolean>(false);
+  const [isProductUploadModalVisible, setIsProductUploadModalVisible] = useState<boolean>(false);
   const [isOptionsVisible, setIsOptionsVisible] = useState<boolean>(false);
   const [user, setUser] = useState<any>({})
   const [authType, setAuthType] = useState<"login" | "signup">("login");
   const [cart, setCart] = useState<any>([]);
-
-
+  const router = useRouter()
 
 
   const value = {
@@ -35,7 +38,9 @@ function AppContextProvider({ children }: { children: React.ReactNode|any }) {
     authType,
     setAuthType,
     cart,
-    setCart
+    setCart,
+    isProductUploadModalVisible,
+    setIsProductUploadModalVisible
   };
 
   useEffect(() =>{
@@ -47,6 +52,7 @@ function AppContextProvider({ children }: { children: React.ReactNode|any }) {
       setUser({})
     }
   },[])
+
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;
 }

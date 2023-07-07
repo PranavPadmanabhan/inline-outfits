@@ -1,9 +1,18 @@
+import { useAppContext } from "@/contexts/AppContext";
+import { CloseCircle } from "iconsax-react";
 import React from "react";
 
 function ProductUpload() {
+  const  { setIsProductUploadModalVisible} =  useAppContext()
   return (
-    <div className="h-[100vh] w-[100vw] bg-[#0000005b]  fixed top-0 left-0 flex items-center justify-center">
-      <div className="h-[70%] w-[70%] bg-white   rounded-md flex items-center justify-center p-5 box-border ">
+    <div className="fixed top-0 z-[100] h-[100vh] w-[100vw] bg-[#0000005b] flex items-center justify-center">
+      <div className="relative h-[70%] w-[70%] bg-white   rounded-md flex items-center justify-center p-5 box-border ">
+      <CloseCircle
+          onClick={() => setIsProductUploadModalVisible(false)}
+          className="absolute cursor-pointer top-4 right-4 "
+          size="25"
+          color="black"
+        />
         <div className="h-full w-[50%] flex flex-col items-start justify-start ">
           <h1 className=" text-black text-[1.3rem] font-[600]  my-1 ">
             Upload Product

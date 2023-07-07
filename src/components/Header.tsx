@@ -5,8 +5,8 @@ import { getCart } from "@/pages/cart";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styles from "@/styles/Extras.module.css";
-import { Detector, Offline, Online } from "react-detect-offline";
-import { MdPortableWifiOff, MdOutlineWifiTethering } from "react-icons/md";
+import { Detector } from "react-detect-offline";
+import { MdPortableWifiOff } from "react-icons/md";
 
 function Header() {
   const router = useRouter();
@@ -20,6 +20,7 @@ function Header() {
     setAuthType,
     cart,
     setCart,
+    setIsProductUploadModalVisible
   } = useAppContext();
   const [isNavbarOptionsVisible, setIsNavbarOptionsVisible] =
     useState<boolean>(false);
@@ -42,10 +43,16 @@ function Header() {
   }, []);
 
   const logout = () => {
-    localStorage.setItem("user", JSON.stringify({}));
-    setUser({});
-    window.location.reload();
-    setIsOptionsVisible(false);
+    if (router.pathname.includes("admin")) {
+      localStorage.setItem("admin", JSON.stringify({}));
+      setUser({});
+      router.replace("/admin");
+    } else {
+      localStorage.setItem("user", JSON.stringify({}));
+      window.location.reload();
+      setIsOptionsVisible(false);
+      setUser({});
+    }
   };
 
   return (
@@ -78,35 +85,71 @@ function Header() {
           <img className="h-[80%] w-[80%]" src="/svg/In&O.svg" alt="" />
         </div>
         <div className="h-full w-[45%] hidden  lg:flex items-center justify-evenly">
-          <h1
-            onClick={() => router.push("/")}
-            className={`text-[1rem] ${
-              router.pathname === "/"
-                ? "border-b-[1px] border-b-black"
-                : "border-none"
-            } font-medium  cursor-pointer text-black`}
-          >
-            Home
-          </h1>
-          <button
-            onClick={() => router.push("/shop")}
-            className={`text-[1rem] ${
-              router.pathname === "/shop"
-                ? "border-b-[1px] border-b-black"
-                : "border-none"
-            } font-medium text-black`}
-          >
-            Shop
-          </button>
-          <h1
-            className={`text-[1rem] ${
-              router.pathname === "/contact"
-                ? "border-b-[1px] border-b-black"
-                : "border-none"
-            } font-medium text-black`}
-          >
-            Contact Us
-          </h1>
+          {router.pathname.includes("admin") ? (
+            <button
+              className={`text-[1rem] ${
+                router.pathname === "/admin/dashboard"
+                  ? "border-b-[1px] border-b-black"
+                  : "border-none"
+              } font-medium text-black`}
+            >
+              Dashboard
+            </button>
+          ) : (
+            <button
+              onClick={() => router.push("/")}
+              className={`text-[1rem] ${
+                router.pathname === "/shop"
+                  ? "border-b-[1px] border-b-black"
+                  : "border-none"
+              } font-medium text-black`}
+            >
+              Home
+            </button>
+          )}
+          {router.pathname.includes("admin") ? (
+            <button
+              className={`text-[1rem] ${
+                router.pathname === "/admin/stickers"
+                  ? "border-b-[1px] border-b-black"
+                  : "border-none"
+              } font-medium text-black`}
+            >
+              Stickers
+            </button>
+          ) : (
+            <button
+              onClick={() => router.push("/shop")}
+              className={`text-[1rem] ${
+                router.pathname === "/shop"
+                  ? "border-b-[1px] border-b-black"
+                  : "border-none"
+              } font-medium text-black`}
+            >
+              Shop
+            </button>
+          )}
+          {router.pathname.includes("admin") ? (
+            <h1
+              className={`text-[1rem] ${
+                router.pathname === "/admin/products"
+                  ? "border-b-[1px] border-b-black"
+                  : "border-none"
+              } font-medium text-black`}
+            >
+              Products
+            </h1>
+          ) : (
+            <h1
+              className={`text-[1rem] ${
+                router.pathname === "/contact"
+                  ? "border-b-[1px] border-b-black"
+                  : "border-none"
+              } font-medium text-black`}
+            >
+              Contact Us
+            </h1>
+          )}
           <button className="relative h-auto w-auto flex flex-col items-center justify-center">
             <img
               onClick={() => setIsOptionsVisible(!isOptionsVisible)}
@@ -118,19 +161,23 @@ function Header() {
               <div className="absolute z-[1000] top-[40px] -right-6 min-h-[45px] rounded-[20px] w-[250px] bg-white flex flex-col items-center justify-start px-3 box-border overflow-hidden shadow-modal_header">
                 {Object.keys(user).length > 1 ? (
                   <>
-                    <div
-                      onClick={() => router.push("/profile")}
-                      className="w-full min-h-[45px] border-b-[1px] border-b-thin_border flex items-center justify-start pl-1 box-border cursor-pointer"
-                    >
-                      <span className="text-black font-[600] text-[1rem] ">
-                        Your Account
-                      </span>
-                    </div>
-                    <div className="w-full min-h-[45px] border-b-[1px] border-b-thin_border flex items-center justify-start pl-1 box-border cursor-pointer">
-                      <span className="text-black font-[600] text-[1rem]">
-                        My Orders
-                      </span>
-                    </div>
+                    {!router.pathname.includes("admin") && (
+                      <div
+                        onClick={() => router.push("/profile")}
+                        className="w-full min-h-[45px] border-b-[1px] border-b-thin_border flex items-center justify-start pl-1 box-border cursor-pointer"
+                      >
+                        <span className="text-black font-[600] text-[1rem] ">
+                          Your Account
+                        </span>
+                      </div>
+                    )}
+                    {!router.pathname.includes("admin") && (
+                      <div className="w-full min-h-[45px] border-b-[1px] border-b-thin_border flex items-center justify-start pl-1 box-border cursor-pointer">
+                        <span className="text-black font-[600] text-[1rem]">
+                          My Orders
+                        </span>
+                      </div>
+                    )}
                     <div
                       onClick={logout}
                       className="w-full min-h-[45px] border-b-[1px] border-b-thin_border flex items-center justify-start pl-1 box-border cursor-pointer"
@@ -142,30 +189,34 @@ function Header() {
                   </>
                 ) : (
                   <>
-                    <div
-                      onClick={() => {
-                        setAuthType("login");
-                        setIsAuthModalVisible(true);
-                        setIsOptionsVisible(false);
-                      }}
-                      className="w-full min-h-[45px] border-b-[1px] border-b-thin_border flex items-center justify-start pl-1 box-border cursor-pointer"
-                    >
-                      <span className="text-black font-[600] text-[1rem] ">
-                        Login
-                      </span>
-                    </div>
-                    <div
-                      onClick={() => {
-                        setAuthType("signup");
-                        setIsAuthModalVisible(true);
-                        setIsOptionsVisible(false);
-                      }}
-                      className="w-full min-h-[45px] border-b-[1px] border-b-thin_border flex items-center justify-start pl-1 box-border cursor-pointer"
-                    >
-                      <span className="text-black font-[600] text-[1rem] ">
-                        SignUp
-                      </span>
-                    </div>
+                    {!router.pathname.includes("admin") && (
+                      <div
+                        onClick={() => {
+                          setAuthType("login");
+                          setIsAuthModalVisible(true);
+                          setIsOptionsVisible(false);
+                        }}
+                        className="w-full min-h-[45px] border-b-[1px] border-b-thin_border flex items-center justify-start pl-1 box-border cursor-pointer"
+                      >
+                        <span className="text-black font-[600] text-[1rem] ">
+                          Login
+                        </span>
+                      </div>
+                    )}
+                    {!router.pathname.includes("admin") && (
+                      <div
+                        onClick={() => {
+                          setAuthType("signup");
+                          setIsAuthModalVisible(true);
+                          setIsOptionsVisible(false);
+                        }}
+                        className="w-full min-h-[45px] border-b-[1px] border-b-thin_border flex items-center justify-start pl-1 box-border cursor-pointer"
+                      >
+                        <span className="text-black font-[600] text-[1rem] ">
+                          SignUp
+                        </span>
+                      </div>
+                    )}
                   </>
                 )}
                 {/* <div className="w-full min-h-[45px] border-b-[1px] border-b-thin_border flex items-center justify-start pl-1 box-border">
@@ -176,16 +227,30 @@ function Header() {
           </button>
           {Object.keys(user).length > 0 && (
             <button
-              onClick={() => router.push("/cart")}
+              onClick={() => {
+                if (router.pathname.includes("admin")) {
+                  setIsProductUploadModalVisible(true)
+                } else {
+                  router.push("/cart");
+                }
+              }}
               className="flex justify-center items-center min-h-[40px] min-w-[130px] bg-black rounded-md "
             >
-              <img className="h-[15px] w-[15px]" src="/svg/Cart.svg" alt="" />
-              <div className="relative text-white text-sm font-medium ml-2 flex items-center justify-center">
-                Cart
-                <span className="absolute left-5 -top-2 min-h-[20px] min-w-[17px] rounded-full bg-red-500 ml-1 text-white text-[10px]">
-                  {cart?.products?.length ?? 0}
-                </span>
-              </div>
+              {!router.pathname.includes("admin") && (
+                <img className="h-[15px] w-[15px]" src="/svg/Cart.svg" alt="" />
+              )}
+              {router.pathname.includes("admin") ? (
+                <div className="relative text-white text-sm font-medium ml-2 flex items-center justify-center">
+                  Add Product
+                </div>
+              ) : (
+                <div className="relative text-white text-sm font-medium ml-2 flex items-center justify-center">
+                  Cart
+                  <span className="absolute left-5 -top-2 min-h-[20px] min-w-[17px] rounded-full bg-red-500 ml-1 text-white text-[10px]">
+                    {cart?.products?.length ?? 0}
+                  </span>
+                </div>
+              )}
             </button>
           )}
         </div>
