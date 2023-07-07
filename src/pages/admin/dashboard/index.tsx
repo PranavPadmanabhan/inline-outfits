@@ -1,6 +1,5 @@
 import Header from "@/components/Header";
 import OrderedProduct from "@/components/OrderedProduct";
-import ProductUpload from "@/components/ProductUpload";
 import TabBar from "@/components/TabBar";
 import React, { useEffect, useState } from "react";
 
@@ -63,12 +62,6 @@ function Dashboard() {
                 totalQuantity={item?.products[0]?.product?.quantity}
               />
             ))}
-            {/* <OrderedProduct />
-            <OrderedProduct />
-            <OrderedProduct />
-            <OrderedProduct />
-            <OrderedProduct />
-            <OrderedProduct /> */}
           </div>
         );
 
