@@ -109,6 +109,7 @@ function Header() {
           )}
           {router.pathname.includes("admin") ? (
             <button
+            onClick={() => router.push("/admin/stickers")}
               className={`text-[1rem] ${
                 router.pathname === "/admin/stickers"
                   ? "border-b-[1px] border-b-black"
@@ -131,6 +132,7 @@ function Header() {
           )}
           {router.pathname.includes("admin") ? (
             <h1
+            onClick={() => router.push("/admin/products")}
               className={`text-[1rem] ${
                 router.pathname === "/admin/products"
                   ? "border-b-[1px] border-b-black"
