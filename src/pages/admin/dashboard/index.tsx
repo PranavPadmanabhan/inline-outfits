@@ -1,3 +1,4 @@
+import ConfirmationModal from "@/components/ConfirmationModal";
 import Header from "@/components/Header";
 import OrderedProduct from "@/components/OrderedProduct";
 import TabBar from "@/components/TabBar";
@@ -12,6 +13,12 @@ function Dashboard() {
   const [allOrders, setAllOrders] = useState<any[]>([]);
   const [inFactory, setInFactory] = useState<any[]>([]);
   const [shippedOrders, setShippedOrders] = useState<any[]>([]);
+  const [isConformationModalVisible, setIsConformationModalVisible] =
+    useState<boolean>(false);
+  const [activeOrder, setActiveOrder] = useState<any>({});
+  const [changeType, setChangeType] = useState<"In Factory" | "Shipped" | null>(
+    null
+  );
 
   const getOrders = async () => {
     try {
@@ -28,7 +35,9 @@ function Dashboard() {
       );
       const data = await res.json();
       if (!data.error) {
-        setAllOrders(data);
+        setAllOrders(
+          data?.filter((item: any) => item.status === "Order Placed")
+        );
         setInFactory(data?.filter((item: any) => item.status === "In Factory"));
         setShippedOrders(
           data?.filter((item: any) => item.status === "Shipped")
@@ -41,25 +50,60 @@ function Dashboard() {
     }
   };
 
+  const getUpdatedOrders = async () => {
+    try {
+      const admin = JSON.parse(localStorage.getItem("admin")!);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/orders/admin/${admin?.phone}`,
+        {
+          headers: {
+            apikey: process.env.NEXT_PUBLIC_API_KEY!,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await res.json();
+      if (!data.error) {
+        setAllOrders(
+          data?.filter((item: any) => item.status === "Order Placed")
+        );
+        setInFactory(data?.filter((item: any) => item.status === "In Factory"));
+        setShippedOrders(
+          data?.filter((item: any) => item.status === "Shipped")
+        );
+      }
+    } catch (error) {}
+  };
+
   useEffect(() => {
-    getOrders();
+    getOrders()
   }, []);
 
   const RenderTabs = () => {
     switch (activeTab) {
       case "AllOrders":
         return (
-          <div className="min-h-[60vh] w-[90%]  grid grid-cols-2 gap-2 ">
+          <div className="min-h-[60vh] w-[90%]  grid grid-cols-2 place-content-start place-items-start gap-2 ">
             {allOrders.map((item: any, i: number) => (
               <OrderedProduct
                 key={i}
-                color={item?.products[0]?.product?.color}
-                description={item?.products[0]?.product?.description}
-                image={item?.products[0]?.product?.images[0]}
-                name={item?.products[0]?.product?.name}
-                size={item?.products[0]?.product?.size}
+                color={item?.product?.color}
+                description={item?.product?.product?.description}
+                image={item?.product?.product?.images[0]}
+                name={item?.product?.product?.name}
+                size={item?.product?.size}
                 status={item?.status}
-                totalQuantity={item?.products[0]?.product?.quantity}
+                totalQuantity={item?.product?.quantity}
+                factorybtnOnClick={() => {
+                  setChangeType("In Factory");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
+                shippingbtnOnClick={() => {
+                  setChangeType("Shipped");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
               />
             ))}
           </div>
@@ -67,17 +111,27 @@ function Dashboard() {
 
       case "InFactory":
         return (
-          <div className="min-h-[60vh] w-[90%]  grid grid-cols-2 gap-2 ">
+          <div className="min-h-[60vh] w-[90%]  grid grid-cols-2 place-content-start place-items-start gap-2 ">
             {inFactory.map((item: any, i: number) => (
               <OrderedProduct
                 key={i}
-                color={item?.products[0]?.product?.color}
-                description={item?.products[0]?.product?.description}
-                image={item?.products[0]?.product?.images[0]}
-                name={item?.products[0]?.product?.name}
-                size={item?.products[0]?.product?.size}
+                color={item?.product?.color}
+                description={item?.product?.product?.description}
+                image={item?.product?.product?.images[0]}
+                name={item?.product?.product?.name}
+                size={item?.product?.size}
                 status={item?.status}
-                totalQuantity={item?.products[0]?.product?.quantity}
+                totalQuantity={item?.product?.quantity}
+                factorybtnOnClick={() => {
+                  setChangeType("In Factory");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
+                shippingbtnOnClick={() => {
+                  setChangeType("Shipped");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
               />
             ))}
           </div>
@@ -85,17 +139,27 @@ function Dashboard() {
 
       case "Shipped":
         return (
-          <div className="min-h-[60vh] w-[90%]  grid grid-cols-2 gap-2 ">
-           {shippedOrders.map((item: any, i: number) => (
+          <div className="min-h-[60vh] w-[90%]  grid grid-cols-2 place-content-start place-items-start gap-2 ">
+            {shippedOrders.map((item: any, i: number) => (
               <OrderedProduct
                 key={i}
-                color={item?.products[0]?.product?.color}
-                description={item?.products[0]?.product?.description}
-                image={item?.products[0]?.product?.images[0]}
-                name={item?.products[0]?.product?.name}
-                size={item?.products[0]?.product?.size}
+                color={item?.product?.color}
+                description={item?.product?.product?.description}
+                image={item?.product?.product?.images[0]}
+                name={item?.product?.product?.name}
+                size={item?.product?.size}
                 status={item?.status}
-                totalQuantity={item?.products[0]?.product?.quantity}
+                totalQuantity={item?.product?.quantity}
+                factorybtnOnClick={() => {
+                  setChangeType("In Factory");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
+                shippingbtnOnClick={() => {
+                  setChangeType("Shipped");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
               />
             ))}
           </div>
@@ -103,17 +167,27 @@ function Dashboard() {
 
       default:
         return (
-          <div className="min-h-[] w-[90%]  grid grid-cols-2 gap-2 ">
-           {allOrders.map((item: any, i: number) => (
+          <div className="min-h-[60vh] w-[90%]  grid grid-cols-2 place-content-start place-items-start  gap-2 ">
+            {allOrders.map((item: any, i: number) => (
               <OrderedProduct
                 key={i}
-                color={item?.products[0]?.product?.color}
-                description={item?.products[0]?.product?.description}
-                image={item?.products[0]?.product?.images[0]}
-                name={item?.products[0]?.product?.name}
-                size={item?.products[0]?.product?.size}
+                color={item?.product?.color}
+                description={item?.product?.product?.description}
+                image={item?.product?.product?.images[0]}
+                name={item?.product?.product?.name}
+                size={item?.product?.size}
                 status={item?.status}
-                totalQuantity={item?.products[0]?.product?.quantity}
+                totalQuantity={item?.product?.quantity}
+                factorybtnOnClick={() => {
+                  setChangeType("In Factory");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
+                shippingbtnOnClick={() => {
+                  setChangeType("Shipped");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
               />
             ))}
           </div>
@@ -132,7 +206,14 @@ function Dashboard() {
 
         <RenderTabs />
       </div>
-      {/* {loading && <ProductUpload/>} */}
+      {isConformationModalVisible && Object.keys(activeOrder).length > 0 && (
+        <ConfirmationModal
+          order={activeOrder}
+          setIsModalVisbile={setIsConformationModalVisible}
+          changeType={changeType}
+          get={getUpdatedOrders}
+        />
+      )}
     </div>
   );
 }

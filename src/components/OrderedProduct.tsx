@@ -1,5 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
+
+type Loading = {
+  sendingToFactory: boolean;
+  shipping: boolean;
+};
 
 function OrderedProduct({
   name,
@@ -8,52 +13,50 @@ function OrderedProduct({
   image,
   totalQuantity,
   status,
-  size
-}:{
-  image?:string;
-  name?:string;
-  description?:string;
+  size,
+  factorybtnOnClick,
+  shippingbtnOnClick
+}: {
+  image?: string;
+  name?: string;
+  description?: string;
   totalQuantity?: number;
-  size?:string;
-  color?:any;
-  status?:string;
+  size?: string;
+  color?: any;
+  status?: string;
+  factorybtnOnClick?:() =>void;
+  shippingbtnOnClick?:() =>void;
 }) {
-
-
   const RenderButtons = () => {
-    if(status === "Order Placed"){
-      return(
+    if (status === "Order Placed") {
+      return (
         <div className="flex justify-between items-center w-[200px] h-[35px] my-2">
-          <button className="h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] bg-[#c5e610]">
+          <button onClick={factorybtnOnClick} className="h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] bg-[#c5e610]">
             {" "}
             Send To Print
           </button>
-          <button className="h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] bg-[#00CCCC]">
+          <button onClick={shippingbtnOnClick} className="h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] bg-[#00CCCC]">
             {" "}
             Shipped
           </button>
         </div>
-      )
-    }
-    else if(status === "InFactory"){
-      return(
+      );
+    } else if (status === "In Factory") {
+      return (
         <div className="flex justify-start items-center w-[200px] h-[35px] my-2">
-          <button className="h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] bg-[#00CCCC]">
+          <button onClick={shippingbtnOnClick} className="h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] bg-[#00CCCC]">
             {" "}
             Shipped
           </button>
         </div>
-      )
+      );
+    } else {
+      return <div />;
     }
-    else {
-      return(
-        <div />
-      )
-    }
-  }
+  };
 
   return (
-    <div className="w-[75%] h-full flex items-center justify-start px-3 box-border  bg-[#F4F4F4] rounded-md ">
+    <div className="w-[75%] h-full  flex items-center justify-start px-3 box-border  bg-[#F4F4F4] rounded-md ">
       <img
         src={image}
         alt=""
@@ -73,7 +76,10 @@ function OrderedProduct({
           size : <span className="font-[500] ml-1">{size}</span>
         </span>
         <span className="text-black text-[0.9rem] font-[300] flex items-center">
-          color :<span style={{color:color?.code}} className="font-[500] ml-1 ">{color?.name}</span>
+          color :
+          <span style={{ color: color?.code }} className="font-[500] ml-1 ">
+            {color?.name}
+          </span>
         </span>
         <RenderButtons />
       </div>
