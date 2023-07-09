@@ -2,7 +2,6 @@ import Header from '@/components/Header'
 import Input from '@/components/Input';
 import { passwordRegex, phoneRegex } from '@/constants/constants';
 import { useAppContext } from '@/contexts/AppContext';
-import { useStorageUpload } from '@thirdweb-dev/react';
 import { Call, Key, User } from 'iconsax-react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -32,21 +31,7 @@ const AdminPage = () => {
 
     const [file, setFile] = useState<any[]>([])
 
-    const { mutateAsync: upload, isLoading, isSuccess } = useStorageUpload();
 
-    const uploadFile = async () => {
-        if (file.length > 0) {
-          const uploadedData = await upload({
-            data: file,
-            options: {
-              uploadWithGatewayUrl: true,
-              uploadWithoutDirectory: false,
-            },
-          });
-        } else {
-          alert("Select one file");
-        }
-      };
 
 
       const [state, setState] = useState<state>({

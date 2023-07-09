@@ -200,7 +200,7 @@ function Dashboard() {
       <div className="h-full w-full flex  flex-col items-center justify-start">
         <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        <div className="h-[45px] w-[150px] bg-black rounded-md -ml-[78%] my-5">
+        <div className="h-[45px] w-[150px] bg-black rounded-md flex items-center justify-center -ml-[78%] my-5">
           Sort by date
         </div>
 
