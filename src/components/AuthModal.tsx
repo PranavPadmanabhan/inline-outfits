@@ -324,7 +324,7 @@ function AuthModal() {
 
   return (
     <div className="fixed top-0 z-[100] w-full h-full flex flex-col items-center justify-center">
-      <div className="relative lg:w-[50%] w-[85%]  lg:h-[60%] h-[50%] lg:rounded-[30px] rounded-[20px] bg-white shadow-modal_header flex items-center overflow-hidden justify-between">
+      <div className="relative lg:w-[50%] w-[85%]  lg:h-[60%] h-[50%] lg:rounded-[20px] rounded-[20px] bg-white shadow-modal_header flex items-center overflow-hidden justify-between">
         <CloseCircle
           onClick={() => setIsAuthModalVisible(false)}
           className="absolute cursor-pointer top-4 right-4 "

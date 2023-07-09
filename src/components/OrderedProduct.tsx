@@ -15,7 +15,8 @@ function OrderedProduct({
   status,
   size,
   factorybtnOnClick,
-  shippingbtnOnClick
+  shippingbtnOnClick,
+  onClick
 }: {
   image?: string;
   name?: string;
@@ -26,6 +27,7 @@ function OrderedProduct({
   status?: string;
   factorybtnOnClick?:() =>void;
   shippingbtnOnClick?:() =>void;
+  onClick?:() => void
 }) {
   const RenderButtons = () => {
     if (status === "Order Placed") {
@@ -58,12 +60,13 @@ function OrderedProduct({
   return (
     <div className="w-[75%] h-full  flex items-center justify-start px-3 box-border  bg-[#F4F4F4] rounded-md ">
       <img
+        onClick={onClick}
         src={image}
         alt=""
-        className="h-full w-[40%] max-h-[170px] max-w-[140px] object-cover rounded-[20px] my-3"
+        className="h-full w-[40%] max-h-[170px] max-w-[140px] object-cover rounded-[20px] my-3 cursor-pointer"
       />
       <div className="w-full h-full flex flex-col items-start justify-start pl-5 box-border">
-        <span className="text-black font-[600] text-[1.1rem] mt-2 ">
+        <span onClick={onClick} className="text-black font-[600] text-[1.1rem] mt-2  cursor-pointer">
           {name}
         </span>
         <p className="text-lightGray text-[0.9rem] font-[400] mb-1">

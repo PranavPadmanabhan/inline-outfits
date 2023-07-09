@@ -87,11 +87,12 @@ function Header() {
         <div className="h-full w-[45%] hidden  lg:flex items-center justify-evenly">
           {router.pathname.includes("admin") ? (
             <button
+              onClick={() => router.push("/admin/dashboard")}
               className={`text-[1rem] ${
                 router.pathname === "/admin/dashboard"
                   ? "border-b-[1px] border-b-black"
                   : "border-none"
-              } font-medium text-black`}
+              } font-medium text-black  cursor-pointer`}
             >
               Dashboard
             </button>
@@ -102,7 +103,7 @@ function Header() {
                 router.pathname === "/shop"
                   ? "border-b-[1px] border-b-black"
                   : "border-none"
-              } font-medium text-black`}
+              } font-medium text-black  cursor-pointer`}
             >
               Home
             </button>
@@ -114,7 +115,7 @@ function Header() {
                 router.pathname === "/admin/stickers"
                   ? "border-b-[1px] border-b-black"
                   : "border-none"
-              } font-medium text-black`}
+              } font-medium text-black  cursor-pointer`}
             >
               Stickers
             </button>
@@ -125,7 +126,7 @@ function Header() {
                 router.pathname === "/shop"
                   ? "border-b-[1px] border-b-black"
                   : "border-none"
-              } font-medium text-black`}
+              } font-medium text-black  cursor-pointer`}
             >
               Shop
             </button>
@@ -137,7 +138,7 @@ function Header() {
                 router.pathname === "/admin/products"
                   ? "border-b-[1px] border-b-black"
                   : "border-none"
-              } font-medium text-black`}
+              } font-medium text-black cursor-pointer`}
             >
               Products
             </h1>
@@ -147,7 +148,7 @@ function Header() {
                 router.pathname === "/contact"
                   ? "border-b-[1px] border-b-black"
                   : "border-none"
-              } font-medium text-black`}
+              } font-medium text-black  cursor-pointer`}
             >
               Contact Us
             </h1>

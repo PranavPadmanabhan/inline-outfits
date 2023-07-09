@@ -28,7 +28,6 @@ function ShopItem({ productId }: { productId: any }) {
     addingToCart: false,
     buyingItem: false,
   });
-  const sizes = ["S", "M", "L", "XL", "XXL"];
   const [selectedSize, setSelectedSize] = useState<string | null>("");
   const [selectedColor, setSelectedColor] = useState<any>({});
   const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
@@ -249,7 +248,7 @@ function ShopItem({ productId }: { productId: any }) {
           )}
             <h1 className="lg:text-xs text-sm mt-2 text-black">Size</h1>
             <div className="h-[50px] w-[300px] flex justify-between items-center my-2">
-              {sizes.map((item, i) => (
+              {product?.sizes?.map((item:any, i:number) => (
                 <Size
                   key={i}
                   isActive={selectedSize === item}
@@ -333,7 +332,7 @@ function ShopItem({ productId }: { productId: any }) {
             </h1>
 
             <div className="lg:h-[300px] h-[500px] lg:w-[70%] w-[95%] mb-5">
-              <Specification details={product.details} />
+              <Specification details={product.details} quantity={quantity} size={selectedSize} />
             </div>
           </div>
         </div>

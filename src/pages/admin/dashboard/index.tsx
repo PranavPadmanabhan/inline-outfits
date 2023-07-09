@@ -2,6 +2,7 @@ import ConfirmationModal from "@/components/ConfirmationModal";
 import Header from "@/components/Header";
 import OrderedProduct from "@/components/OrderedProduct";
 import TabBar from "@/components/TabBar";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 function Dashboard() {
@@ -19,6 +20,7 @@ function Dashboard() {
   const [changeType, setChangeType] = useState<"In Factory" | "Shipped" | null>(
     null
   );
+  const router = useRouter();
 
   const getOrders = async () => {
     try {
@@ -76,7 +78,7 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    getOrders()
+    getOrders();
   }, []);
 
   const RenderTabs = () => {
@@ -104,6 +106,7 @@ function Dashboard() {
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
                 }}
+                onClick={() => router.push(`/admin/dashboard/${item?.orderId}`)}
               />
             ))}
           </div>
@@ -132,6 +135,7 @@ function Dashboard() {
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
                 }}
+                onClick={() => router.push(`/admin/dashboard/${item?.orderId}`)}
               />
             ))}
           </div>
@@ -160,6 +164,7 @@ function Dashboard() {
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
                 }}
+                onClick={() => router.push(`/admin/dashboard/${item?.orderId}`)}
               />
             ))}
           </div>
@@ -188,6 +193,7 @@ function Dashboard() {
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
                 }}
+                onClick={() => router.push(`/admin/dashboard/${item?.orderId}`)}
               />
             ))}
           </div>
