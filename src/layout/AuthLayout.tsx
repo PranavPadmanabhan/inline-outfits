@@ -5,13 +5,13 @@ import React from "react";
 
 function AuthLayout({ children }: { children: React.ReactNode }) {
 
-  const { isAuthModalVisible,isProductUploadModalVisible } = useAppContext()
+  const { isAuthModalVisible,isProductUploadModalVisible,isUpdating,product } = useAppContext()
 
   return (
     <div className="relative w-full min-h-screen overflow-y-scroll bg-white flex items-center justify-center scrollbar-hide">
       {children}
       { isAuthModalVisible && <AuthModal /> }
-      { isProductUploadModalVisible && <ProductUpload /> }
+      { isProductUploadModalVisible && <ProductUpload isUpdating={isUpdating} product={product} /> }
     </div>
   );
 }

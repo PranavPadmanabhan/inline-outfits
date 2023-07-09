@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Header from "@/components/Header";
+import { useAppContext } from "@/contexts/AppContext";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { ImSpinner4 } from "react-icons/im";
@@ -10,6 +11,7 @@ function Products() {
   const [deleting, setDeleting] = useState<boolean>(false);
   const [hasError, setHasError] = useState<boolean>(false);
   const router = useRouter();
+  const { setIsProductUploadModalVisible,setProduct,setIsUpdating } = useAppContext()
 
   const getProducts = async () => {
     try {
@@ -21,6 +23,7 @@ function Products() {
         },
       });
       const data = await res.json();
+      console.log(data)
       if (!data.error) {
         setProducts(data);
       }
@@ -110,6 +113,11 @@ function Products() {
                     className="h-[18px] w-[18px] cursor-pointer"
                     src="/svg/edit.svg"
                     alt=""
+                    onClick={() =>{
+                      setIsUpdating(true)
+                      setProduct(item)
+                      setIsProductUploadModalVisible(true)
+                    }}
                   />
                   {deleting ? (
                     <ImSpinner4

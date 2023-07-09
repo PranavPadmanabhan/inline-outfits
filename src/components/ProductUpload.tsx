@@ -1,7 +1,7 @@
 import { useAppContext } from "@/contexts/AppContext";
 import { useStorageUpload } from "@thirdweb-dev/react";
 import { CloseCircle } from "iconsax-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { ImSpinner4 } from "react-icons/im";
 
@@ -28,7 +28,13 @@ type Details = {
   fabric: string;
 };
 
-function ProductUpload() {
+function ProductUpload({
+  isUpdating,
+  product,
+}: {
+  isUpdating: boolean;
+  product?: any;
+}) {
   const { setIsProductUploadModalVisible } = useAppContext();
   const [states, setStates] = useState<States>({
     colors: [],
@@ -65,6 +71,26 @@ function ProductUpload() {
   const [images, setImages] = useState<any[]>([]);
   const { mutateAsync: upload, isLoading, isSuccess } = useStorageUpload();
 
+  useEffect(() => {
+    if (isUpdating && product) {
+      setStates({
+        colors: product?.colors,
+        description: product?.description,
+        name: product?.name,
+        price: product.price,
+      });
+      setDetails({
+        fabric: product?.details?.fabric,
+        fabricCare: product?.details?.fabricCare,
+        fit: product?.details?.fit,
+        neckType: product?.details?.neckType,
+        sleeveType: product?.details?.sleeveType,
+      });
+      setSelectedSizes(product.sizes);
+      // setImages(product?.images);
+    }
+  }, []);
+
   const addSize = (size: string) => {
     if (selectedSizes.includes(size)) {
       setSelectedSizes(selectedSizes.filter((item) => item !== size));
@@ -93,35 +119,21 @@ function ProductUpload() {
     return uploadedData;
   };
 
-  const addProduct = async () => {
-    // console.log(states);
-    // console.log(details);
-    try {
-      const admin = JSON.parse(localStorage.getItem("admin")!);
-      if (
-        Object.keys(admin).length > 0 &&
-        states.colors.length > 0 &&
-        states.description.trim().length > 0 &&
-        states.price.original.toString().trim().length > 0 &&
-        states.price.offer.toString().trim().length > 0 &&
-        states.name.trim().length > 0 &&
-        details.fabric.trim().length > 0 &&
-        details.fabricCare.trim().length > 0 &&
-        details.fit.trim().length > 0 &&
-        details.neckType.trim().length > 0 &&
-        details.sleeveType.trim().length > 0
-      ) {
+  const addProduct = async (isUpdating: boolean, product?: any) => {
+    const admin = JSON.parse(localStorage.getItem("admin")!);
+    if (isUpdating && product) {
+      try {
         setLoading(true);
         const stills = await uploadFile(images);
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/products/admin`,
+          `${process.env.NEXT_PUBLIC_API_URL}/products/update`,
           {
-            method: "post",
+            method: "put",
             body: JSON.stringify({
               ...states,
-              phone:admin?.phone,
-              images: stills,
-              sizes: selectedSizes,
+              phone: admin?.phone,
+              images: [...product.images, stills],
+              sizes: [...product.images, selectedSizes],
               details,
             }),
             headers: {
@@ -132,14 +144,58 @@ function ProductUpload() {
         );
         const data = await res.json();
         if (!data.error) {
-          setIsProductUploadModalVisible(false)
+          setIsProductUploadModalVisible(false);
         }
         setLoading(false);
-      } else {
+      } catch (error) {
+        setLoading(false);
+        setIsProductUploadModalVisible(false);
       }
-    } catch (error) {
-      setLoading(false);
-      setIsProductUploadModalVisible(false)
+    } else {
+      try {
+        if (
+          Object.keys(admin).length > 0 &&
+          states.colors.length > 0 &&
+          states.description.trim().length > 0 &&
+          states.price.original.toString().trim().length > 0 &&
+          states.price.offer.toString().trim().length > 0 &&
+          states.name.trim().length > 0 &&
+          details.fabric.trim().length > 0 &&
+          details.fabricCare.trim().length > 0 &&
+          details.fit.trim().length > 0 &&
+          details.neckType.trim().length > 0 &&
+          details.sleeveType.trim().length > 0
+        ) {
+          setLoading(true);
+          const stills = await uploadFile(images);
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/products/admin`,
+            {
+              method: "post",
+              body: JSON.stringify({
+                ...states,
+                phone: admin?.phone,
+                images: stills,
+                sizes: selectedSizes,
+                details,
+              }),
+              headers: {
+                apikey: process.env.NEXT_PUBLIC_API_KEY!,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const data = await res.json();
+          if (!data.error) {
+            setIsProductUploadModalVisible(false);
+          }
+          setLoading(false);
+        } else {
+        }
+      } catch (error) {
+        setLoading(false);
+        setIsProductUploadModalVisible(false);
+      }
     }
   };
 
@@ -206,11 +262,20 @@ function ProductUpload() {
               {states.colors.map((item: any, i: number) => (
                 <div
                   key={i}
-                  className="min-h-[45px] min-w-[35px] rounded-full mx-1 flex flex-col items-center justify-start"
+                  className="relative min-h-[45px] min-w-[35px] rounded-full mx-1 flex flex-col items-center justify-start"
                 >
                   <div
                     style={{ backgroundColor: item?.code }}
                     className="h-[35px] w-[35px] rounded-full "
+                  ></div>
+                  <div
+                    onClick={() =>
+                      setStates({
+                        ...states,
+                        colors: states.colors.filter((color) => color !== item),
+                      })
+                    }
+                    className="absolute -top-[4px] -right-[4px] min-h-[10px] min-w-[10px] rounded-full bg-gray-400 "
                   ></div>
                   <span className="text-black text-[0.7rem]">{item?.name}</span>
                 </div>
@@ -375,7 +440,7 @@ function ProductUpload() {
           </div>
 
           <button
-            onClick={addProduct}
+            onClick={() => addProduct(isUpdating, product)}
             className="self-end mr-10 min-h-[35px] w-[100px] bg-black text-white rounded-md flex items-center justify-center text-[0.7rem] my-3"
           >
             {loading ? (

@@ -14,6 +14,10 @@ type AppContext = {
   setCart:any
   isProductUploadModalVisible: boolean;
   setIsProductUploadModalVisible: Dispatch<SetStateAction<boolean>>;
+  isUpdating: boolean;
+  setIsUpdating: Dispatch<SetStateAction<boolean>>;
+  product: any;
+  setProduct: Dispatch<SetStateAction<any>>;
 };
 
 const appContext = React.createContext<AppContext>({} as AppContext);
@@ -26,6 +30,10 @@ function AppContextProvider({ children }: { children: React.ReactNode|any }) {
   const [authType, setAuthType] = useState<"login" | "signup">("login");
   const [cart, setCart] = useState<any>([]);
   const router = useRouter()
+  const [isUpdating, setIsUpdating] = useState<boolean>(false)
+  const [product, setProduct] = useState<any>({})
+
+
 
 
   const value = {
@@ -40,7 +48,11 @@ function AppContextProvider({ children }: { children: React.ReactNode|any }) {
     cart,
     setCart,
     isProductUploadModalVisible,
-    setIsProductUploadModalVisible
+    setIsProductUploadModalVisible,
+    isUpdating,
+    setIsUpdating,
+    product,
+    setProduct
   };
 
   useEffect(() =>{
