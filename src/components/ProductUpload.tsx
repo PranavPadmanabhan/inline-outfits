@@ -142,7 +142,7 @@ function ProductUpload({
         setLoading(true);
         const stills = await uploadFile(images);
         if (stills.length > 0 && stills !== productImages) {
-          body = { ...body, images: stills };
+          body = { ...body, images: [...stills,...productImages] };
         }
         body = { ...body, productId: product?.productId, phone: admin?.phone };
         const res = await fetch(
