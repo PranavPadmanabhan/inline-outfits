@@ -242,7 +242,7 @@ function Header() {
               {!router.pathname.includes("admin") && (
                 <img className="h-[15px] w-[15px]" src="/svg/Cart.svg" alt="" />
               )}
-              {router.pathname.includes("admin") && Object.keys(JSON.parse(localStorage.getItem("user")!)).length>0 ? (
+              {router.pathname.includes("admin") && Object.keys(JSON.parse(localStorage.getItem("admin")!)).length>0 ? (
                 <div className="relative text-white text-sm font-medium ml-2 flex items-center justify-center">
                   Add Product
                 </div>
