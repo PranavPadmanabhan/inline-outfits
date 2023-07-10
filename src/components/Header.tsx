@@ -29,7 +29,7 @@ function Header() {
 
   useEffect(() => {
     setIsOptionsVisible(false);
-    setOrderPlaced(false)
+    // setOrderPlaced(false)
   }, [router.pathname]);
 
   useEffect(() => {
