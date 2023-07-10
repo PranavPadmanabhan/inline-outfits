@@ -448,7 +448,7 @@ function ProductUpload({
               >
                 <div
                   onClick={() =>
-                    setImages(images.filter((image) => item !== image))
+                    setProductImages(productImages.filter((image) => item !== image))
                   }
                   className="absolute h-[20px] w-[20px] -top-[8px] -right-[8px] rounded-full bg-gray-300 flex items-center justify-center cursor-pointer"
                 >

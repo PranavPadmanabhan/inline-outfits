@@ -16,7 +16,8 @@ function OrderedProduct({
   size,
   factorybtnOnClick,
   shippingbtnOnClick,
-  onClick
+  onClick,
+  deliverybtnClick
 }: {
   image?: string;
   name?: string;
@@ -28,6 +29,7 @@ function OrderedProduct({
   factorybtnOnClick?:() =>void;
   shippingbtnOnClick?:() =>void;
   onClick?:() => void
+  deliverybtnClick?:() => void
 }) {
   const RenderButtons = () => {
     if (status === "Order Placed") {
@@ -49,6 +51,10 @@ function OrderedProduct({
           <button onClick={shippingbtnOnClick} className="h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] bg-[#00CCCC]">
             {" "}
             Shipped
+          </button>
+          <button onClick={deliverybtnClick} className="h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] bg-[#00CCCC]">
+            {" "}
+            Delivered
           </button>
         </div>
       );

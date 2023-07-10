@@ -9,12 +9,19 @@ function ConfirmationModal({
 }: {
   setIsModalVisbile: Dispatch<SetStateAction<boolean>>;
   order: any;
-  changeType: "In Factory" | "Shipped" | null;
+  changeType:
+    | "In Factory"
+    | "Shipped"
+    | "Delivered"
+    | "Replacement Requests"
+    | null;
   get?: () => void;
 }) {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const updateStatus = async (type: "ToFactory" | "shipping") => {
+  const updateStatus = async (
+    type: "In Factory" | "Shipped" | "Delivered" | "Replacement Requests"
+  ) => {
     try {
       const admin = JSON.parse(localStorage.getItem("admin")!);
       if (Object.keys(admin).length > 0) {
@@ -26,7 +33,7 @@ function ConfirmationModal({
             body: JSON.stringify({
               phone: admin?.phone,
               orderId: order?.orderId,
-              status: type === "ToFactory" ? "In Factory" : "Shipped",
+              status: type,
             }),
             headers: {
               apikey: process.env.NEXT_PUBLIC_API_KEY!,
@@ -57,7 +64,8 @@ function ConfirmationModal({
         </h1>
         <p className=" text-[0.9rem] text-gray-600 text-center font-[300]">
           {" "}
-          Are you sure? You want to change order status from &quot;{order?.status}&quot; to &quot;{changeType}&quot;
+          Are you sure? You want to change order status from &quot;
+          {order?.status}&quot; to &quot;{changeType}&quot;
         </p>
         <div className="w-full h-auto flex items-center justify-evenly">
           <button
@@ -67,11 +75,7 @@ function ConfirmationModal({
             Cancel
           </button>
           <button
-            onClick={() =>
-              updateStatus(
-                changeType === "In Factory" ? "ToFactory" : "shipping"
-              )
-            }
+            onClick={() => updateStatus(changeType!)}
             className="w-[35%] min-h-[40px] rounded-md bg-black text-white flex items-center justify-center"
           >
             {loading ? (
