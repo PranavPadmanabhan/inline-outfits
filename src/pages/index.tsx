@@ -2,6 +2,7 @@ import About from "@/components/About";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Landing from "@/components/Landing";
+
 import TeesShowCase from "@/components/TeesShowCase";
 import React, { useEffect, useState } from "react";
 
@@ -34,6 +35,7 @@ function Index() {
       <TeesShowCase products={products} />
       <About />
       <Footer />
+      
     </div>
   );
 }

@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 
+
 function Footer() {
   return (
     <div className="lg:min-h-[30vh] h-[45vh] w-[100%] flex lg:flex-row flex-col items-center justify-between lg:px-10 py-5 box-border text-white bg-black bottom-0 relative">
