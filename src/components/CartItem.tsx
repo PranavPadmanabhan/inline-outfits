@@ -150,7 +150,6 @@ function CartItem({
           <span className="text-black text-[1rem] font-[300] ml-3">
             color :{" "}
             <span
-              style={{ color: product?.color?.code }}
               className="font-[700]"
             >
               {product?.color?.name}
