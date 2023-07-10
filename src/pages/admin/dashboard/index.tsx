@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import ConfirmationModal from "@/components/ConfirmationModal";
 import Header from "@/components/Header";
 import OrderedProduct from "@/components/OrderedProduct";
@@ -7,7 +8,7 @@ import React, { useEffect, useState } from "react";
 
 function Dashboard() {
   const [activeTab, setActiveTab] = useState<
-    "AllOrders" | "InFactory" | "Shipped" |"Delivered" |"Replacement Requests"
+    "AllOrders" | "InFactory" | "Shipped" | "Delivered" | "Replacement Requests"
   >("AllOrders");
   const [hasError, setHasError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -20,9 +21,14 @@ function Dashboard() {
   const [isConformationModalVisible, setIsConformationModalVisible] =
     useState<boolean>(false);
   const [activeOrder, setActiveOrder] = useState<any>({});
-  const [changeType, setChangeType] = useState<"In Factory" | "Shipped" |"Delivered" |"Replacement Requests"| null>(
-    null
-  );
+  const [sortDate, setSortDate] = useState<any>({
+    from: 0,
+    to: 0,
+  });
+  const [changeType, setChangeType] = useState<
+    "In Factory" | "Shipped" | "Delivered" | "Replacement Requests" | null
+  >(null);
+  const [isSorting, setIsSorting] = useState<boolean>(false);
   const router = useRouter();
 
   const getOrders = async () => {
@@ -47,9 +53,7 @@ function Dashboard() {
         setShippedOrders(
           data?.filter((item: any) => item.status === "Shipped")
         );
-        setDelivered(
-          data?.filter((item: any) => item.status === "Delivered")
-        );
+        setDelivered(data?.filter((item: any) => item.status === "Delivered"));
         setReplacements(
           data?.filter((item: any) => item.status === "Requested Replacement")
         );
@@ -75,8 +79,25 @@ function Dashboard() {
       );
       const data = await res.json();
       if (!data.error) {
+        if (isSorting) {
+          console.log(
+            data?.filter(
+              (item: any) =>
+                item.status === "Order Placed" &&
+                item.createdAt >= sortDate.from &&
+                item.createdAt <= sortDate.to
+            )
+          );
+        }
         setAllOrders(
-          data?.filter((item: any) => item.status === "Order Placed")
+          isSorting
+            ? data?.filter(
+                (item: any) =>
+                  item.status === "Order Placed" &&
+                  item.createdAt >= sortDate.from &&
+                  item.createdAt <= sortDate.to
+              )
+            : data?.filter((item: any) => item.status === "Order Placed")
         );
         setInFactory(data?.filter((item: any) => item.status === "In Factory"));
         setShippedOrders(
@@ -90,6 +111,11 @@ function Dashboard() {
     getOrders();
   }, []);
 
+  useEffect(() => {
+    if (!isSorting || (sortDate.from > 0 && sortDate.to > 0)) {
+      getUpdatedOrders();
+    }
+  }, [sortDate.from, sortDate.to, isSorting]);
   const RenderTabs = () => {
     switch (activeTab) {
       case "AllOrders":
@@ -115,7 +141,7 @@ function Dashboard() {
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
                 }}
-                deliverybtnClick={() =>{
+                deliverybtnClick={() => {
                   setChangeType("Delivered");
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
@@ -149,7 +175,7 @@ function Dashboard() {
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
                 }}
-                deliverybtnClick={() =>{
+                deliverybtnClick={() => {
                   setChangeType("Delivered");
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
@@ -183,7 +209,7 @@ function Dashboard() {
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
                 }}
-                deliverybtnClick={() =>{
+                deliverybtnClick={() => {
                   setChangeType("Delivered");
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
@@ -193,7 +219,7 @@ function Dashboard() {
             ))}
           </div>
         );
-        case "Delivered":
+      case "Delivered":
         return (
           <div className="min-h-[60vh] w-[90%]  grid grid-cols-2 place-content-start place-items-start gap-2 ">
             {delivered.map((item: any, i: number) => (
@@ -216,7 +242,7 @@ function Dashboard() {
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
                 }}
-                deliverybtnClick={() =>{
+                deliverybtnClick={() => {
                   setChangeType("Delivered");
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
@@ -226,7 +252,7 @@ function Dashboard() {
             ))}
           </div>
         );
-        case "Replacement Requests":
+      case "Replacement Requests":
         return (
           <div className="min-h-[60vh] w-[90%]  grid grid-cols-2 place-content-start place-items-start gap-2 ">
             {replacements.map((item: any, i: number) => (
@@ -249,7 +275,7 @@ function Dashboard() {
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
                 }}
-                deliverybtnClick={() =>{
+                deliverybtnClick={() => {
                   setChangeType("Delivered");
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
@@ -296,8 +322,50 @@ function Dashboard() {
       <div className="h-full w-full flex  flex-col items-center justify-start">
         <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        <div className="h-[45px] w-[150px] bg-black rounded-md flex items-center justify-center -ml-[78%] my-5">
-          Sort by date
+        <div className="w-full min-h-[50px] flex items-center justify-between  px-[5%] box-border my-2">
+          <div
+            onClick={() => setIsSorting(!isSorting)}
+            className="w-[20%] min-h-[40px] bg-black flex items-center justify-center text-white rounded-lg cursor-pointer"
+          >
+            Sort by date
+          </div>
+          {isSorting && (
+            <div className="w-[30%] min-h-[40px] flex items-center justify-evenly">
+              <div className="w-1/2 h-auto flex flex-col items-start justify-start">
+                <span className="text-black mb-1 text-[0.8rem]">starting </span>
+                <input
+                  placeholder="From "
+                  onChange={(e) => {
+                    console.log(new Date(e.target.value).getTime());
+                    setSortDate({
+                      ...sortDate,
+                      from: new Date(e.target.value).getTime(),
+                    });
+                  }}
+                  type="date"
+                  name=""
+                  id=""
+                  className="placeholder:text-gray-300 text-black border-[1px] border-black rounded-md focus:outline-none"
+                />
+              </div>
+              <div className="w-1/2 h-auto flex flex-col items-center justify-start  ">
+                <span className="text-black mb-1 text-[0.8rem]">ending</span>
+                <input
+                  placeholder="To"
+                  onChange={(e) =>
+                    setSortDate({
+                      ...sortDate,
+                      to: new Date(e.target.value).getTime(),
+                    })
+                  }
+                  type="date"
+                  name=""
+                  id=""
+                  className="placeholder:text-gray-300 text-black border-[1px] border-black rounded-md focus:outline-none"
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         <RenderTabs />

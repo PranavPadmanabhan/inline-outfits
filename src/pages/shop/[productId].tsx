@@ -34,7 +34,7 @@ function ShopItem({ productId }: { productId: any }) {
   const [hasError, setHasError] = useState<boolean>(false)
   const { setIsAuthModalVisible, setCart } = useAppContext();
   const [error, seterror] = useState<string[]>([]);
-  const [quantity, setQuantity] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(1);
   const handleClickSizeButton = (size: string) => {
     if (selectedSize === size) {
       setSelectedSize(null);
