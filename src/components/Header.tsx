@@ -85,7 +85,7 @@ function Header() {
           <img className="h-[80%] w-[80%]" src="/svg/In&O.svg" alt="" />
         </div>
         <div className="h-full w-[45%] hidden  lg:flex items-center justify-evenly">
-          {router.pathname.includes("admin") ? (
+          {router.pathname.includes("admin") && Object.keys(JSON.parse(localStorage.getItem("admin")!)).length>0  ? (
             <button
               onClick={() => router.push("/admin/dashboard")}
               className={`text-[1rem] ${
@@ -108,7 +108,7 @@ function Header() {
               Home
             </button>
           )}
-          {router.pathname.includes("admin") ? (
+          {router.pathname.includes("admin") && Object.keys(JSON.parse(localStorage.getItem("admin")!)).length>0 ? (
             <button
             onClick={() => router.push("/admin/stickers")}
               className={`text-[1rem] ${
@@ -131,7 +131,7 @@ function Header() {
               Shop
             </button>
           )}
-          {router.pathname.includes("admin") ? (
+          {router.pathname.includes("admin") && Object.keys(JSON.parse(localStorage.getItem("admin")!)).length>0? (
             <h1
             onClick={() => router.push("/admin/products")}
               className={`text-[1rem] ${
@@ -228,7 +228,7 @@ function Header() {
               </div>
             )}
           </button>
-          {Object.keys(user).length > 0 && (
+          {(Object.keys(user).length > 0 || Object.keys(JSON.parse(localStorage.getItem("admin")!)).length>0 ) && (
             <button
               onClick={() => {
                 if (router.pathname.includes("admin")) {
@@ -242,7 +242,7 @@ function Header() {
               {!router.pathname.includes("admin") && (
                 <img className="h-[15px] w-[15px]" src="/svg/Cart.svg" alt="" />
               )}
-              {router.pathname.includes("admin") ? (
+              {router.pathname.includes("admin") && Object.keys(JSON.parse(localStorage.getItem("user")!)).length>0 ? (
                 <div className="relative text-white text-sm font-medium ml-2 flex items-center justify-center">
                   Add Product
                 </div>
