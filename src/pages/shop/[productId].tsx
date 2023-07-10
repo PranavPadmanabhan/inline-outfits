@@ -225,7 +225,7 @@ function ShopItem({ productId }: { productId: any }) {
             </span>
           )}
             <h1 className="lg:text-xs text-sm mt-2 text-black">Colors</h1>
-            <div className="h-[50px] w-auto  flex justify-between items-center my-2">
+            <div className="h-[50px] w-auto  flex justify-between items-center my-2 ml-2">
               {/* <Colour colour="black" colourName="Black" />
 
                 <Colour colour="white" colourName="White" />
