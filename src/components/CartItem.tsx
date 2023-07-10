@@ -143,11 +143,11 @@ function CartItem({
               </>
             )}
           </span>
-          <div className="w-full h-auto flex flex-row lg:flex-col items-center justify-start">
+          <div className="w-full h-auto flex flex-row lg:flex-col items-center lg:items-start justify-start">
           <span className="text-black text-[1rem] font-[300]">
             size : <span className="font-[700]">{product?.size}</span>
           </span>
-          <span className="text-black text-[1rem] font-[300] ml-3">
+          <span className="text-black text-[1rem] font-[300] lg:ml-0 ml-3">
             color :{" "}
             <span
               className="font-[700]"

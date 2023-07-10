@@ -37,6 +37,17 @@ function Ordered({ deliveryState, order }: props) {
             {order?.product?.product?.price?.offer}% off
           </h1>
         </div>
+        <span className="text-black text-[1rem] font-[300]">
+            size : <span className="font-[700]">{order?.product?.size}</span>
+          </span>
+          <span className="text-black text-[1rem] font-[300] ">
+            color :{" "}
+            <span
+              className="font-[700]"
+            >
+              {order?.product?.color?.name}
+            </span>
+          </span>
 
         <span className="text-[0.8rem] font-[500] text-[#027500d3]">
           {deliveryState}
