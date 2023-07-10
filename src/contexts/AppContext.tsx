@@ -18,6 +18,8 @@ type AppContext = {
   setIsUpdating: Dispatch<SetStateAction<boolean>>;
   product: any;
   setProduct: Dispatch<SetStateAction<any>>;
+  orderPlaced: any;
+  setOrderPlaced: Dispatch<SetStateAction<any>>;
 };
 
 const appContext = React.createContext<AppContext>({} as AppContext);
@@ -32,6 +34,8 @@ function AppContextProvider({ children }: { children: React.ReactNode|any }) {
   const router = useRouter()
   const [isUpdating, setIsUpdating] = useState<boolean>(false)
   const [product, setProduct] = useState<any>({})
+  const [orderPlaced, setOrderPlaced] = useState<boolean>(false);
+
 
 
 
@@ -52,7 +56,9 @@ function AppContextProvider({ children }: { children: React.ReactNode|any }) {
     isUpdating,
     setIsUpdating,
     product,
-    setProduct
+    setProduct,
+    orderPlaced,
+    setOrderPlaced
   };
 
   useEffect(() =>{

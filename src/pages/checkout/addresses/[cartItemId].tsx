@@ -69,7 +69,7 @@ function IndividualDeliveryAddress({ cartItemId }: { cartItemId: string }) {
   const [selectedAddress, setSelectedAddress] = useState<any>({});
   const router = useRouter();
   const [loadingProduct, setLoadingProduct] = useState<boolean>(false);
-  const { cart, setCart } = useAppContext();
+  const { cart, setCart,setOrderPlaced } = useAppContext();
 
   useEffect(() => {
     getCart(setCart, setLoadingProduct, null, SetCartItem, cartItemId);
@@ -211,9 +211,8 @@ function IndividualDeliveryAddress({ cartItemId }: { cartItemId: string }) {
       });
       const data = await res.json();
       if (!data.error) {
-        alert(data?.message);
+        setOrderPlaced(true)
         getCart(setCart);
-        router.push("/shop");
       }
       setLoading({ ...loading, placingOrder: false });
     } catch (error) {

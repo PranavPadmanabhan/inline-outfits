@@ -60,7 +60,7 @@ function DeliveryAddress() {
   const [totalAmount, settotalAmount] = useState<any>(0);
   const [selectedAddress, setSelectedAddress] = useState<any>({});
   const router = useRouter();
-  const { cart, setCart } = useAppContext();
+  const { cart, setCart,setOrderPlaced } = useAppContext();
 
   useEffect(() => {
     getCart(setCart, setLoadinProduct, settotalAmount);
@@ -194,7 +194,8 @@ function DeliveryAddress() {
 
       const data = await res.json();
       if (!data.error) {
-        alert(data?.message);
+        setOrderPlaced(true)
+        getCart(setCart)
       }
       getCart(setCart);
       setLoading({ ...loading, placingOrder: false });

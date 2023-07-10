@@ -20,7 +20,8 @@ function Header() {
     setAuthType,
     cart,
     setCart,
-    setIsProductUploadModalVisible
+    setIsProductUploadModalVisible,
+    setOrderPlaced
   } = useAppContext();
   const [isNavbarOptionsVisible, setIsNavbarOptionsVisible] =
     useState<boolean>(false);
@@ -28,6 +29,7 @@ function Header() {
 
   useEffect(() => {
     setIsOptionsVisible(false);
+    setOrderPlaced(false)
   }, [router.pathname]);
 
   useEffect(() => {

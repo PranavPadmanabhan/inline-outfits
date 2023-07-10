@@ -60,7 +60,7 @@ function Delivery() {
   const [selectedAddress, setSelectedAddress] = useState<any>({});
   const [isHomeAddress, setIsHomeAddress] = useState<boolean>(true);
   const router = useRouter();
-  const { cart, setCart } = useAppContext();
+  const { cart, setCart,setOrderPlaced } = useAppContext();
 
   useEffect(() => {
     getCart(setCart, setLoadinProduct, settotalAmount);
@@ -193,7 +193,8 @@ function Delivery() {
 
       const data = await res.json();
       if (!data.error) {
-        alert(data?.message);
+        setOrderPlaced(true)
+        getCart(setCart)
       }
       getCart(setCart);
       setLoading({ ...loading, placingOrder: false });
@@ -317,15 +318,6 @@ function Delivery() {
                   isSelected={item === selectedAddress}
                 />
               ))}
-              {/* <GivenAddress
-              Delete="/svg/delete.svg"
-              AddressType="/svg/office.svg"
-              Name="Athul Vishnu"
-              Locality="Karamel"
-              City="Payyanur"
-              PinNumber={670307}
-              PhoneNumber={9999999999}
-            /> */}
             </div>
           </div>
 
