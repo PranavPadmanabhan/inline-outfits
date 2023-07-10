@@ -69,6 +69,8 @@ function ProductUpload({
   const [uploading, setUploading] = useState<boolean>(false);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [images, setImages] = useState<any[]>([]);
+  const [productImages, setProductImages] = useState<any[]>([]);
+
   const { mutateAsync: upload, isLoading, isSuccess } = useStorageUpload();
 
   useEffect(() => {
@@ -87,7 +89,7 @@ function ProductUpload({
         sleeveType: product?.details?.sleeveType,
       });
       setSelectedSizes(product.sizes);
-      // setImages(product?.images);
+      setProductImages(product?.images);
     }
   }, []);
 
@@ -122,20 +124,32 @@ function ProductUpload({
   const addProduct = async (isUpdating: boolean, product?: any) => {
     const admin = JSON.parse(localStorage.getItem("admin")!);
     if (isUpdating && product) {
+      let body: any;
+      Object.values(states).map((item, i) => {
+        if (item !== product[Object.keys(states)[i]]) {
+          body = { ...body, [Object.keys(states)[i]]: item };
+        }
+      });
+      Object.values(details).map((item, i) => {
+        if (item !== product[Object.keys(details)[i]]) {
+          body = { ...body, [Object.keys(details)[i]]: item };
+        }
+      });
+      if (selectedSizes !== product.sizes) {
+        body = { ...body, sizes: selectedSizes };
+      }
       try {
         setLoading(true);
         const stills = await uploadFile(images);
+        if (stills.length > 0 && stills !== productImages) {
+          body = { ...body, images: stills };
+        }
+        body = { ...body, productId: product?.productId, phone: admin?.phone };
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/products/update`,
+          `${process.env.NEXT_PUBLIC_API_URL}/products/product/update`,
           {
             method: "put",
-            body: JSON.stringify({
-              ...states,
-              phone: admin?.phone,
-              images: [...product.images, stills],
-              sizes: [...product.images, selectedSizes],
-              details,
-            }),
+            body: JSON.stringify(body),
             headers: {
               apikey: process.env.NEXT_PUBLIC_API_KEY!,
               "Content-Type": "application/json",
@@ -143,6 +157,7 @@ function ProductUpload({
           }
         );
         const data = await res.json();
+        console.log(data);
         if (!data.error) {
           setIsProductUploadModalVisible(false);
         }
@@ -275,8 +290,14 @@ function ProductUpload({
                         colors: states.colors.filter((color) => color !== item),
                       })
                     }
-                    className="absolute -top-[4px] -right-[4px] min-h-[10px] min-w-[10px] rounded-full bg-gray-400 "
-                  ></div>
+                    className="absolute -top-[2px] -right-[2px] h-[15px] w-[15px] rounded-full bg-gray-300 flex items-center justify-center"
+                  >
+                    <FaPlus
+                      color="black"
+                      size={10}
+                      className="rotate-45 cursor-pointer "
+                    />
+                  </div>
                   <span className="text-black text-[0.7rem]">{item?.name}</span>
                 </div>
               ))}
@@ -345,8 +366,6 @@ function ProductUpload({
                   return;
                 }
                 setImages(Object.values(e.target.files));
-                uploadFile(Object.values(e.target.files));
-                console.log(Object.values(e.target.files));
               }}
               type="file"
               accept="image/*"
@@ -358,7 +377,7 @@ function ProductUpload({
             <button className="h-[90%] w-[80px] bg-black  flex items-center justify-center rounded-md text-white">
               {uploading ? (
                 <>
-                  <span className="text-white text-[0.7rem] mr-1">
+                  <span className="text-white text-[0.6rem] mr-1">
                     uploading
                   </span>
                   <ImSpinner4
@@ -421,6 +440,22 @@ function ProductUpload({
             }
           />
           <div className="min-h-[80px] overflow-x-scroll scrollbar-hide w-[90%] flex items-center justify-start gap-x-4 pt-2 box-border">
+            {productImages.map((item: any, i: number) => (
+              <div
+                key={i}
+                style={{ backgroundImage: `url(${item})` }}
+                className="relative h-full w-[65px] border-[1px] border-gray-400 rounded-md bg-center bg-no-repeat bg-cover"
+              >
+                <div
+                  onClick={() =>
+                    setImages(images.filter((image) => item !== image))
+                  }
+                  className="absolute h-[20px] w-[20px] -top-[8px] -right-[8px] rounded-full bg-gray-300 flex items-center justify-center cursor-pointer"
+                >
+                  <FaPlus color="black" size={16} className="rotate-45" />
+                </div>
+              </div>
+            ))}
             {images.map((item: any, i: number) => (
               <div
                 key={i}
@@ -446,7 +481,7 @@ function ProductUpload({
             {loading ? (
               <ImSpinner4 color="white" size={22} className="animate-rotate" />
             ) : (
-              "Add Product"
+              isUpdating?"Update":"Add Product"
             )}
           </button>
         </div>

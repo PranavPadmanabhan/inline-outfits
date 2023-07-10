@@ -11,7 +11,7 @@ function Products() {
   const [deleting, setDeleting] = useState<boolean>(false);
   const [hasError, setHasError] = useState<boolean>(false);
   const router = useRouter();
-  const { setIsProductUploadModalVisible,setProduct,setIsUpdating } = useAppContext()
+  const { setIsProductUploadModalVisible,setProduct,setIsUpdating,isProductUploadModalVisible } = useAppContext()
 
   const getProducts = async () => {
     try {
@@ -23,7 +23,6 @@ function Products() {
         },
       });
       const data = await res.json();
-      console.log(data)
       if (!data.error) {
         setProducts(data);
       }
@@ -36,7 +35,7 @@ function Products() {
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [isProductUploadModalVisible]);
 
   const deleteProduct = async (productId: string) => {
     try {

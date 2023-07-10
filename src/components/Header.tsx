@@ -100,7 +100,7 @@ function Header() {
             <button
               onClick={() => router.push("/")}
               className={`text-[1rem] ${
-                router.pathname === "/shop"
+                router.pathname === "/"
                   ? "border-b-[1px] border-b-black"
                   : "border-none"
               } font-medium text-black  cursor-pointer`}
@@ -170,12 +170,12 @@ function Header() {
                         className="w-full min-h-[45px] border-b-[1px] border-b-thin_border flex items-center justify-start pl-1 box-border cursor-pointer"
                       >
                         <span className="text-black font-[600] text-[1rem] ">
-                          Your Account
+                          My Account
                         </span>
                       </div>
                     )}
                     {!router.pathname.includes("admin") && (
-                      <div className="w-full min-h-[45px] border-b-[1px] border-b-thin_border flex items-center justify-start pl-1 box-border cursor-pointer">
+                      <div onClick={() => router.push("/orders")} className="w-full min-h-[45px] border-b-[1px] border-b-thin_border flex items-center justify-start pl-1 box-border cursor-pointer">
                         <span className="text-black font-[600] text-[1rem]">
                           My Orders
                         </span>
