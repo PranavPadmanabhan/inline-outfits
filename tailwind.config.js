@@ -22,9 +22,12 @@ module.exports = {
       fontFamily: {
         MuseoModerno: ['MuseoModerno']
       },
+      dropShadow:{
+        text:"0px 0px 10px #CE5937"
+      },
       boxShadow: {
         ds: "0px 0px 210px 68px rgba(255,255,255,1)",
-        modal_header: "0px 0px 36px rgba(0, 0, 0, 0.25)"
+        modal_header: "0px 0px 36px rgba(0, 0, 0, 0.25)",
       },
       keyframes: {
         flicker: {

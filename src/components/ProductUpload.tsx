@@ -142,7 +142,7 @@ function ProductUpload({
         setLoading(true);
         const stills = await uploadFile(images);
         if (stills.length > 0 && stills !== productImages) {
-          body = { ...body, images: stills };
+          body = { ...body, images: [...stills,...productImages] };
         }
         body = { ...body, productId: product?.productId, phone: admin?.phone };
         const res = await fetch(
@@ -448,7 +448,7 @@ function ProductUpload({
               >
                 <div
                   onClick={() =>
-                    setImages(images.filter((image) => item !== image))
+                    setProductImages(productImages.filter((image) => item !== image))
                   }
                   className="absolute h-[20px] w-[20px] -top-[8px] -right-[8px] rounded-full bg-gray-300 flex items-center justify-center cursor-pointer"
                 >

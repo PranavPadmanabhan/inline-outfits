@@ -16,7 +16,8 @@ function OrderedProduct({
   size,
   factorybtnOnClick,
   shippingbtnOnClick,
-  onClick
+  onClick,
+  deliverybtnClick
 }: {
   image?: string;
   name?: string;
@@ -28,12 +29,13 @@ function OrderedProduct({
   factorybtnOnClick?:() =>void;
   shippingbtnOnClick?:() =>void;
   onClick?:() => void
+  deliverybtnClick?:() => void
 }) {
   const RenderButtons = () => {
     if (status === "Order Placed") {
       return (
         <div className="flex justify-between items-center w-[200px] h-[35px] my-2">
-          <button onClick={factorybtnOnClick} className="h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] bg-[#c5e610]">
+          <button onClick={factorybtnOnClick} className="h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] mr-2 bg-[#c5e610]">
             {" "}
             Send To Print
           </button>
@@ -46,13 +48,28 @@ function OrderedProduct({
     } else if (status === "In Factory") {
       return (
         <div className="flex justify-start items-center w-[200px] h-[35px] my-2">
-          <button onClick={shippingbtnOnClick} className="h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] bg-[#00CCCC]">
+          <button onClick={shippingbtnOnClick} className="h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] mr-2 bg-[#00CCCC]">
             {" "}
             Shipped
           </button>
+          <button onClick={deliverybtnClick} className="h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] bg-[#00CCCC]">
+            {" "}
+            Delivered
+          </button>
         </div>
       );
-    } else {
+    } 
+    else if (status === "Shipped") {
+      return (
+        <div className="flex justify-start items-center w-[200px] h-[35px] my-2">
+          <button onClick={deliverybtnClick} className="h-full w-[45%] rounded-md justify-center items-center flex text-[0.8rem] bg-[#00CCCC]">
+            {" "}
+            Delivered
+          </button>
+        </div>
+      );
+    } 
+    else {
       return <div />;
     }
   };
@@ -80,7 +97,7 @@ function OrderedProduct({
         </span>
         <span className="text-black text-[0.9rem] font-[300] flex items-center">
           color :
-          <span style={{ color: color?.code }} className="font-[500] ml-1 ">
+          <span  className="font-[500] ml-1 drop-shadow-text text-black">
             {color?.name}
           </span>
         </span>

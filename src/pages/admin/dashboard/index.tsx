@@ -7,17 +7,20 @@ import React, { useEffect, useState } from "react";
 
 function Dashboard() {
   const [activeTab, setActiveTab] = useState<
-    "AllOrders" | "InFactory" | "Shipped"
+    "AllOrders" | "InFactory" | "Shipped" |"Delivered" |"Replacement Requests"
   >("AllOrders");
   const [hasError, setHasError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [allOrders, setAllOrders] = useState<any[]>([]);
   const [inFactory, setInFactory] = useState<any[]>([]);
   const [shippedOrders, setShippedOrders] = useState<any[]>([]);
+  const [delivered, setDelivered] = useState<any[]>([]);
+  const [replacements, setReplacements] = useState<any[]>([]);
+
   const [isConformationModalVisible, setIsConformationModalVisible] =
     useState<boolean>(false);
   const [activeOrder, setActiveOrder] = useState<any>({});
-  const [changeType, setChangeType] = useState<"In Factory" | "Shipped" | null>(
+  const [changeType, setChangeType] = useState<"In Factory" | "Shipped" |"Delivered" |"Replacement Requests"| null>(
     null
   );
   const router = useRouter();
@@ -43,6 +46,12 @@ function Dashboard() {
         setInFactory(data?.filter((item: any) => item.status === "In Factory"));
         setShippedOrders(
           data?.filter((item: any) => item.status === "Shipped")
+        );
+        setDelivered(
+          data?.filter((item: any) => item.status === "Delivered")
+        );
+        setReplacements(
+          data?.filter((item: any) => item.status === "Requested Replacement")
         );
       }
       setLoading(false);
@@ -106,6 +115,11 @@ function Dashboard() {
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
                 }}
+                deliverybtnClick={() =>{
+                  setChangeType("Delivered");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
                 onClick={() => router.push(`/admin/dashboard/${item?.orderId}`)}
               />
             ))}
@@ -135,6 +149,11 @@ function Dashboard() {
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
                 }}
+                deliverybtnClick={() =>{
+                  setChangeType("Delivered");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
                 onClick={() => router.push(`/admin/dashboard/${item?.orderId}`)}
               />
             ))}
@@ -161,6 +180,77 @@ function Dashboard() {
                 }}
                 shippingbtnOnClick={() => {
                   setChangeType("Shipped");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
+                deliverybtnClick={() =>{
+                  setChangeType("Delivered");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
+                onClick={() => router.push(`/admin/dashboard/${item?.orderId}`)}
+              />
+            ))}
+          </div>
+        );
+        case "Delivered":
+        return (
+          <div className="min-h-[60vh] w-[90%]  grid grid-cols-2 place-content-start place-items-start gap-2 ">
+            {delivered.map((item: any, i: number) => (
+              <OrderedProduct
+                key={i}
+                color={item?.product?.color}
+                description={item?.product?.product?.description}
+                image={item?.product?.product?.images[0]}
+                name={item?.product?.product?.name}
+                size={item?.product?.size}
+                status={item?.status}
+                totalQuantity={item?.product?.quantity}
+                factorybtnOnClick={() => {
+                  setChangeType("In Factory");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
+                shippingbtnOnClick={() => {
+                  setChangeType("Shipped");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
+                deliverybtnClick={() =>{
+                  setChangeType("Delivered");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
+                onClick={() => router.push(`/admin/dashboard/${item?.orderId}`)}
+              />
+            ))}
+          </div>
+        );
+        case "Replacement Requests":
+        return (
+          <div className="min-h-[60vh] w-[90%]  grid grid-cols-2 place-content-start place-items-start gap-2 ">
+            {replacements.map((item: any, i: number) => (
+              <OrderedProduct
+                key={i}
+                color={item?.product?.color}
+                description={item?.product?.product?.description}
+                image={item?.product?.product?.images[0]}
+                name={item?.product?.product?.name}
+                size={item?.product?.size}
+                status={item?.status}
+                totalQuantity={item?.product?.quantity}
+                factorybtnOnClick={() => {
+                  setChangeType("In Factory");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
+                shippingbtnOnClick={() => {
+                  setChangeType("Shipped");
+                  setActiveOrder(item);
+                  setIsConformationModalVisible(true);
+                }}
+                deliverybtnClick={() =>{
+                  setChangeType("Delivered");
                   setActiveOrder(item);
                   setIsConformationModalVisible(true);
                 }}

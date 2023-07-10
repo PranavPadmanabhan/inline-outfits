@@ -342,6 +342,28 @@ function Header() {
                 </div>
               </div>
               <div
+                onClick={() => {
+                  setIsNavbarOptionsVisible(false);
+                  router.push("/profile");
+                }}
+                className="w-full min-h-[50px] flex items-center justify-center px-5 "
+              >
+                <div className="w-full h-full flex items-center justify-center border-b-[1px] border-b-[#0000003d] cursor-pointer">
+                  <h1 className="text-black text-[1.4rem] font-[800] ">My Account</h1>
+                </div>
+              </div>
+              <div
+                onClick={() => {
+                  setIsNavbarOptionsVisible(false);
+                  router.push("/orders");
+                }}
+                className="w-full min-h-[50px] flex items-center justify-center px-5 "
+              >
+                <div className="w-full h-full flex items-center justify-center border-b-[1px] border-b-[#0000003d] cursor-pointer">
+                  <h1 className="text-black text-[1.4rem] font-[800] ">My Orders</h1>
+                </div>
+              </div>
+              <div
                 onClick={logout}
                 className="w-full min-h-[50px] flex items-center justify-center px-5 "
               >
