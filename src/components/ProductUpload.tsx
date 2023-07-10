@@ -476,7 +476,7 @@ function ProductUpload({
 
           <button
             onClick={() => addProduct(isUpdating, product)}
-            className="self-end mr-10 min-h-[35px] w-[100px] bg-black text-white rounded-md flex items-center justify-center text-[0.7rem] my-3"
+            className="self-end mr-10  min-h-[35px] w-[100px] bg-black text-white rounded-md flex items-center justify-center text-[0.7rem] mb-11"
           >
             {loading ? (
               <ImSpinner4 color="white" size={22} className="animate-rotate" />
