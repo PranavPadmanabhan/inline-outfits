@@ -79,16 +79,6 @@ function Dashboard() {
       );
       const data = await res.json();
       if (!data.error) {
-        if (isSorting) {
-          console.log(
-            data?.filter(
-              (item: any) =>
-                item.status === "Order Placed" &&
-                item.createdAt >= sortDate.from &&
-                item.createdAt <= sortDate.to
-            )
-          );
-        }
         setAllOrders(
           isSorting
             ? data?.filter(
