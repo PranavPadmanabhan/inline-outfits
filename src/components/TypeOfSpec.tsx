@@ -7,7 +7,7 @@ type props ={
 
 function TypeOfSpec({Spec,SpecDetails}:props) {
   return (
-    <div className="h-[100%] lg:w-[50%]  flex flex-col bg-transparent justify-evenly items-start">
+    <div className="h-[100%] lg:w-[100%]  flex flex-col bg-transparent justify-evenly items-start">
     <h1 className="text-[12px] text-[#0000008e]">
         {Spec}
     </h1>

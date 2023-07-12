@@ -66,7 +66,7 @@ function Products() {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col items-start justify-start  lg:pt-[100px] pt-[50px]">
+    <div className="h-screen w-screen  flex flex-col items-start justify-start  lg:pt-[100px] pt-[50px]">
       <Header />
       {loading ? (
         <div className="h-full w-full flex items-center justify-center">
