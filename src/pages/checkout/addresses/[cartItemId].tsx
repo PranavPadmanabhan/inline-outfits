@@ -113,7 +113,7 @@ function IndividualDeliveryAddress({ cartItemId }: { cartItemId: string }) {
           {
             method: "put",
             body: JSON.stringify({
-                addresses : [...user?.addresses, { ...address, isHomeAddress }]
+                address :  { ...address, isHomeAddress }
             }),
             headers: {
               apikey: process.env.NEXT_PUBLIC_API_KEY!,
