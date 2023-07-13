@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Specification from "@/components/Specification";
 import TypeOfSpec from "@/components/TypeOfSpec";
-import GivenAddress from "@/components/GivenAddress";
 import { GetServerSideProps } from "next";
 import { ImSpinner4 } from "react-icons/im";
 import Carouselcomponent from "@/components/Carousel";
@@ -12,7 +11,7 @@ type Loading = {
   gettingInformation: boolean;
 };
 
-function OrderId({ orderId }: { orderId: string }) {
+function Order({ orderId }: { orderId: string }) {
   const [loading, setLoading] = useState<Loading>({
     gettingInformation: false,
   });
@@ -219,7 +218,7 @@ function OrderId({ orderId }: { orderId: string }) {
   );
 }
 
-export default OrderId;
+export default Order;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const orderId = context.query.orderId;
