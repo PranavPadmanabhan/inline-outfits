@@ -106,13 +106,11 @@ function Profile() {
           setLoading({ ...loading, saving: true });
           const user = JSON.parse(localStorage.getItem("user")!);
           const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/auth/user/${user?.phone}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/user/address/add/${user?.phone}`,
             {
               method: "put",
               body: JSON.stringify({
-                addresses: addresses
-                  ? addresses
-                  : [...user?.addresses, { ...address, isHomeAddress }],
+                address: { ...address, isHomeAddress },
               }),
               headers: {
                 apikey: process.env.NEXT_PUBLIC_API_KEY!,
@@ -170,13 +168,12 @@ function Profile() {
       }
     } catch (error) {
       setLoading({ ...loading, saving: false });
-      // ;
     }
   };
 
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-start pt-[50px] lg:pt-[100px]">
-       <Head>
+      <Head>
         <title>In&O | My Account</title>
       </Head>
       <Header />
@@ -241,7 +238,7 @@ function Profile() {
                   Delete="/svg/delete.svg"
                   get={getUser}
                   user={user}
-                  id={item._id}
+                  id={item.addressId}
                   AddressType={item.isHomeAddress ? "Home" : "Office"}
                   Name={item.name}
                   Locality={item.locality}

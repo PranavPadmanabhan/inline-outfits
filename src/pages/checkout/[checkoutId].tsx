@@ -302,7 +302,7 @@ function IndividualDelivery({ checkoutId }: { checkoutId: string }) {
               {user?.addresses?.map((item: any, i: number) => (
                 <GivenAddress
                   key={i}
-                  id={item._id}
+                  id={item.addressId}
                   user={user}
                   get={getUser}
                   onClick={() => setSelectedAddress(item)}

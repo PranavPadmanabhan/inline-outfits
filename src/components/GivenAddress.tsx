@@ -35,14 +35,15 @@ function GivenAddress({
 
   const deleteAddress = async () => {
     try {
+      console.log(id)
       setDeleting(true);
       const addresses = user.addresses.filter((item: any) => item._id !== id);
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/user/${user?.phone}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/user/address/remove/${user?.phone}`,
         {
           method: "put",
           body: JSON.stringify({
-            addresses: addresses,
+            addressId: id,
           }),
           headers: {
             apikey: process.env.NEXT_PUBLIC_API_KEY!,

@@ -308,7 +308,7 @@ function Delivery() {
               {user?.addresses?.map((item: any, i: number) => (
                 <GivenAddress
                   user={user}
-                  id={item._id}
+                  id={item.addressId}
                   get={getUser}
                   onClick={() => setSelectedAddress(item)}
                   key={i}
