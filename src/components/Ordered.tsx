@@ -5,9 +5,10 @@ import { ImSpinner4 } from "react-icons/im";
 type props = {
   deliveryState: any;
   order: any;
+  onClick?:() => void
 };
 
-function Ordered({ deliveryState, order }: props) {
+function Ordered({ deliveryState, order,onClick }: props) {
   const router = useRouter();
   const [loading, setloading] = useState<boolean>(true);
 
@@ -15,7 +16,7 @@ function Ordered({ deliveryState, order }: props) {
     <div className="w-[100%] lg:w-[90%] min-h-[200px] flex items-center justify-start lg:px-3 px-1 box-border   rounded-md ">
       <div className="relative h-full lg:w-[40%] w-[50%] max-h-[170px] max-w-[140px] object-cover rounded-[20px] my-3">
         <img
-          onClick={() => router.push(`/orders/${order?.orderId}`)}
+          onClick={onClick}
           src={order?.product?.product?.images[0]}
           alt=""
           className="h-full w-full object-cover rounded-[20px] cursor-pointer"
@@ -32,7 +33,7 @@ function Ordered({ deliveryState, order }: props) {
       </div>
       <div className="w-full lg:h-[85%] h-[100%]  flex flex-col items-start justify-start pl-5 box-border">
         <span
-          onClick={() => router.push(`/orders/${order?.orderId}`)}
+          onClick={onClick}
           className="text-black font-[600] lg:text-[1.3rem] text-[1.5rem] cursor-pointer"
         >
           {order?.product?.product?.name}

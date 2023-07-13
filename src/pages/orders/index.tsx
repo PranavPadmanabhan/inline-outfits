@@ -54,7 +54,7 @@ function Order() {
       ) : (
         <div className="h-full w-[90%] grid grid-cols-1 lg:grid-cols-2 place-content-start place-items-center overflow-y-scroll scrollbar-hide lg:pt-5 pt-1 box-border gap-x-0 gap-y-3 lg:gap-x-6 lg:gap-y-6">
           {orders?.map((order: any, i: number) => (
-            <Ordered key={i} order={order} deliveryState={order.status} />
+            <Ordered onClick={() => router.push(`/orders/${order.orderId}`)} key={i} order={order} deliveryState={order.status} />
           ))}
         </div>
       )}
