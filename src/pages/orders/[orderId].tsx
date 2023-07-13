@@ -63,7 +63,7 @@ function Order({ orderId }: { orderId: string }) {
       ) : (
         <div className="h-[100%] w-[100%] flex items-start justify-center ">
           <div className="h-full lg:w-[40%] flex bg-white justify-center items-start pt-16 box-border ">
-            {/* put carousel component here and change bg-colour */}
+           
             <Carouselcomponent images={order?.product?.product?.images??[]} />
           </div>
           <div className="h-[100%] lg:w-[50%] w-[90%] flex flex-col bg-white justify-start items-start lg:pl-10 pl-5 box-border ">

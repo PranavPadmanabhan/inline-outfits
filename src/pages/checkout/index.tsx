@@ -99,7 +99,7 @@ function Delivery() {
       ) {
         setLoading({ ...loading, saving: true });
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/user/${user?.phone}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/user/address/add/${user?.phone}`,
           {
             method: "put",
             body: JSON.stringify({
