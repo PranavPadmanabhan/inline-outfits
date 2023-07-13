@@ -52,13 +52,15 @@ function Profile() {
     phone: "",
     pinCode: "",
     state: "",
-  });  const [error, setError] = useState<string[]>([]);
+  });
+  const [error, setError] = useState<string[]>([]);
   const [loading, setLoading] = useState<Loading>({ saving: false });
   const [states, setStates] = useState<State>({
     email: "",
     name: "",
   });
   const [addresses, setAddresses] = useState<any[]>([]);
+  const [isHomeAddress, setIsHomeAddress] = useState<boolean>(true);
   const { user, setUser } = useAppContext();
 
   useEffect(() => {
@@ -86,12 +88,10 @@ function Profile() {
         setStates({ name: data.name, email: data?.email });
         setAddresses(data?.addresses);
       }
-    } catch (error) {
-      ;
-    }
+    } catch (error) {}
   };
 
-  const updateAddress = async (isAddressOnly: boolean,addresses?:any) => {
+  const updateAddress = async (isAddressOnly: boolean, addresses?: any) => {
     try {
       if (isAddressOnly) {
         if (
@@ -109,7 +109,9 @@ function Profile() {
             {
               method: "put",
               body: JSON.stringify({
-                addresses: addresses?addresses:[...user?.addresses, address],
+                addresses: addresses
+                  ? addresses
+                  : [...user?.addresses, { ...address, isHomeAddress }],
               }),
               headers: {
                 apikey: process.env.NEXT_PUBLIC_API_KEY!,
@@ -120,7 +122,8 @@ function Profile() {
           const data = await res.json();
           if (!data.error) {
             setUser(data);
-          SetnewAddress(false)
+            getUser();
+            SetnewAddress(false);
           }
           setLoading({ ...loading, saving: false });
         } else {
@@ -162,17 +165,13 @@ function Profile() {
             }
             setLoading({ ...loading, saving: false });
           }
-        } catch (error) {
-          ;
-        }
+        } catch (error) {}
       }
     } catch (error) {
       setLoading({ ...loading, saving: false });
       // ;
-      
     }
   };
-
 
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-start pt-[50px] lg:pt-[100px]">
@@ -230,7 +229,7 @@ function Profile() {
         </div>
 
         <div className="min-h-[100%] w-[50%] flex flex-col items-start justify-start  mt-5 px-10 box-border">
-          <div className="min-h-[32%] h-auto w-[100%]  grid grid-cols-3 gap-y-2 place-content-center place-items-center  box-border">
+          <div className="min-h-[32%] h-auto w-[100%]  grid grid-cols-3 gap-y-2 lg:gap-x-1 place-content-center place-items-center  box-border">
             {addresses?.map((item: any, i: number) => {
               return (
                 <GivenAddress
@@ -246,7 +245,7 @@ function Profile() {
                   PinNumber={item.pinCode}
                   PhoneNumber={"+91" + item.phone}
                 />
-              )
+              );
             })}
           </div>
 
@@ -269,6 +268,8 @@ function Profile() {
                 loading={loading.saving}
                 updateAddress={() => updateAddress(true)}
                 error={error}
+                isHome={isHomeAddress}
+                setIsHome={setIsHomeAddress}
               />
             )}
           </div>

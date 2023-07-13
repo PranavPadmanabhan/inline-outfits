@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { ImSpinner4 } from "react-icons/im";
 import InfiniteScroll from "react-infinite-scroller";
-import OrderId from "../orders/[OrderId]";
+import OrderId from "../orders/[orderId]";
 
 function Cart() {
   // const [cart, setCart] = useState<any>([]);
