@@ -61,16 +61,16 @@ function Order({ orderId }: { orderId: string }) {
           <ImSpinner4 color="black" size={36} className="animate-rotate" />
         </div>
       ) : (
-        <div className="h-[100%] w-[100%] flex items-start justify-center ">
-          <div className="h-full lg:w-[40%] flex bg-white justify-center items-start pt-16 box-border ">
+        <div className="h-[100%] w-[100%] flex  lg:flex-row flex-col lg:items-start items-center justify-center ">
+          <div className="lg:h-full  [w-80%] lg:w-[40%] flex bg-white justify-center lg:items-start items-center lg:pt-16 pt-4 box-border ">
            
             <Carouselcomponent images={order?.product?.product?.images??[]} />
           </div>
-          <div className="h-[100%] lg:w-[50%] w-[90%] flex flex-col bg-white justify-start items-start lg:pl-10 pl-5 box-border ">
-            <h1 className="text-2xl font-bold  mt-3 text-black">
+          <div className="h-[100%] lg:w-[50%] w-[80%] flex flex-col bg-white justify-start items-start lg:pl-10 lg:pt-4 box-border ">
+            <h1 className="lg:text-2xl text-3xl font-bold   text-black">
               {order?.product?.product?.name}
             </h1>
-            <h1 className="text-[16px] text-[#000000a6] font-light mb-1">
+            <h1 className="lg:text-[16px] text-[17px] text-[#000000a6] lg:font-light font-normal mb-1">
               {order?.product?.product?.description}
             </h1>
             <div className="h-[20px] w-[100%] flex items-center justify-start my-1">
@@ -118,7 +118,7 @@ function Order({ orderId }: { orderId: string }) {
               </div>
             </div>
 
-            <div className="h-[30px] w-[300px]  flex items-center justify-start">
+            <div className="h-[30px] w-[300px]  flex items-center justify-start my-1 lg:my-0">
               <img
                 src="/svg/delivery.svg"
                 alt=""
@@ -130,79 +130,79 @@ function Order({ orderId }: { orderId: string }) {
               </span>
             </div>
 
-            <div className="h-[300px] w-full flex items-center justify-center ">
-              <div className="h-full w-[50%] flex flex-col justify-start items-start ">
-                <h1 className="lg:text-lg text-xl font-medium my-2 text-black">
+            <div className="lg:h-[300px] min-h-[400px] lg:w-full w-[80%]   flex lg:flex-row flex-col lg:items-center items-start justify-center ">
+              <div className="h-full lg:w-[50%] w-[100%] flex flex-col justify-start items-start">
+                <h1 className="lg:text-lg text-xl lg:font-medium font-semibold my-2 text-black">
                   Specifications
                 </h1>
 
-                <div className="h-[25%] w-[100%] border-t-[1px] border-[#00000025] flex lg:flex-row flex-col justify-start lg:items-center items-start">
+                <div className="h-[25%] w-[100%] border-t-[1px] border-[#00000025] flex lg:flex-row flex-col lg:justify-start justify-between lg:items-center items-start lg:pt-0 pt-1 box-border lg:mt-0 mt-1">
                   <TypeOfSpec
                     Spec="Type"
                     SpecDetails={order?.product?.product?.details?.neckType}
                   />
-                  <div className="h-[1px] w-[100%] bg-[#00000025] lg:hidden"></div>
+                 
                 </div>
 
-                <div className="h-[25%] w-[100%] border-t-[1px] border-[#00000025] flex lg:flex-row flex-col  justify-start lg:items-center items-start mb-1">
+                <div className="h-[25%] w-[100%] border-t-[1px] border-[#00000025] flex lg:flex-row flex-col  lg:justify-start justify-between lg:items-center items-start lg:pt-0 pt-1 box-border lg:mt-0 mt-1">
                   <TypeOfSpec
                     Spec="Sleeve"
                     SpecDetails={order?.product?.product?.details?.sleeveType}
                   />
-                  <div className="h-[1px] w-[100%] bg-[#00000025] lg:hidden"></div>
+                 
                 </div>
 
-                <div className="h-[25%] w-[100%] border-t-[1px] border-[#00000025] flex lg:flex-row flex-col  justify-start lg:items-center items-start mb-1">
+                <div className="h-[25%] w-[100%] border-t-[1px] border-[#00000025] flex lg:flex-row flex-col  lg:justify-start justify-between lg:items-center items-start lg:pt-0 pt-1 box-border lg:mt-0 mt-1">
                   <TypeOfSpec
                     Spec="Fit"
                     SpecDetails={order?.product?.product?.details?.fit}
                   />
-                  <div className="h-[1px] w-[100%] bg-[#00000025] lg:hidden"></div>
+                 
                 </div>
 
-                <div className="lg:h-[25%] h-[15%] w-[100%] border-t-[1px] border-[#00000025] flex  lg:flex-row flex-col  justify-start lg:items-center items-start mb-1">
+                <div className="lg:h-[25%] h-[15%] w-[100%] border-t-[1px] border-[#00000025] flex  lg:flex-row flex-col  lg:justify-start justify-between lg:items-center items-start lg:pt-0 pt-1 box-border lg:mt-0 mt-1">
                   <TypeOfSpec
                     Spec="Fabric"
                     SpecDetails={order?.product?.product?.details?.fabric}
                   />
                 </div>
 
-                <div className="h-[25%] w-[100%] border-t-[1px] border-[#00000025] flex lg:flex-row flex-col  justify-start lg:items-center items-start ">
+                <div className="h-[25%] w-[100%] border-t-[1px] border-[#00000025] flex lg:flex-row flex-col  lg:justify-start justify-between lg:items-center items-start  lg:pt-0 pt-1 box-border lg:mt-0 mt-1 ">
                   <TypeOfSpec
                     Spec="Fabric Care"
                     SpecDetails={order?.product?.product?.details?.fabricCare}
                   />
-                  <div className="h-[1px] w-[100%] bg-[#00000025] lg:hidden"></div>
+                  <div className="h-[1px] w-[100%] bg-[#00000025] lg:hidden my-2"></div>
                 </div>
               </div>
 
-              <div className="h-full w-[50%] flex flex-col justify-start items-center  ">
-                <h1 className="lg:text-lg text-xl font-medium my-3 text-black">
+              <div className="h-full lg:w-[50%] w-[90%] flex flex-col justify-start lg:items-center items-start  ">
+                <h1 className="lg:text-lg text-xl lg:font-medium font-semibold my-3 text-black">
                   Delivery Address
                 </h1>
 
-                <div className="min-h-[170px] w-[170px] border-[1px] border-[#00000013] rounded-lg flex flex-col items-center justify-center">
-                  <h1 className="text-xs text-black">
+                <div className="min-h-[170px] w-[170px] border-[1px] border-[#00000013] rounded-lg flex flex-col items-center justify-center lg:px-0 px-3 box-border lg:mb-1 mb-5">
+                  <h1 className="text-xs text-black mb-1">
                     {" "}
                     {order?.address?.Name}
                   </h1>
-                  <h1 className="text-xs text-black">
+                  <h1 className="text-xs text-black text-center mb-1">
                     {" "}
                     {order?.address?.Address}
                   </h1>
-                  <h1 className="text-xs mt-1 text-black">
+                  <h1 className="text-xs mt-1 text-black mb-1">
                     {order?.address?.Locality}{" "}
                   </h1>
-                  <h1 className="text-xs mt-1 text-black">
+                  <h1 className="text-xs mt-1 text-black mb-1">
                     {order?.address?.CityOrDistrict}{" "}
                   </h1>
-                  <h1 className="text-xs mt-1 text-black">
+                  <h1 className="text-xs mt-1 text-black mb-1">
                     {order?.address?.State}{" "}
                   </h1>
-                  <h1 className="text-xs mt-1 text-black">
+                  <h1 className="text-xs mt-1 text-black mb-1">
                     {order?.address?.PinCode}{" "}
                   </h1>
-                  <h1 className="text-xs mt-1 text-black">
+                  <h1 className="text-xs mt-1 text-black mb-1">
                     {order?.address?.Phone}{" "}
                   </h1>
                 </div>
