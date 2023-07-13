@@ -13,6 +13,7 @@ import styles from "@/styles/Extras.module.css";
 import { ImSpinner4 } from "react-icons/im";
 import { useRouter } from "next/router";
 import InfiniteScroll from "react-infinite-scroller";
+import Head from "next/head";
 
 type Address = {
   name: string;
@@ -205,6 +206,9 @@ function Delivery() {
 
   return (
     <div className="relative h-screen w-full  flex flex-col  items-center justify-start overflow-y-scroll scrollbar-hide pt-[50px] lg:pt-[100px] pb-[90px] sm:pb-0">
+       <Head>
+        <title>In&O | Checkout</title>
+      </Head>
       <Header />
       {loadinProduct ? (
         <div className="w-full h-full flex flex-col items-center justify-center">

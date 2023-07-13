@@ -2,13 +2,14 @@
 /* eslint-disable @next/next/no-img-element */
 import CartItem from "@/components/CartItem";
 import Header from "@/components/Header";
-
+import TopBarProgress from "react-topbar-progress-indicator";
 import { useAppContext } from "@/contexts/AppContext";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { ImSpinner4 } from "react-icons/im";
 import InfiniteScroll from "react-infinite-scroller";
 import OrderId from "../orders/[orderId]";
+import Head from "next/head";
 
 function Cart() {
   // const [cart, setCart] = useState<any>([]);
@@ -28,7 +29,13 @@ function Cart() {
 
   return (
     <div className="relative h-screen w-full flex flex-col items-center justify-start pt-[50px] lg:pt-[100px] ">
+      <Head>
+        <title>In&O | Cart</title>
+      </Head>
       <Header />
+      {
+        loading && <TopBarProgress />
+      }
       {cart?.products?.length <= 0 && !loading && (
         <div className="w-screen h-full flex items-center justify-center">
           <span className="text-black text-[1.4rem] font-semibold ">

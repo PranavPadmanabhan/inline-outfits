@@ -1,12 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
 import Header from "@/components/Header";
-import Specification from "@/components/Specification";
 import TypeOfSpec from "@/components/TypeOfSpec";
 import { GetServerSideProps } from "next";
 import { ImSpinner4 } from "react-icons/im";
 import Carouselcomponent from "@/components/Carousel";
 import { useRouter } from "next/router";
+import TopBarProgress from "react-topbar-progress-indicator";
+import Head from "next/head";
+
 
 type Loading = {
   gettingInformation: boolean;
@@ -49,7 +51,11 @@ function Order({ orderId }: { orderId: string }) {
 
   return (
     <div className="min-h-[100vh] w-full bg-white flex flex-col items-start justify-center scrollbar-hide pt-[50px] lg:pt-[80px]">
+       <Head>
+        <title>In&O | My Order - {orderId.slice(0,7)}</title>
+      </Head>
       <Header />
+      {loading.gettingInformation && <TopBarProgress />}
       {loading.gettingInformation ? (
         <div className="h-[80vh]  w-full flex items-center justify-center">
           <ImSpinner4 color="black" size={36} className="animate-rotate" />

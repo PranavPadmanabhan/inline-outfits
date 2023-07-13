@@ -1,9 +1,11 @@
 import Header from "@/components/Header";
 import ProductItem from "@/components/ProductItem";
 import dynamic from "next/dynamic";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { ImSpinner4 } from "react-icons/im";
+import TopBarProgress from "react-topbar-progress-indicator";
 
 function Shop() {
   const [products, setProducts] = useState<any>([]);
@@ -38,18 +40,13 @@ function Shop() {
 
   return (
     <div className="w-screen h-screen bg-white flex flex-col items-center justify-start pt-[50px] lg:pt-[100px]">
+       <Head>
+        <title>In&O-Shop</title>
+      </Head>
       <Header />
-      {hasError && (
-        <div className="w-full h-full flex flex-col items-center justify-center">
-          <h1 className="text-[1rem] text-black">Something went wrong!!</h1>
-          <button
-            onClick={getProducts}
-            className="bg-transparent text-black text-[0.85rem] mt-1"
-          >
-            Try again
-          </button>
-        </div>
-      )}
+      {
+        loading && <TopBarProgress />
+      }
       {loading ? (
         <div className="w-full h-full flex flex-col items-center justify-center">
           <ImSpinner4 color="black" size={36} className="animate-rotate" />

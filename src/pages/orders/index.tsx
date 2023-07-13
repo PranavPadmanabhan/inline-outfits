@@ -1,9 +1,11 @@
 import Header from "@/components/Header";
 import Ordered from "@/components/Ordered";
 import dynamic from "next/dynamic";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { ImSpinner4 } from "react-icons/im";
+import TopBarProgress from "react-topbar-progress-indicator";
 
 function Order() {
   const [orders, setOrders] = useState<any>([]);
@@ -41,7 +43,13 @@ function Order() {
 
   return (
     <div className=" h-screen w-full  flex flex-col  items-center justify-start overflow-y-scroll scrollbar-hide pt-[50px] lg:pt-[100px]">
+       <Head>
+        <title>In&O | My Orders</title>
+      </Head>
       <Header />
+      {
+        loading && <TopBarProgress/>
+      }
       {
         !loading && orders.length === 0 && <div className="h-full w-full flex items-center justify-center">
         <h1 className="text-black text-[1rem]">Your OrderList is empty</h1>

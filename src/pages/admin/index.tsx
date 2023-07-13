@@ -4,6 +4,7 @@ import { passwordRegex, phoneRegex } from '@/constants/constants';
 import { useAppContext } from '@/contexts/AppContext';
 import { Call, Key, User } from 'iconsax-react';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { ImSpinner4 } from 'react-icons/im';
@@ -328,6 +329,9 @@ const AdminPage = () => {
 
   return (
     <div className='w-full h-screen flex flex-col items-center justify-start pt-[50px] lg:pt-[100px]'>
+      <Head>
+        <title>In&O | Admin</title>
+      </Head>
         <Header />
         <div className="relative lg:w-[80%] w-[85%]  lg:h-[70%] h-[50%] lg:rounded-[30px] rounded-[20px] bg-white flex items-center overflow-hidden justify-between">
         {otpSent ? (

@@ -12,6 +12,7 @@ import OrderItem from "@/components/OrderItem";
 import { ImSpinner4 } from "react-icons/im";
 import { useRouter } from "next/router";
 import { getCart } from "@/pages/cart";
+import Head from "next/head";
 
 type Address = {
   name: string;
@@ -222,6 +223,9 @@ function IndividualDeliveryAddress({ cartItemId }: { cartItemId: string }) {
 
   return (
     <div className="relative h-screen w-full  flex flex-col  items-center justify-start overflow-y-scroll scrollbar-hide pt-[50px] lg:pt-[100px]">
+      <Head>
+        <title>In&O | Checkout</title>
+      </Head>
       <Header />
       {loadingProduct ? (
         <div className="w-full h-full flex flex-col items-center justify-center">

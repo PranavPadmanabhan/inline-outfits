@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import NewAddress from "@/components/NewAddress";
 import { useAppContext } from "@/contexts/AppContext";
 import dynamic from "next/dynamic";
+import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { ImSpinner4 } from "react-icons/im";
 
@@ -175,6 +176,9 @@ function Profile() {
 
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-start pt-[50px] lg:pt-[100px]">
+       <Head>
+        <title>In&O | My Account</title>
+      </Head>
       <Header />
 
       <div className="h-full w-full flex items-start justify-start  overflow-y-scroll scrollbar-hide">
